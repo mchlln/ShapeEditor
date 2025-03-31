@@ -1,0 +1,144 @@
+@startuml struct
+
+skinparam defaultTextAlignment center
+left to right direction
+
+
+package Controller{
+    interface Command{
+        + execute()
+        + undo()
+    }
+
+    note left of Command{
+    Design pattern command + memento
+    }
+    class Move implements Command{}
+
+    class Delete implements Command{}
+
+    class Resize implements Command{}
+
+    class Undo implements Command{}
+
+    class Redo implements Command{}
+
+    class Duplicate implements Command{}
+
+    note left of Duplicate{
+        Design pattern prototype (copy)
+    }
+    class BagOfCommands{
+        + add()
+        + executeOne()
+        + executeAll()
+    }
+
+    note left of BagOfCommands{
+    Design pattern Composite
+    }
+}
+
+package Model{
+
+
+interface ShapeVisitor{
+    + visit(Shape)
+    + visit(Rect)
+    + visit(Circle)
+    + visit(Group)
+}
+
+note left of ShapeVisitor{
+ Design pattern visitor
+}
+
+class DrawVisitor implements ShapeVisitor{}
+
+abstract class Shape{
+    + drawLine()
+    + drawRect()
+    + drawCircle()
+    + drawHalo()
+    + scale()
+    + translate()
+    + rotate()
+    }
+
+    class Polygon extends Shape{}
+
+    class Ellipsoid extends Shape{}
+
+    class Group extends Shape{}
+
+    note left of Group{
+    Design pattern Composite
+    }
+
+    class Square extends Polygon{}
+
+    class Rectangle extends Polygon{}
+
+    class Circle extends Ellipsoid{}
+
+    interface Observable{
+        + addObserver()
+        + removeObserver()
+        + notify()
+    }
+    interface ShapeObserver{
+        + update()
+    }
+
+    note left of ShapeObserver{
+    Design pattern observer
+    }
+
+    class ShapeEditor{
+        + createEditor()
+    }
+    note left of ShapeEditor{
+    Method factory
+    }
+
+    class groupEditor extends ShapeEditor{}
+
+    class CircleEditor extends ShapeEditor{}
+
+    class RectEditor extends ShapeEditor{}
+
+    interface FileBuilder{
+        + addCircle()
+        + addRect()
+        + addGroup()
+    }
+    note left of FileBuilder{
+    Builder for saving files
+    }
+    class XMLBuilder implements FileBuilder{}
+
+    interface FileReader{}
+
+    class XMLReader implements FileReader{}
+}
+
+package View{
+    class Render{
+        + createMenu()
+        + createToolbar()
+        + createCanva()
+    }
+
+    class AWT implements Render{}
+
+    note left of Render{
+    Bridge, to allow multiple graphical libraries.
+    }
+}
+
+
+Shape o--> "1" Render
+Group o--> "*" Shape
+BagOfCommands o--> "*" Command
+
+@enduml
