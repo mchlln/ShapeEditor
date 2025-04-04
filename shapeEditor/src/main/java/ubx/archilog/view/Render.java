@@ -1,14 +1,15 @@
 package ubx.archilog.view;
 
 import java.util.function.BiFunction;
+import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
 public interface Render {
-  void drawRect(int x, int y, int w, int h, String color);
+  void drawRect(int x, int y, int w, int h, Color color);
 
   void drawImageRect(int x, int y, int w, int h, String path);
 
-  void drawCircle(int x, int y, int radius, String color);
+  void drawCircle(int x, int y, int radius, Color color);
 
   void onClick(int x, int y);
 

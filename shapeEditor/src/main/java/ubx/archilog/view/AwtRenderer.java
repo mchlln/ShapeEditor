@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
 public class AwtRenderer extends Frame implements Render, ActionListener, MouseListener {
@@ -20,8 +21,8 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   }
 
   @Override
-  public void drawRect(int x, int y, int w, int h, String color) {
-    shapes.add(new Rectangle(x, y, w, h, "#00000"));
+  public void drawRect(int x, int y, int w, int h, Color color) {
+    shapes.add(new Rectangle(x, y, w, h, color));
     repaint();
   }
 
@@ -29,8 +30,8 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public void drawImageRect(int x, int y, int w, int h, String path) {}
 
   @Override
-  public void drawCircle(int x, int y, int radius, String color) {
-    shapes.add(new Circle(x, y, radius, "#00000"));
+  public void drawCircle(int x, int y, int radius, Color color) {
+    shapes.add(new Circle(x, y, radius, color));
     repaint();
   }
 
@@ -93,17 +94,20 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int y;
     private final int w;
     private final int h;
+    private final Color color;
 
-    public Rectangle(int x, int y, int width, int height, String color) {
+    public Rectangle(int x, int y, int width, int height, Color color) {
       this.x = x;
       this.y = y;
       this.w = width;
       this.h = height;
+      this.color = color;
     }
 
     @Override
     public void draw(Graphics g) {
       g.fillRect(x, y, w, h);
+      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
     }
   }
 
@@ -111,16 +115,19 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int x;
     private final int y;
     private final int radius;
+    private final Color color;
 
-    public Circle(int x, int y, int radius, String color) {
+    public Circle(int x, int y, int radius, Color color) {
       this.x = x;
       this.y = y;
       this.radius = radius;
+      this.color = color;
     }
 
     @Override
     public void draw(Graphics g) {
       g.fillOval(x, y, radius, radius);
+      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
     }
   }
 }
