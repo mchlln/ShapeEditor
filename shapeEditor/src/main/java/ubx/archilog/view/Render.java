@@ -1,9 +1,20 @@
 package ubx.archilog.view;
 
+import java.util.function.BiFunction;
+import ubx.archilog.model.Position;
+
 public interface Render {
-  void createMenu();
+  void drawRect(int x, int y, int w, int h, String color);
 
-  void createToolbar();
+  void drawImageRect(int x, int y, int w, int h, String path);
 
-  void createCanva();
+  void drawCircle(int x, int y, int radius, String color);
+
+  void onClick(int x, int y);
+
+  void initialize(
+      int xSize,
+      int ySize,
+      BiFunction<Position, Integer, Void> mousePressed,
+      BiFunction<Position, Integer, Void> mouseReleased);
 }
