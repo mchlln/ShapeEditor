@@ -1,5 +1,6 @@
 package ubx.archilog.model;
 
+import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public class Circle extends Ellipsoid {
@@ -23,6 +24,25 @@ public class Circle extends Ellipsoid {
 
   @Override
   public void draw(Render render) {
-    // render.drawCircle()
+    render.drawCircle(super.getX(), super.getY(), radius, super.getColor());
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName()
+        + " [x="
+        + super.getX()
+        + ", y="
+        + super.getY()
+        + ", radius= "
+        + radius
+        + ", color="
+        + super.getColor()
+        + "]";
+  }
+
+  @Override
+  public void accept(ShapeVisitor visitor) {
+    visitor.visit(this);
   }
 }

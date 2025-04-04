@@ -1,5 +1,6 @@
 package ubx.archilog.model;
 
+import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public interface Shape {
@@ -9,5 +10,7 @@ public interface Shape {
 
   void rotate();
 
-  void translate();
+  void translate(int xDiff, int yDiff);
+
+  void accept(ShapeVisitor visitor);
 }

@@ -1,5 +1,8 @@
 package ubx.archilog.model;
 
+import ubx.archilog.model.visitor.ShapeVisitor;
+import ubx.archilog.view.Render;
+
 public class Square extends Polygon {
   private int width;
 
@@ -13,9 +16,37 @@ public class Square extends Polygon {
     this.width = width;
   }
 
+  public int getWidth() {
+    return width;
+  }
+
   @Override
   public void rotate() {
     // no action needed for a square
     return;
+  }
+
+  @Override
+  public void draw(Render render) {
+    render.drawRect(super.getX(), super.getY(), width, width, super.getColor());
+  }
+
+  @Override
+  public void accept(ShapeVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName()
+        + " [x="
+        + super.getX()
+        + ", y="
+        + super.getY()
+        + ", size= "
+        + width
+        + ", color="
+        + super.getColor()
+        + "]";
   }
 }
