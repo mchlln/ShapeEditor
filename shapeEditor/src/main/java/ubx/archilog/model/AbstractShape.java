@@ -58,6 +58,30 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
+  public Shape clone() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof AbstractShape) {
+      return this.x == ((AbstractShape) obj).x
+          && this.y == ((AbstractShape) obj).y
+          && this.color == ((AbstractShape) obj).color;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + x;
+    result = 31 * result + y;
+    result = 31 * result + color.hashCode();
+    return result;
+  }
+
+  @Override
   public String toString() {
     return this.getClass() + " [x=" + x + ", y=" + y + ", color=" + color + "]";
   }

@@ -28,6 +28,26 @@ public class Circle extends Ellipsoid {
   }
 
   @Override
+  public Shape clone() {
+    return new Circle(super.getX(), super.getY(), radius, super.getColor());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Circle) {
+      return this.radius == ((Circle) obj).radius && super.equals(obj);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + radius;
+    return result;
+  }
+
+  @Override
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="

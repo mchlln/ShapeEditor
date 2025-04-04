@@ -45,6 +45,29 @@ public class Rectangle extends Polygon {
   }
 
   @Override
+  public Shape clone() {
+    return new Rectangle(super.getX(), super.getY(), width, height, super.getColor());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Rectangle) {
+      return this.height == ((Rectangle) obj).height
+          && this.width == ((Rectangle) obj).width
+          && super.equals(obj);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + width;
+    result = 31 * result + height;
+    return result;
+  }
+
+  @Override
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="

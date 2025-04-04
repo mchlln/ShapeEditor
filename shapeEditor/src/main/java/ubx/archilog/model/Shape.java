@@ -13,4 +13,6 @@ public interface Shape {
   void translate(int xDiff, int yDiff);
 
   void accept(ShapeVisitor visitor);
+
+  Shape clone();
 }

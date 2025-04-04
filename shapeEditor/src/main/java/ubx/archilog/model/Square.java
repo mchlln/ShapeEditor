@@ -37,6 +37,26 @@ public class Square extends Polygon {
   }
 
   @Override
+  public Shape clone() {
+    return new Square(super.getX(), super.getY(), width, super.getColor());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Square) {
+      return this.width == ((Square) obj).width && super.equals(obj);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + width;
+    return result;
+  }
+
+  @Override
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="

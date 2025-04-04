@@ -60,6 +60,32 @@ public class Group implements Shape {
   }
 
   @Override
+  public Shape clone() {
+    Group copy = new Group();
+    List<Shape> clonedShapes = List.copyOf(shapesList);
+    for (Shape s : clonedShapes) {
+      copy.add(s);
+    }
+    return copy;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (!(obj instanceof Group o)) return false;
+    return shapesList.equals(o.shapesList);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    for (Shape shape : shapesList) {
+      result = 31 * result + (shape == null ? 0 : shape.hashCode());
+    }
+    return result;
+  }
+
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("Group [");

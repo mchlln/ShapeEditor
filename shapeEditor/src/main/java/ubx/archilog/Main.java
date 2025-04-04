@@ -19,6 +19,12 @@ public class Main {
     Group group = new Group();
     group.add(shape);
     group.add(shape2);
+    Shape group2 = group.clone();
+    if (group2 instanceof Group) {
+      ((Group) group2).remove(shape2);
+    }
+    System.out.println(group2.equals(group));
     System.out.println(group);
+    System.out.println(group2);
   }
 }
