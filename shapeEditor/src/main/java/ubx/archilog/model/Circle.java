@@ -16,6 +16,10 @@ public class Circle extends Ellipsoid {
     this.radius = radius;
   }
 
+  public int getRadius() {
+    return radius;
+  }
+
   @Override
   public void rotate() {
     // no action needed for a square
