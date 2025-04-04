@@ -1,13 +1,9 @@
 package ubx.archilog.model;
 
+import ubx.archilog.view.Render;
+
 public interface Shape {
-  void drawLine();
-
-  void drawRectangle();
-
-  void drawCircle();
-
-  void drawSquare();
+  void draw(Render render);
 
   void scale();
 

@@ -1,9 +1,37 @@
 package ubx.archilog.controller;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BagOfCommands {
-  public void addCommand() {}
+  private static BagOfCommands instance = null;
 
-  public void executeOne() {}
+  private final Queue<Command> commands = new LinkedList<>();
 
-  public void executeAll() {}
+  private BagOfCommands() {}
+
+  public static BagOfCommands getInstance() {
+    if (instance == null) {
+      instance = new BagOfCommands();
+    }
+    return instance;
+  }
+
+  public void addCommand(Command command) {
+    this.commands.add(command);
+  }
+
+  public void executeOne() {
+    if (!commands.isEmpty()) {
+      Command command = commands.remove();
+      command.execute();
+    }
+  }
+
+  public void executeAll() {
+    while (!commands.isEmpty()) {
+      Command command = commands.remove();
+      command.execute();
+    }
+  }
 }
