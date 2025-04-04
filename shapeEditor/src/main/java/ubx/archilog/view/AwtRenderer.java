@@ -13,6 +13,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   BiFunction<Position, Integer, Void> mousePressed;
   BiFunction<Position, Integer, Void> mouseReleased;
   private List<Shape> newShapes = new ArrayList<>();
+  boolean init = false;
 
   @Override
   public void paint(Graphics g) {
@@ -21,8 +22,11 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
       System.out.println(shape);
     }
     System.out.println(shapes.size() + " objects rendered / " + newShapes.size());
-    newShapes.clear();
-    shapes.clear();
+    if (init) {
+      newShapes.clear();
+      shapes.clear();
+    }
+    init = true;
   }
 
   private void updateShapes() {
@@ -125,12 +129,12 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
     @Override
     public void draw(Graphics g) {
+      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
       if (fill) {
         g.fillRect(x, y, w, h);
       } else {
         g.drawRect(x, y, w, h);
       }
-      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
     }
 
     @Override
