@@ -18,7 +18,11 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public void paint(Graphics g) {
     for (Shape shape : shapes) {
       shape.draw(g);
+      System.out.println(shape);
     }
+    System.out.println(shapes.size() + " objects rendered / " + newShapes.size());
+    newShapes.clear();
+    shapes.clear();
   }
 
   private void updateShapes() {
@@ -30,27 +34,26 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
   @Override
   public void drawRect(int x, int y, int w, int h, boolean fill, Color color) {
-    shapes.add(new Rectangle(x, y, w, h, fill, color));
+    newShapes.add(new Rectangle(x, y, w, h, fill, color));
     EventQueue.invokeLater(this::updateShapes);
-    repaint();
   }
 
   @Override
   public void drawImageRect(int x, int y, int w, int h, String path) {
-    shapes.add(new ImageRectangle(x, y, w, h, path));
+    newShapes.add(new ImageRectangle(x, y, w, h, path));
     EventQueue.invokeLater(this::updateShapes);
-    repaint();
   }
 
   @Override
   public void drawCircle(int x, int y, int radius, Color color) {
-    shapes.add(new Circle(x, y, radius, color));
+    newShapes.add(new Circle(x, y, radius, color));
     EventQueue.invokeLater(this::updateShapes);
-    repaint();
   }
 
   @Override
-  public void onClick(int x, int y) {}
+  public void update() {
+    repaint();
+  }
 
   @Override
   public void initialize(
@@ -128,6 +131,11 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
         g.drawRect(x, y, w, h);
       }
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
+    }
+
+    @Override
+    public String toString() {
+      return "Rectangle(" + x + "," + y + ") + color=" + color;
     }
   }
 

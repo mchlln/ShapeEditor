@@ -1,8 +1,7 @@
 package ubx.archilog.view;
 
 import java.util.function.BiFunction;
-import ubx.archilog.model.Color;
-import ubx.archilog.model.Position;
+import ubx.archilog.model.*;
 
 public class View {
   private static final int WINDOW_WIDTH = 800;
@@ -18,23 +17,36 @@ public class View {
     BiFunction<Position, Integer, Void> mousePressed = this::mousePressed;
     BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
-    createMenu();
-    createToolbar();
+    Model model = Model.getInstance();
+    model.addComponent(createMenu());
+    model.addComponent(createToolbar());
+    updateView();
   }
 
-  public void createMenu() {
-    renderer.drawRect(0, 0, WINDOW_WIDTH, MENU_MARGIN + 37, false, new Color(189, 142, 231, 255));
+  public Shape createMenu() {
+    Group menu = new Group();
+    menu.add(new Rectangle(0, 0, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50)));
     renderer.drawImageRect(MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png");
     renderer.drawImageRect(10 + 2 * MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png");
+    return menu;
   }
 
-  public void createToolbar() {
-    renderer.drawRect(0, 0, MENU_MARGIN, WINDOW_HEIGHT, false, new Color(189, 142, 231, 255));
+  public Shape createToolbar() {
+    Group toolbar = new Group();
+    toolbar.add(new Rectangle(0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 50)));
     renderer.drawImageRect(
         0, WINDOW_HEIGHT - (MENU_MARGIN + 10), MENU_MARGIN, MENU_MARGIN, "/icons/bin.png");
+    return toolbar;
   }
 
   public void createCanva() {}
+
+  public void updateView() {
+    for (Shape s : Model.getInstance().getComponents().getShapes()) {
+      s.draw(renderer);
+    }
+    renderer.update();
+  }
 
   public Void mousePressed(Position position, int button) {
     from = position;
@@ -48,7 +60,7 @@ public class View {
       mouseDragged(from, position, button);
     }
     from = null;
-
+    updateView();
     return null;
   }
 
@@ -59,16 +71,20 @@ public class View {
 
   public void mouseDragged(Position from, Position to, int b) {
     if (b == 1) {
-      renderer.drawRect(
-          from.x(),
-          from.y(),
-          to.x() - from.x(),
-          to.y() - from.y(),
-          true,
-          new Color(189, 142, 231, 255));
+      Model.getInstance()
+          .addComponent(
+              new Rectangle(
+                  from.x(),
+                  from.y(),
+                  to.x() - from.x(),
+                  to.y() - from.y(),
+                  new Color(189, 142, 231, 255)));
     } else if (b == 3) {
-      renderer.drawCircle(from.x(), from.y(), to.y() - from.y(), new Color(189, 142, 231, 255));
+      Model.getInstance()
+          .addComponent(
+              new Circle(from.x(), from.y(), to.y() - from.y(), new Color(189, 142, 231, 255)));
     }
+    System.out.println(Model.getInstance().getComponents().getShapes().size());
 
     System.out.println("Mouse Dragged  " + from + "," + to);
   }

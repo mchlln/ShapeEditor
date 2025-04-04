@@ -8,6 +8,8 @@ public class Main {
   public static void main(String[] args) {
     System.out.println("Hello World!");
     View view = new View();
+    Model.getInstance();
+    /*
 
     Shape shape = new Circle(2, 4, 6);
     System.out.println(shape);
@@ -25,6 +27,6 @@ public class Main {
     }
     System.out.println(group2.equals(group));
     System.out.println(group);
-    System.out.println(group2);
+    System.out.println(group2);*/
   }
 }

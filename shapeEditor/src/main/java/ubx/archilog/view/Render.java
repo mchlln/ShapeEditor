@@ -11,7 +11,7 @@ public interface Render {
 
   void drawCircle(int x, int y, int radius, Color color);
 
-  void onClick(int x, int y);
+  void update();
 
   void initialize(
       int xSize,
