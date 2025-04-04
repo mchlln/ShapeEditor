@@ -4,6 +4,10 @@ import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public interface Shape {
+  int getX();
+
+  int getY();
+
   void draw(Render render);
 
   void scale();
