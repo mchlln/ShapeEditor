@@ -10,48 +10,38 @@ import ubx.archilog.model.Position;
 
 public class AwtRenderer extends Frame implements Render, ActionListener, MouseListener {
   private List<Shape> shapes = new ArrayList<Shape>();
-  BiFunction<Position, Integer, Void> mousePressed;
-  BiFunction<Position, Integer, Void> mouseReleased;
-  private List<Shape> newShapes = new ArrayList<>();
-  boolean init = false;
+  private BiFunction<Position, Integer, Void> mousePressed;
+  private BiFunction<Position, Integer, Void> mouseReleased;
+  private boolean init = false;
 
   @Override
   public void paint(Graphics g) {
     for (Shape shape : shapes) {
       shape.draw(g);
-      System.out.println(shape);
     }
-    System.out.println(shapes.size() + " objects rendered / " + newShapes.size());
+    System.out.println(shapes.size() + " objects rendered");
     if (init) {
-      newShapes.clear();
       shapes.clear();
     }
     init = true;
   }
 
-  private void updateShapes() {
-    if (!newShapes.isEmpty()) {
-      shapes.addAll(newShapes);
-      newShapes.clear();
-    }
-  }
-
   @Override
   public void drawRect(int x, int y, int w, int h, boolean fill, Color color) {
-    newShapes.add(new Rectangle(x, y, w, h, fill, color));
-    EventQueue.invokeLater(this::updateShapes);
+    shapes.add(new Rectangle(x, y, w, h, fill, color));
+    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
   public void drawImageRect(int x, int y, int w, int h, String path) {
-    newShapes.add(new ImageRectangle(x, y, w, h, path));
-    EventQueue.invokeLater(this::updateShapes);
+    shapes.add(new ImageRectangle(x, y, w, h, path));
+    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
   public void drawCircle(int x, int y, int radius, Color color) {
-    newShapes.add(new Circle(x, y, radius, color));
-    EventQueue.invokeLater(this::updateShapes);
+    shapes.add(new Circle(x, y, radius, color));
+    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
