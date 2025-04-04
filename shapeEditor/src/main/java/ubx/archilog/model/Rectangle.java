@@ -36,7 +36,7 @@ public class Rectangle extends Polygon {
 
   @Override
   public void draw(Render render) {
-    render.drawRect(super.getX(), super.getY(), width, height, super.getColor());
+    render.drawRect(super.getX(), super.getY(), width, height, true, super.getColor());
   }
 
   @Override

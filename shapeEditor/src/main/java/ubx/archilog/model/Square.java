@@ -28,7 +28,7 @@ public class Square extends Polygon {
 
   @Override
   public void draw(Render render) {
-    render.drawRect(super.getX(), super.getY(), width, width, super.getColor());
+    render.drawRect(super.getX(), super.getY(), width, width, true, super.getColor());
   }
 
   @Override
