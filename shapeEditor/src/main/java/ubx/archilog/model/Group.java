@@ -2,20 +2,16 @@ package ubx.archilog.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
-public class Group extends AbstractShape {
+public class Group implements Shape {
   private final Set<Shape> shapesSet;
-  private final ArrayList<Shape> shapesList;
-  private int width;
-  private int height;
+  private final List<Shape> shapesList;
 
-  public Group(int x, int y, int width, int height) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
+  public Group() {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
   }
@@ -32,12 +28,8 @@ public class Group extends AbstractShape {
     shapesList.remove(s);
   }
 
-  public int getWidth() {
-    return width;
-  }
-
-  public int getHeight() {
-    return height;
+  public List<Shape> getShapes() {
+    return shapesList;
   }
 
   @Override
@@ -51,6 +43,9 @@ public class Group extends AbstractShape {
       s.draw(render);
     }
   }
+
+  @Override
+  public void scale() {}
 
   @Override
   public void translate(int xDiff, int yDiff) {

@@ -35,11 +35,9 @@ public class IsInVisitor implements ShapeVisitor {
 
   @Override
   public void visit(Group g) {
-    result =
-        xVisit >= g.getX()
-            && yVisit >= g.getY()
-            && xVisit <= g.getX() + g.getWidth()
-            && yVisit <= g.getX() + g.getHeight();
+    for (Shape s : g.getShapes()) {
+      // TODO
+    }
   }
 
   @Override

@@ -16,7 +16,7 @@ public class Main {
     shape.translate(1, 6);
     System.out.println(shape);
     Shape shape2 = new Square(6, 6, 6);
-    Group group = new Group(0, 0, 0, 0);
+    Group group = new Group();
     group.add(shape);
     group.add(shape2);
     System.out.println(group);
