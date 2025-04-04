@@ -12,6 +12,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   private List<Shape> shapes = new ArrayList<Shape>();
   BiFunction<Position, Integer, Void> mousePressed;
   BiFunction<Position, Integer, Void> mouseReleased;
+  private List<Shape> newShapes = new ArrayList<>();
 
   @Override
   public void paint(Graphics g) {
@@ -20,18 +21,31 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
   }
 
+  private void updateShapes() {
+    if (!newShapes.isEmpty()) {
+      shapes.addAll(newShapes);
+      newShapes.clear();
+    }
+  }
+
   @Override
-  public void drawRect(int x, int y, int w, int h, Color color) {
-    shapes.add(new Rectangle(x, y, w, h, color));
+  public void drawRect(int x, int y, int w, int h, boolean fill, Color color) {
+    shapes.add(new Rectangle(x, y, w, h, fill, color));
+    EventQueue.invokeLater(this::updateShapes);
     repaint();
   }
 
   @Override
-  public void drawImageRect(int x, int y, int w, int h, String path) {}
+  public void drawImageRect(int x, int y, int w, int h, String path) {
+    shapes.add(new ImageRectangle(x, y, w, h, path));
+    EventQueue.invokeLater(this::updateShapes);
+    repaint();
+  }
 
   @Override
   public void drawCircle(int x, int y, int radius, Color color) {
     shapes.add(new Circle(x, y, radius, color));
+    EventQueue.invokeLater(this::updateShapes);
     repaint();
   }
 
@@ -94,19 +108,25 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int y;
     private final int w;
     private final int h;
+    private final boolean fill;
     private final Color color;
 
-    public Rectangle(int x, int y, int width, int height, Color color) {
+    public Rectangle(int x, int y, int width, int height, boolean fill, Color color) {
       this.x = x;
       this.y = y;
       this.w = width;
       this.h = height;
+      this.fill = fill;
       this.color = color;
     }
 
     @Override
     public void draw(Graphics g) {
-      g.fillRect(x, y, w, h);
+      if (fill) {
+        g.fillRect(x, y, w, h);
+      } else {
+        g.drawRect(x, y, w, h);
+      }
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
     }
   }
@@ -128,6 +148,36 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     public void draw(Graphics g) {
       g.fillOval(x, y, radius, radius);
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
+    }
+  }
+
+  public static class ImageRectangle extends Canvas implements Shape {
+    private final int x;
+    private final int y;
+    private final int w;
+    private final int h;
+    Image image;
+
+    public ImageRectangle(int x, int y, int width, int height, String path) {
+      this.x = x;
+      this.y = y;
+      this.w = width;
+      this.h = height;
+
+      try {
+        image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(path));
+      } catch (Exception e) {
+        System.out.println("Error loading image: " + e.getMessage());
+      }
+    }
+
+    @Override
+    public void draw(Graphics g) {
+      if (image != null) {
+        g.drawImage(image, x, y, w, h, this);
+      } else {
+        g.drawRect(x, y, w, h);
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
 public interface Render {
-  void drawRect(int x, int y, int w, int h, Color color);
+  void drawRect(int x, int y, int w, int h, boolean fill, Color color);
 
   void drawImageRect(int x, int y, int w, int h, String path);
 

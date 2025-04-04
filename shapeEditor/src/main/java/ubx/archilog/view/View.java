@@ -1,7 +1,6 @@
 package ubx.archilog.view;
 
 import java.util.function.BiFunction;
-import javax.swing.*;
 import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
@@ -24,11 +23,15 @@ public class View {
   }
 
   public void createMenu() {
-    renderer.drawRect(0, 0, WINDOW_WIDTH, MENU_MARGIN * 2, new Color(189, 142, 231, 255));
+    renderer.drawRect(0, 0, WINDOW_WIDTH, MENU_MARGIN + 37, false, new Color(189, 142, 231, 255));
+    renderer.drawImageRect(MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png");
+    renderer.drawImageRect(10 + 2 * MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png");
   }
 
   public void createToolbar() {
-    renderer.drawRect(0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 255));
+    renderer.drawRect(0, 0, MENU_MARGIN, WINDOW_HEIGHT, false, new Color(189, 142, 231, 255));
+    renderer.drawImageRect(
+        0, WINDOW_HEIGHT - (MENU_MARGIN + 10), MENU_MARGIN, MENU_MARGIN, "/icons/bin.png");
   }
 
   public void createCanva() {}
@@ -50,14 +53,19 @@ public class View {
   }
 
   public void clickOn(Position position) {
-    renderer.drawCircle(position.x(), position.y(), 100, new Color(189, 142, 231, 255));
+    // renderer.drawCircle(position.x(), position.y(), 100, new Color(189, 142, 231, 255));
     System.out.println("Mouse Clicked  " + position);
   }
 
   public void mouseDragged(Position from, Position to, int b) {
     if (b == 1) {
       renderer.drawRect(
-          from.x(), from.y(), to.x() - from.x(), to.y() - from.y(), new Color(189, 142, 231, 255));
+          from.x(),
+          from.y(),
+          to.x() - from.x(),
+          to.y() - from.y(),
+          true,
+          new Color(189, 142, 231, 255));
     } else if (b == 3) {
       renderer.drawCircle(from.x(), from.y(), to.y() - from.y(), new Color(189, 142, 231, 255));
     }
