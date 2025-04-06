@@ -29,4 +29,9 @@ public class ToolBar extends Group {
     s.translate(-s.getX(), shapeCount * 60 + MENU_MARGIN - s.getY());
     shapeCount++;
   }
+
+  public void removeShapeFromToolBar(Shape s) {
+    super.remove(s);
+    shapeCount--;
+  }
 }

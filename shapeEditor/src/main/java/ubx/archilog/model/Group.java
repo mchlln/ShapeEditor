@@ -141,7 +141,17 @@ public class Group implements Shape {
     for (Shape s : shapesList) {
       s.draw(render);
     }
-    render.drawRect(x, y, width, height, false, new Color(255, 25, 155, 255));
+    render.drawRect(
+        x,
+        y,
+        width,
+        height,
+        false,
+        new Color(
+            (int) (Math.random() * 256),
+            (int) (Math.random() * 256),
+            (int) (Math.random() * 256),
+            255));
   }
 
   @Override
@@ -151,6 +161,8 @@ public class Group implements Shape {
       s.moveTo(
           new Position((int) (x + (s.getX() - x) * factor), (int) (y + (s.getY() - y) * factor)));
     }
+    setCorner();
+    setSize();
   }
 
   @Override
@@ -163,6 +175,7 @@ public class Group implements Shape {
     for (Shape s : shapesList) {
       s.translate(xDiff, yDiff);
     }
+    setCorner();
   }
 
   @Override
