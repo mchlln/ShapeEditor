@@ -16,8 +16,6 @@ public class View {
 
   private Render renderer;
 
-  private Shape shape = new Rectangle(200, 200, 1, 50, 50, new Color(255, 255, 1, 100));
-
   public View() {
     renderer = new AwtRenderer();
     BiFunction<Position, Integer, Void> mousePressed = this::mousePressed;
@@ -25,8 +23,6 @@ public class View {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
     model.addComponent(createMenu());
-    model.addComponent(shape);
-    model.getToolBar().addShapeToToolBar(shape);
     updateView();
   }
 
@@ -82,32 +78,45 @@ public class View {
       Model model = Model.getInstance();
       model.getToolBar().accept(appSector);
       List<Shape> in = appSector.getResult();
+
+      // Case adding shape to canvas
       if (!in.isEmpty()) {
         System.out.println(in);
-        Shape toAdd = in.get(2).clone();
-        toAdd.translate(to.x(), to.y());
-        System.out.println(toAdd.toString());
-        model.getComponents().add(toAdd);
+        Shape toAdd = in.getFirst();
+        for (Shape s : in) {
+          if (s.getZindex() > toAdd.getZindex()) {
+            toAdd = s;
+          }
+        }
+        toAdd = toAdd.clone();
+        if (toAdd.getZindex() > 0) {
+          toAdd.moveTo(new Position(to.x(), to.y()));
+          toAdd.setZindex(1);
+          model.getCanvas().add(toAdd);
+          System.out.println("PUSH: " + toAdd);
+        }
       }
-      /*Model.getInstance()
-      .addComponent(
-          new Rectangle(
-              from.x(),
-              from.y(),
-              to.x() - from.x(),
-              to.y() - from.y(),
-              new Color(189, 142, 231, 255)));*/
-      IsInVisitor visitor = new IsInVisitor(from.x(), from.y());
-      // Model.getInstance().getComponents().accept(visitor);
-      shape.accept(visitor);
-      List<Shape> g1 = visitor.getResult();
-      if (g1.isEmpty() || to.x() > MENU_MARGIN) {
-        return;
+
+      // Case adding shape to toolbar
+      model.getCanvas().accept(appSector);
+      in = appSector.getResult();
+      if (!in.isEmpty()) {
+        System.out.println("CANVAS: " + in);
+        Shape toAdd = in.getFirst();
+        for (Shape s : in) {
+          if (s.getZindex() > toAdd.getZindex()) {
+            toAdd = s;
+          }
+        }
+        toAdd = toAdd.clone();
+        if (toAdd.getZindex() > 0) {
+          toAdd.setZindex(1);
+          model.getToolBar().addShapeToToolBar(toAdd);
+          System.out.println("ADDING: " + toAdd);
+        }
+        // model.getToolBar().addShapeToToolBar(new Rectangle(0,0, 1, 100, 50, new
+        // Color(255,0,0,255)));
       }
-      Shape s1 = shape.clone();
-      s1.translate(-s1.getX(), to.y() - s1.getY());
-      System.out.println("at: " + s1.getX() + ", " + s1.getY());
-      Model.getInstance().getToolBar().addShapeToToolBar(s1);
     } else if (b == 3) {
       Model.getInstance()
           .addComponent(

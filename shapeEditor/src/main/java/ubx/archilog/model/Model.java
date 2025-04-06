@@ -1,5 +1,7 @@
 package ubx.archilog.model;
 
+import static ubx.archilog.view.View.*;
+
 import ubx.archilog.model.io.FileBuilder;
 
 public class Model {
@@ -13,8 +15,11 @@ public class Model {
     components = new Group();
     toolBar = new ToolBar();
     canvas = new Group();
+    canvas.add(
+        new Rectangle(
+            MENU_MARGIN, MENU_MARGIN + 37, 0, WINDOW_WIDTH, WINDOW_HEIGHT, new Color(0, 0, 0, 0)));
     components.add(toolBar);
-    canvas.add(canvas);
+    components.add(canvas);
   }
 
   public static Model getInstance() {
