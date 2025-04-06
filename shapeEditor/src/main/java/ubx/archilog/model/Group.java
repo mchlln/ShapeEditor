@@ -114,7 +114,12 @@ public class Group implements Shape {
 
   @Override
   public void moveTo(Position pos) {
-    // TODO
+    int diffX = pos.x() - x;
+    int diffY = pos.y() - y;
+    for (Shape s : shapesList) {
+      s.translate(diffX, diffY);
+    }
+    setCorner();
   }
 
   @Override
@@ -175,7 +180,13 @@ public class Group implements Shape {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("Group x=").append(x).append(", y=").append(y).append(" [");
+    sb.append("Group x=")
+        .append(x)
+        .append(", y=")
+        .append(y)
+        .append(", zIndex=")
+        .append(zIndex)
+        .append(" [");
     for (Shape s : shapesList) {
       sb.append(s.toString());
       sb.append(" ");

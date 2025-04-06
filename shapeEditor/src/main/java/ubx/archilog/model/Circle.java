@@ -55,6 +55,8 @@ public class Circle extends Ellipsoid {
         + super.getX()
         + ", y="
         + super.getY()
+        + ", zIndex="
+        + super.getZindex()
         + ", radius= "
         + getRadius()
         + ", color="

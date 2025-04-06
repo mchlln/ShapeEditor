@@ -67,6 +67,8 @@ public class Rectangle extends Polygon {
         + getX()
         + ", y="
         + getY()
+        + ", zIndex="
+        + super.getZindex()
         + ", width= "
         + getWidth()
         + ", height="

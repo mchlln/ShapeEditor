@@ -58,6 +58,8 @@ public class Square extends Polygon {
         + super.getX()
         + ", y="
         + super.getY()
+        + ", zIndex="
+        + super.getZindex()
         + ", size= "
         + getWidth()
         + ", color="

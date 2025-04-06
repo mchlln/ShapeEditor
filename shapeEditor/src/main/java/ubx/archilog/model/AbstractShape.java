@@ -40,7 +40,8 @@ public abstract class AbstractShape implements Shape {
 
   @Override
   public void scale(float factor) {
-    throw new UnsupportedOperationException();
+    width *= factor;
+    height *= factor;
   }
 
   @Override
@@ -126,7 +127,16 @@ public abstract class AbstractShape implements Shape {
 
   @Override
   public String toString() {
-    return this.getClass() + " [x=" + x + ", y=" + y + ", color=" + color + "]";
+    return this.getClass()
+        + " [x="
+        + x
+        + ", y="
+        + y
+        + ", zIndex="
+        + zIndex
+        + ", color="
+        + color
+        + "]";
   }
 
   public Color getColor() {
