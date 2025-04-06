@@ -32,6 +32,16 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
+  public void beginToolBar() {
+    sb.append("<toolBar>");
+  }
+
+  @Override
+  public void endToolBar() {
+    sb.append("</toolBar>");
+  }
+
+  @Override
   public void buildPolygon(Polygon polygon) {
     sb.append("<polygon>");
     // sb.append();

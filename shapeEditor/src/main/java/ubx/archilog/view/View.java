@@ -1,5 +1,6 @@
 package ubx.archilog.view;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import ubx.archilog.model.*;
 import ubx.archilog.model.visitor.IsInVisitor;
@@ -7,7 +8,7 @@ import ubx.archilog.model.visitor.IsInVisitor;
 public class View {
   private static final int WINDOW_WIDTH = 800;
   private static final int WINDOW_HEIGHT = 600;
-  private static final int MENU_MARGIN = 32;
+  private static final int MENU_MARGIN = 50;
 
   private Group menu;
   private Group toolbar;
@@ -15,6 +16,8 @@ public class View {
   private Position from;
 
   private Render renderer;
+
+  private Shape shape = new Rectangle(200, 200, 50, 50, new Color(255, 255, 1, 100));
 
   public View() {
     renderer = new AwtRenderer();
@@ -24,6 +27,7 @@ public class View {
     Model model = Model.getInstance();
     model.addComponent(createMenu());
     model.addComponent(createToolbar());
+    model.addComponent(shape);
     updateView();
   }
 
@@ -74,21 +78,39 @@ public class View {
   public void clickOn(Position position) {
     // renderer.drawCircle(position.x(), position.y(), 100, new Color(189, 142, 231, 255));
     IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
-    menu.accept(visitor);
-    System.out.println("Menu clicked ? " + visitor.getResult());
+    // menu.accept(visitor);
+    Model.getInstance().getComponents().accept(visitor);
+    for (Shape s : visitor.getResult()) {
+      System.out.println("Menu clicked ? " + s.toString());
+    }
+
     System.out.println("Mouse Clicked  " + position);
   }
 
   public void mouseDragged(Position from, Position to, int b) {
     if (b == 1) {
-      Model.getInstance()
-          .addComponent(
-              new Rectangle(
-                  from.x(),
-                  from.y(),
-                  to.x() - from.x(),
-                  to.y() - from.y(),
-                  new Color(189, 142, 231, 255)));
+      IsInVisitor menuVisitor = new IsInVisitor(from.x(), from.y());
+      menu.accept(menuVisitor);
+      if (!menuVisitor.getResult().isEmpty()) {}
+      /*Model.getInstance()
+      .addComponent(
+          new Rectangle(
+              from.x(),
+              from.y(),
+              to.x() - from.x(),
+              to.y() - from.y(),
+              new Color(189, 142, 231, 255)));*/
+      IsInVisitor visitor = new IsInVisitor(from.x(), from.y());
+      // Model.getInstance().getComponents().accept(visitor);
+      shape.accept(visitor);
+      List<Shape> g1 = visitor.getResult();
+      if (g1.isEmpty() || to.x() > MENU_MARGIN) {
+        return;
+      }
+      Shape s1 = shape.clone();
+      s1.translate(-s1.getX(), to.y() - s1.getY());
+      System.out.println("at: " + s1.getX() + ", " + s1.getY());
+      toolbar.add(s1);
     } else if (b == 3) {
       Model.getInstance()
           .addComponent(

@@ -11,6 +11,10 @@ public interface FileBuilder {
 
   void endGroup();
 
+  void beginToolBar();
+
+  void endToolBar();
+
   void buildPolygon(Polygon polygon);
 
   void buildEllipsoid(Ellipsoid ellipsoid);

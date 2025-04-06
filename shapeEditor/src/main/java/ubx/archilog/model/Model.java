@@ -1,5 +1,7 @@
 package ubx.archilog.model;
 
+import ubx.archilog.model.io.FileBuilder;
+
 public class Model {
   private Group components;
   private static Model instance;
@@ -21,5 +23,15 @@ public class Model {
 
   public void addComponent(Shape s) {
     components.add(s);
+  }
+
+  public FileBuilder save(FileBuilder fb) {
+    fb.beginDocument();
+    fb.beginToolBar();
+    fb.beginGroup();
+    fb.endGroup();
+    fb.endToolBar();
+    fb.endDocument();
+    return fb;
   }
 }
