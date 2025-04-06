@@ -10,12 +10,16 @@ import ubx.archilog.view.Render;
 public class Group implements Shape {
   private final Set<Shape> shapesSet;
   private final List<Shape> shapesList;
-  int x;
-  int y;
+  private int x;
+  private int y;
+  private int zIndex;
+  private int width;
+  private int height;
 
   public Group() {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
+    this.zIndex = 0;
   }
 
   public void add(Shape s) {
@@ -23,6 +27,7 @@ public class Group implements Shape {
       shapesSet.add(s);
       shapesList.add(s);
       setCorner();
+      setSize();
     }
   }
 
@@ -30,6 +35,7 @@ public class Group implements Shape {
     shapesSet.remove(s);
     shapesList.remove(s);
     setCorner();
+    setSize();
   }
 
   public List<Shape> getShapes() {
@@ -51,6 +57,21 @@ public class Group implements Shape {
     this.y = minY;
   }
 
+  private void setSize() {
+    int maxX = Integer.MIN_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    for (Shape s : shapesList) {
+      if (s.getX() + s.getWidth() > maxX) {
+        maxX = s.getX() + s.getWidth();
+      }
+      if (s.getY() + s.getHeight() > maxY) {
+        maxY = s.getY() + s.getHeight();
+      }
+    }
+    this.width = maxX - this.x;
+    this.height = maxY - this.y;
+  }
+
   @Override
   public int getX() {
     return x;
@@ -62,6 +83,41 @@ public class Group implements Shape {
   }
 
   @Override
+  public int getZindex() {
+    return zIndex;
+  }
+
+  @Override
+  public void setZindex(int z) {
+    this.zIndex = z;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public void setWidth(int width) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public void setHeight(int height) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void moveTo(Position pos) {
+    // TODO
+  }
+
+  @Override
   public void draw(Render render) {
     for (Shape s : shapesList) {
       s.draw(render);
@@ -69,7 +125,9 @@ public class Group implements Shape {
   }
 
   @Override
-  public void scale() {}
+  public void scale(float factor) {
+    // TODO
+  }
 
   @Override
   public void rotate() {
@@ -117,7 +175,7 @@ public class Group implements Shape {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("Group x=" + x + ", y=" + y + " [");
+    sb.append("Group x=").append(x).append(", y=").append(y).append(" [");
     for (Shape s : shapesList) {
       sb.append(s.toString());
       sb.append(" ");

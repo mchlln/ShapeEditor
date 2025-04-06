@@ -6,17 +6,26 @@ import ubx.archilog.view.Render;
 public abstract class AbstractShape implements Shape {
   private int x;
   private int y;
+  private int zIndex;
+  private int width;
+  private int height;
   private Color color = new Color(245, 40, 145, 255);
 
-  public AbstractShape(int x, int y, Color color) {
+  public AbstractShape(int x, int y, int zIndex, int width, int height, Color color) {
     this.x = x;
     this.y = y;
+    this.zIndex = zIndex;
+    this.width = width;
+    this.height = height;
     this.color = color;
   }
 
-  public AbstractShape(int x, int y) {
+  public AbstractShape(int x, int y, int zIndex, int width, int height) {
     this.x = x;
     this.y = y;
+    this.zIndex = zIndex;
+    this.width = width;
+    this.height = height;
   }
 
   @Override
@@ -30,7 +39,7 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void scale() {
+  public void scale(float factor) {
     throw new UnsupportedOperationException();
   }
 
@@ -50,8 +59,40 @@ public abstract class AbstractShape implements Shape {
     return y;
   }
 
-  public Color getColor() {
-    return color;
+  @Override
+  public int getZindex() {
+    return zIndex;
+  }
+
+  @Override
+  public void setZindex(int zIndex) {
+    this.zIndex = zIndex;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public void setHeight(int height) {
+    this.height = height;
+  }
+
+  @Override
+  public void moveTo(Position pos) {
+    this.x = pos.x();
+    this.y = pos.y();
   }
 
   @Override
@@ -86,5 +127,9 @@ public abstract class AbstractShape implements Shape {
   @Override
   public String toString() {
     return this.getClass() + " [x=" + x + ", y=" + y + ", color=" + color + "]";
+  }
+
+  public Color getColor() {
+    return color;
   }
 }

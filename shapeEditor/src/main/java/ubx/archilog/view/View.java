@@ -17,7 +17,7 @@ public class View {
 
   private Render renderer;
 
-  private Shape shape = new Rectangle(200, 200, 50, 50, new Color(255, 255, 1, 100));
+  private Shape shape = new Rectangle(200, 200, 1, 50, 50, new Color(255, 255, 1, 100));
 
   public View() {
     renderer = new AwtRenderer();
@@ -26,28 +26,18 @@ public class View {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
     model.addComponent(createMenu());
-    model.addComponent(createToolbar());
     model.addComponent(shape);
     updateView();
   }
 
   public Shape createMenu() {
     menu = new Group();
-    menu.add(new Rectangle(0, 0, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50)));
-    menu.add(new ImageRectangle(MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png"));
+    menu.add(new Rectangle(0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50)));
+    menu.add(new ImageRectangle(MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png"));
     menu.add(
-        new ImageRectangle(10 + 2 * MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png"));
-    return menu;
-  }
-
-  public Shape createToolbar() {
-    toolbar = new Group();
-    toolbar.add(new Rectangle(0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 50)));
-    toolbar.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
-    toolbar.add(
         new ImageRectangle(
-            0, WINDOW_HEIGHT - (MENU_MARGIN + 10), MENU_MARGIN, MENU_MARGIN, "/icons/bin.png"));
-    return toolbar;
+            10 + 2 * MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png"));
+    return menu;
   }
 
   public void createCanva() {}
@@ -114,7 +104,7 @@ public class View {
     } else if (b == 3) {
       Model.getInstance()
           .addComponent(
-              new Circle(from.x(), from.y(), to.y() - from.y(), new Color(189, 142, 231, 255)));
+              new Circle(from.x(), from.y(), 1, to.y() - from.y(), new Color(189, 142, 231, 255)));
     }
     System.out.println("Mouse Dragged  " + from + "," + to);
   }

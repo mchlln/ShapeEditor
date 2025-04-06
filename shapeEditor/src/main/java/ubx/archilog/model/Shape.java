@@ -8,9 +8,23 @@ public interface Shape {
 
   int getY();
 
+  int getZindex();
+
+  void setZindex(int z);
+
+  int getWidth();
+
+  void setWidth(int width);
+
+  int getHeight();
+
+  void setHeight(int height);
+
+  void moveTo(Position pos);
+
   void draw(Render render);
 
-  void scale();
+  void scale(float factor);
 
   void rotate();
 
