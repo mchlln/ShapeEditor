@@ -4,13 +4,16 @@ import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public class Rectangle extends Polygon {
+  boolean fill;
 
-  public Rectangle(int x, int y, int zIndex, int width, int height) {
+  public Rectangle(int x, int y, int zIndex, int width, int height, boolean fill) {
     super(x, y, zIndex, width, height, 4);
+    this.fill = fill;
   }
 
-  public Rectangle(int x, int y, int zIndex, int width, int height, Color color) {
+  public Rectangle(int x, int y, int zIndex, int width, int height, Color color, boolean fill) {
     super(x, y, zIndex, width, height, 4, color);
+    this.fill = fill;
   }
 
   @Override
@@ -23,7 +26,7 @@ public class Rectangle extends Polygon {
   @Override
   public void draw(Render render) {
     render.drawRect(
-        super.getX(), super.getY(), super.getWidth(), super.getHeight(), true, super.getColor());
+        super.getX(), super.getY(), super.getWidth(), super.getHeight(), fill, super.getColor());
   }
 
   @Override
@@ -39,7 +42,8 @@ public class Rectangle extends Polygon {
         super.getZindex(),
         super.getWidth(),
         super.getHeight(),
-        super.getColor());
+        super.getColor(),
+        fill);
   }
 
   @Override
