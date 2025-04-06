@@ -6,12 +6,11 @@ import ubx.archilog.model.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 
 public class View {
-  private static final int WINDOW_WIDTH = 800;
-  private static final int WINDOW_HEIGHT = 600;
-  private static final int MENU_MARGIN = 50;
+  public static final int WINDOW_WIDTH = 800;
+  public static final int WINDOW_HEIGHT = 600;
+  public static final int MENU_MARGIN = 50;
 
   private Group menu;
-  private Group toolbar;
 
   private Position from;
 
@@ -26,8 +25,8 @@ public class View {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
     model.addComponent(createMenu());
-    model.addComponent(createToolbar());
     model.addComponent(shape);
+    model.getToolBar().addShapeToToolBar(shape);
     updateView();
   }
 
@@ -38,16 +37,6 @@ public class View {
     menu.add(
         new ImageRectangle(10 + 2 * MENU_MARGIN, 37, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png"));
     return menu;
-  }
-
-  public Shape createToolbar() {
-    toolbar = new Group();
-    toolbar.add(new Rectangle(0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 50)));
-    toolbar.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
-    toolbar.add(
-        new ImageRectangle(
-            0, WINDOW_HEIGHT - (MENU_MARGIN + 10), MENU_MARGIN, MENU_MARGIN, "/icons/bin.png"));
-    return toolbar;
   }
 
   public void createCanva() {}
@@ -81,17 +70,24 @@ public class View {
     // menu.accept(visitor);
     Model.getInstance().getComponents().accept(visitor);
     for (Shape s : visitor.getResult()) {
-      System.out.println("Menu clicked ? " + s.toString());
+      if (!(s instanceof Group)) System.out.println("Menu clicked ? " + s.toString());
     }
-
     System.out.println("Mouse Clicked  " + position);
   }
 
   public void mouseDragged(Position from, Position to, int b) {
     if (b == 1) {
-      IsInVisitor menuVisitor = new IsInVisitor(from.x(), from.y());
-      menu.accept(menuVisitor);
-      if (!menuVisitor.getResult().isEmpty()) {}
+      IsInVisitor appSector = new IsInVisitor(from.x(), from.y());
+      Model model = Model.getInstance();
+      model.getToolBar().accept(appSector);
+      List<Shape> in = appSector.getResult();
+      if (!in.isEmpty()) {
+        System.out.println(in);
+        Shape toAdd = in.get(2).clone();
+        toAdd.translate(to.x(), to.y());
+        System.out.println(toAdd.toString());
+        model.getComponents().add(toAdd);
+      }
       /*Model.getInstance()
       .addComponent(
           new Rectangle(
@@ -110,7 +106,7 @@ public class View {
       Shape s1 = shape.clone();
       s1.translate(-s1.getX(), to.y() - s1.getY());
       System.out.println("at: " + s1.getX() + ", " + s1.getY());
-      toolbar.add(s1);
+      Model.getInstance().getToolBar().addShapeToToolBar(s1);
     } else if (b == 3) {
       Model.getInstance()
           .addComponent(

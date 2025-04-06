@@ -39,7 +39,7 @@ public class IsInVisitor implements ShapeVisitor {
     if (xVisit >= r.getX()
         && yVisit >= r.getY()
         && xVisit <= r.getX() + r.getWidth()
-        && yVisit <= r.getX() + r.getHeight()) {
+        && yVisit <= r.getY() + r.getHeight()) {
       result.add(r);
     }
   }

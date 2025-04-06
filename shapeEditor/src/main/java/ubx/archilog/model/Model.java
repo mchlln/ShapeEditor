@@ -6,8 +6,15 @@ public class Model {
   private Group components;
   private static Model instance;
 
+  private ToolBar toolBar;
+  private Group canvas;
+
   private Model() {
     components = new Group();
+    toolBar = new ToolBar();
+    canvas = new Group();
+    components.add(toolBar);
+    canvas.add(canvas);
   }
 
   public static Model getInstance() {
@@ -33,5 +40,13 @@ public class Model {
     fb.endToolBar();
     fb.endDocument();
     return fb;
+  }
+
+  public ToolBar getToolBar() {
+    return toolBar;
+  }
+
+  public Group getCanvas() {
+    return canvas;
   }
 }
