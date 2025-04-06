@@ -13,8 +13,10 @@ public class Model {
 
   private Model() {
     components = new Group();
+    components.setZindex(0);
     toolBar = new ToolBar();
     canvas = new Group();
+    canvas.setZindex(0);
     canvas.add(
         new Rectangle(
             MENU_MARGIN, MENU_MARGIN + 37, 0, WINDOW_WIDTH, WINDOW_HEIGHT, new Color(0, 0, 0, 0)));

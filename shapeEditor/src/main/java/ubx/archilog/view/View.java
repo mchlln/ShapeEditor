@@ -25,6 +25,18 @@ public class View {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
     model.addComponent(createMenu());
+    Group g = new Group();
+    g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
+    g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255)));
+
+    /*
+    Circle c = new Circle(100,100,1,50,new Color(245, 0, 245, 255));
+    System.out.println(c);
+    model.getCanvas().add(c);
+
+      */
+    g.updateChildZIndex();
+    model.getCanvas().add(g);
     updateView();
   }
 

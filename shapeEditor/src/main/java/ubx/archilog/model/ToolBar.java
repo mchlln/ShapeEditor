@@ -9,6 +9,7 @@ public class ToolBar extends Group {
 
   public ToolBar() {
     super();
+    this.setZindex(0);
     this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0)));
     // this.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
     this.add(

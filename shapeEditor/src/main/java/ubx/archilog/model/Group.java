@@ -19,7 +19,19 @@ public class Group implements Shape {
   public Group() {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
-    this.zIndex = 0;
+    this.zIndex = 1;
+  }
+
+  public Group(int zIndex) {
+    this.shapesSet = new HashSet<>();
+    this.shapesList = new ArrayList<>();
+    this.zIndex = zIndex;
+  }
+
+  public void updateChildZIndex() {
+    for (Shape s : shapesList) {
+      s.setZindex(0);
+    }
   }
 
   public void add(Shape s) {
@@ -55,6 +67,7 @@ public class Group implements Shape {
     }
     this.x = minX;
     this.y = minY;
+    System.out.println("x: " + this.x + " y: " + this.y);
   }
 
   private void setSize() {
@@ -70,6 +83,7 @@ public class Group implements Shape {
     }
     this.width = maxX - this.x;
     this.height = maxY - this.y;
+    System.out.println("width: " + this.width + ", height: " + this.height);
   }
 
   @Override
@@ -127,11 +141,16 @@ public class Group implements Shape {
     for (Shape s : shapesList) {
       s.draw(render);
     }
+    render.drawRect(x, y, width, height, false, new Color(255, 25, 155, 255));
   }
 
   @Override
   public void scale(float factor) {
-    // TODO
+    for (Shape s : shapesList) {
+      s.scale(factor);
+      s.moveTo(
+          new Position((int) (x + (s.getX() - x) * factor), (int) (y + (s.getY() - y) * factor)));
+    }
   }
 
   @Override
@@ -154,9 +173,8 @@ public class Group implements Shape {
   @Override
   public Shape clone() {
     Group copy = new Group();
-    List<Shape> clonedShapes = List.copyOf(shapesList);
-    for (Shape s : clonedShapes) {
-      copy.add(s);
+    for (Shape s : shapesList) {
+      copy.add(s.clone());
     }
     return copy;
   }
