@@ -14,6 +14,8 @@ public class View {
 
   private Position from;
 
+  private Position fromSelection = null;
+
   private Render renderer;
 
   public View() {
@@ -52,7 +54,7 @@ public class View {
 
   public Void mouseReleased(Position position, int button) {
     if (from.equals(position)) {
-      clickOn(position);
+      clickOn(position, button);
     } else {
       mouseDragged(from, position, button);
     }
@@ -61,7 +63,24 @@ public class View {
     return null;
   }
 
-  public void clickOn(Position position) {
+  public void clickOn(Position position, int button) {
+    if (button == 3) {
+      if (fromSelection == null) {
+        fromSelection = position;
+      } else {
+        Shape shape =
+            new Rectangle(
+                fromSelection.x(),
+                fromSelection.y(),
+                1,
+                Math.abs(position.x() - fromSelection.x()),
+                Math.abs(position.y() - fromSelection.y()),
+                new Color(255, 0, 0, 255));
+        System.out.println("SELECTION: " + shape);
+        Model.getInstance().getCanvas().add(shape);
+        fromSelection = null;
+      }
+    }
     // renderer.drawCircle(position.x(), position.y(), 100, new Color(189, 142, 231, 255));
     IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
     // menu.accept(visitor);
@@ -74,13 +93,15 @@ public class View {
 
   public void mouseDragged(Position from, Position to, int b) {
     if (b == 1) {
-      IsInVisitor appSector = new IsInVisitor(from.x(), from.y());
+      IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
+      IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
       Model model = Model.getInstance();
-      model.getToolBar().accept(appSector);
-      List<Shape> in = appSector.getResult();
+      model.getToolBar().accept(fromAppSector);
+      List<Shape> in = fromAppSector.getResult();
 
       // Case adding shape to canvas
-      if (!in.isEmpty()) {
+      model.getCanvas().accept(toAppSector);
+      if (!in.isEmpty() && !toAppSector.getResult().isEmpty()) {
         System.out.println(in);
         Shape toAdd = in.getFirst();
         for (Shape s : in) {
@@ -98,9 +119,10 @@ public class View {
       }
 
       // Case adding shape to toolbar
-      model.getCanvas().accept(appSector);
-      in = appSector.getResult();
-      if (!in.isEmpty()) {
+      model.getCanvas().accept(fromAppSector);
+      model.getToolBar().accept(toAppSector);
+      in = fromAppSector.getResult();
+      if (!in.isEmpty() && !fromAppSector.getResult().isEmpty()) {
         System.out.println("CANVAS: " + in);
         Shape toAdd = in.getFirst();
         for (Shape s : in) {

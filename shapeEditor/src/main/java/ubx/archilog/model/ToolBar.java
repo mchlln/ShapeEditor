@@ -16,7 +16,7 @@ public class ToolBar extends Group {
             0, WINDOW_HEIGHT - (MENU_MARGIN + 10), 1, MENU_MARGIN, MENU_MARGIN, "/icons/bin.png"));
     addShapeToToolBar(new Rectangle(0, 0, 1, 50, 50, new Color(0, 25, 230, 100)));
     addShapeToToolBar(new Rectangle(0, 0, 1, 100, 50, new Color(100, 25, 200, 100)));
-    // addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));
+    addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));
   }
 
   public void addShapeToToolBar(Shape s) {
