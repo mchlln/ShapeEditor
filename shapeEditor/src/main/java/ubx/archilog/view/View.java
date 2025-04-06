@@ -2,6 +2,10 @@ package ubx.archilog.view;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import ubx.archilog.controller.BagOfCommands;
+import ubx.archilog.controller.commands.AddToToolBarCommand;
+import ubx.archilog.controller.commands.CloneToCanvasCommand;
+import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 
@@ -92,6 +96,7 @@ public class View {
                 new Color(255, 0, 0, 255),
                 false);
         System.out.println("SELECTION: " + shape);
+        // IsInVisitor visitor = new IsInVisitor()
         Model.getInstance().getCanvas().add(shape);
         fromSelection = null;
       }
@@ -128,10 +133,7 @@ public class View {
         }
         toAdd = toAdd.clone();
         if (toAdd.getZindex() > 0) {
-          toAdd.moveTo(new Position(to.x(), to.y()));
-          toAdd.setZindex(1);
-          model.getCanvas().add(toAdd);
-          System.out.println("PUSH: " + toAdd);
+          BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(toAdd, to));
         }
       }
 
@@ -141,8 +143,6 @@ public class View {
       in = fromAppSector.getResult();
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        System.out.println("CANVAS TO TOOLBAR");
-        System.out.println("CANVAS: " + in);
         Shape toAdd = in.getFirst();
         for (Shape s : in) {
           if (s.getZindex() > toAdd.getZindex()) {
@@ -151,14 +151,11 @@ public class View {
         }
         toAdd = toAdd.clone();
         if (toAdd.getZindex() > 0) {
-          toAdd.setZindex(1);
-          model.getToolBar().addShapeToToolBar(toAdd);
-          System.out.println("ADDING: " + toAdd);
+          BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(toAdd));
         }
-        // model.getToolBar().addShapeToToolBar(new Rectangle(0,0, 1, 100, 50, new
-        // Color(255,0,0,255)));
       }
 
+      // Moving shape from canvas
       model.getCanvas().accept(toAppSector);
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
@@ -169,15 +166,9 @@ public class View {
           }
         }
         if (toMove.getZindex() > 0) {
-          toMove.moveTo(new Position(to.x(), to.y()));
+          BagOfCommands.getInstance().addCommand(new MoveCommand(toMove, to));
         }
       }
-
-    } else if (b == 3) {
-      Model.getInstance()
-          .addComponent(
-              new Circle(from.x(), from.y(), 1, to.y() - from.y(), new Color(189, 142, 231, 255)));
     }
-    System.out.println("Mouse Dragged  " + from + "," + to);
   }
 }

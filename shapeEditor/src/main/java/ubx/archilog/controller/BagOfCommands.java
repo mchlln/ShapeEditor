@@ -19,6 +19,7 @@ public class BagOfCommands {
 
   public void addCommand(Command command) {
     this.commands.add(command);
+    executeAll();
   }
 
   public void executeOne() {

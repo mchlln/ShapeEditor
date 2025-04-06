@@ -1,21 +1,21 @@
 package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
-import ubx.archilog.model.Position;
+import ubx.archilog.model.Model;
 import ubx.archilog.model.Shape;
 
-public class MoveCommand implements Command {
-  Shape shape;
-  Position to;
+public class AddToToolBarCommand implements Command {
 
-  public MoveCommand(Shape shape, Position to) {
+  Shape shape;
+
+  public AddToToolBarCommand(Shape shape) {
     this.shape = shape;
-    this.to = to;
   }
 
   @Override
   public void execute() {
-    shape.moveTo(new Position(to.x(), to.y()));
+    shape.setZindex(1);
+    Model.getInstance().getToolBar().addShapeToToolBar(shape);
   }
 
   @Override
