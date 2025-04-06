@@ -4,39 +4,26 @@ import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public class Rectangle extends Polygon {
-  private int width;
-  private int height;
 
-  public Rectangle(int x, int y, int width, int height) {
-    super(x, y, 4);
-    this.width = width;
-    this.height = height;
+  public Rectangle(int x, int y, int zIndex, int width, int height) {
+    super(x, y, zIndex, width, height, 4);
   }
 
-  public Rectangle(int x, int y, int width, int height, Color color) {
-    super(x, y, 4, color);
-    this.width = width;
-    this.height = height;
-  }
-
-  public int getWidth() {
-    return width;
-  }
-
-  public int getHeight() {
-    return height;
+  public Rectangle(int x, int y, int zIndex, int width, int height, Color color) {
+    super(x, y, zIndex, width, height, 4, color);
   }
 
   @Override
   public void rotate() {
-    int tmp = this.width;
-    this.width = this.height;
-    this.height = tmp;
+    int tmp = super.getWidth();
+    super.setWidth(super.getHeight());
+    super.setHeight(tmp);
   }
 
   @Override
   public void draw(Render render) {
-    render.drawRect(super.getX(), super.getY(), width, height, true, super.getColor());
+    render.drawRect(
+        super.getX(), super.getY(), super.getWidth(), super.getHeight(), true, super.getColor());
   }
 
   @Override
@@ -46,14 +33,20 @@ public class Rectangle extends Polygon {
 
   @Override
   public Shape clone() {
-    return new Rectangle(super.getX(), super.getY(), width, height, super.getColor());
+    return new Rectangle(
+        super.getX(),
+        super.getY(),
+        super.getZindex(),
+        super.getWidth(),
+        super.getHeight(),
+        super.getColor());
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Rectangle) {
-      return this.height == ((Rectangle) obj).height
-          && this.width == ((Rectangle) obj).width
+      return getHeight() == ((Rectangle) obj).getHeight()
+          && getWidth() == ((Rectangle) obj).getWidth()
           && super.equals(obj);
     }
     return false;
@@ -62,8 +55,8 @@ public class Rectangle extends Polygon {
   @Override
   public int hashCode() {
     int result = super.hashCode();
-    result = 31 * result + width;
-    result = 31 * result + height;
+    result = 31 * result + getWidth();
+    result = 31 * result + getHeight();
     return result;
   }
 
@@ -71,15 +64,15 @@ public class Rectangle extends Polygon {
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="
-        + super.getX()
+        + getX()
         + ", y="
-        + super.getY()
+        + getY()
         + ", width= "
-        + width
+        + getWidth()
         + ", height="
-        + height
+        + getHeight()
         + ", color="
-        + super.getColor()
+        + getColor()
         + "]";
   }
 }

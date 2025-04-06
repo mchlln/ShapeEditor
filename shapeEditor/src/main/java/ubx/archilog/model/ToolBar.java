@@ -9,12 +9,12 @@ public class ToolBar extends Group {
 
   public ToolBar() {
     super();
-    this.add(new Rectangle(0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 50)));
+    this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 50)));
     // this.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
     this.add(
         new ImageRectangle(
-            0, WINDOW_HEIGHT - (MENU_MARGIN + 10), MENU_MARGIN, MENU_MARGIN, "/icons/bin.png"));
-    addShapeToToolBar(new Rectangle(0, 0, 50, 50, new Color(0, 25, 230, 100)));
+            0, WINDOW_HEIGHT - (MENU_MARGIN + 10), 1, MENU_MARGIN, MENU_MARGIN, "/icons/bin.png"));
+    addShapeToToolBar(new Rectangle(0, 0, 1, 50, 50, new Color(0, 25, 230, 100)));
   }
 
   public void addShapeToToolBar(Shape s) {
