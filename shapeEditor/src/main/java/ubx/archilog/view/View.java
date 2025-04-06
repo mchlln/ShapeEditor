@@ -8,6 +8,7 @@ import ubx.archilog.controller.commands.CloneToCanvasCommand;
 import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
 import ubx.archilog.model.visitor.IsInVisitor;
+import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
 public class View {
   public static final int WINDOW_WIDTH = 800;
@@ -90,7 +91,7 @@ public class View {
             new Rectangle(
                 fromSelection.x(),
                 fromSelection.y(),
-                1,
+                0,
                 Math.abs(position.x() - fromSelection.x()),
                 Math.abs(position.y() - fromSelection.y()),
                 new Color(255, 0, 0, 255),
@@ -98,6 +99,15 @@ public class View {
         System.out.println("SELECTION: " + shape);
         // IsInVisitor visitor = new IsInVisitor()
         Model.getInstance().getCanvas().add(shape);
+        ShapeInZoneVisitor zoneVisitor =
+            new ShapeInZoneVisitor(
+                fromSelection.x(),
+                fromSelection.y(),
+                Math.abs(position.x() - fromSelection.x()),
+                Math.abs(position.y() - fromSelection.y()));
+        Model.getInstance().getCanvas().accept(zoneVisitor);
+        List<Shape> zone = zoneVisitor.getResult();
+        System.out.println("ZONE: " + zone);
         fromSelection = null;
       }
     }
