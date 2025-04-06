@@ -120,18 +120,10 @@ public class View {
       // Case adding shape to canvas
       model.getToolBar().accept(fromAppSector);
       model.getCanvas().accept(toAppSector);
-
       List<Shape> in = fromAppSector.getResult();
       List<Shape> out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        System.out.println(in);
-        Shape toAdd = in.getFirst();
-        for (Shape s : in) {
-          if (s.getZindex() > toAdd.getZindex()) {
-            toAdd = s;
-          }
-        }
-        toAdd = toAdd.clone();
+        Shape toAdd = model.getBestZIndex(in).clone();
         if (toAdd.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(toAdd, to));
         }
@@ -143,13 +135,7 @@ public class View {
       in = fromAppSector.getResult();
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        Shape toAdd = in.getFirst();
-        for (Shape s : in) {
-          if (s.getZindex() > toAdd.getZindex()) {
-            toAdd = s;
-          }
-        }
-        toAdd = toAdd.clone();
+        Shape toAdd = model.getBestZIndex(in).clone();
         if (toAdd.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(toAdd));
         }
@@ -159,12 +145,7 @@ public class View {
       model.getCanvas().accept(toAppSector);
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        Shape toMove = in.getFirst();
-        for (Shape s : in) {
-          if (s.getZindex() > toMove.getZindex()) {
-            toMove = s;
-          }
-        }
+        Shape toMove = model.getBestZIndex(in);
         if (toMove.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new MoveCommand(toMove, to));
         }

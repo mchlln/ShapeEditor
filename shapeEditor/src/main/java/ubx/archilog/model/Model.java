@@ -2,6 +2,7 @@ package ubx.archilog.model;
 
 import static ubx.archilog.view.View.*;
 
+import java.util.List;
 import ubx.archilog.model.io.FileBuilder;
 
 public class Model {
@@ -61,5 +62,21 @@ public class Model {
 
   public Group getCanvas() {
     return canvas;
+  }
+
+  /**
+   * Search for the highest Z-index in the given list.
+   *
+   * @param shapes The list to lookup.
+   * @return The shape with the highest Z-index.
+   */
+  public Shape getBestZIndex(List<Shape> shapes) {
+    Shape best = shapes.getFirst();
+    for (Shape s : shapes) {
+      if (s.getZindex() > best.getZindex()) {
+        best = s;
+      }
+    }
+    return best;
   }
 }
