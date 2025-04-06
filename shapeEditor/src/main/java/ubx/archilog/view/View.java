@@ -96,12 +96,14 @@ public class View {
       IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
       IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
       Model model = Model.getInstance();
-      model.getToolBar().accept(fromAppSector);
-      List<Shape> in = fromAppSector.getResult();
 
       // Case adding shape to canvas
+      model.getToolBar().accept(fromAppSector);
       model.getCanvas().accept(toAppSector);
-      if (!in.isEmpty() && !toAppSector.getResult().isEmpty()) {
+
+      List<Shape> in = fromAppSector.getResult();
+      List<Shape> out = toAppSector.getResult();
+      if (!in.isEmpty() && !out.isEmpty()) {
         System.out.println(in);
         Shape toAdd = in.getFirst();
         for (Shape s : in) {
@@ -122,7 +124,9 @@ public class View {
       model.getCanvas().accept(fromAppSector);
       model.getToolBar().accept(toAppSector);
       in = fromAppSector.getResult();
-      if (!in.isEmpty() && !fromAppSector.getResult().isEmpty()) {
+      out = toAppSector.getResult();
+      if (!in.isEmpty() && !out.isEmpty()) {
+        System.out.println("CANVAS TO TOOLBAR");
         System.out.println("CANVAS: " + in);
         Shape toAdd = in.getFirst();
         for (Shape s : in) {
@@ -139,6 +143,21 @@ public class View {
         // model.getToolBar().addShapeToToolBar(new Rectangle(0,0, 1, 100, 50, new
         // Color(255,0,0,255)));
       }
+
+      model.getCanvas().accept(toAppSector);
+      out = toAppSector.getResult();
+      if (!in.isEmpty() && !out.isEmpty()) {
+        Shape toMove = in.getFirst();
+        for (Shape s : in) {
+          if (s.getZindex() > toMove.getZindex()) {
+            toMove = s;
+          }
+        }
+        if (toMove.getZindex() > 0) {
+          toMove.moveTo(new Position(to.x(), to.y()));
+        }
+      }
+
     } else if (b == 3) {
       Model.getInstance()
           .addComponent(
