@@ -6,7 +6,7 @@ public class ImageRectangle extends Rectangle {
   private String path;
 
   public ImageRectangle(int x, int y, int zIndex, int width, int height, String path) {
-    super(x, y, zIndex, width, height);
+    super(x, y, zIndex, width, height, false);
     this.path = path;
   }
 

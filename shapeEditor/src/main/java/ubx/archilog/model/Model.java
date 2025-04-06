@@ -19,7 +19,13 @@ public class Model {
     canvas.setZindex(0);
     canvas.add(
         new Rectangle(
-            MENU_MARGIN, MENU_MARGIN + 37, 0, WINDOW_WIDTH, WINDOW_HEIGHT, new Color(0, 0, 0, 0)));
+            MENU_MARGIN,
+            MENU_MARGIN + 37,
+            0,
+            WINDOW_WIDTH,
+            WINDOW_HEIGHT,
+            new Color(0, 0, 0, 0),
+            true));
     components.add(toolBar);
     components.add(canvas);
   }

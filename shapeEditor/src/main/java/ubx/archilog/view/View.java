@@ -27,7 +27,7 @@ public class View {
     model.addComponent(createMenu());
     Group g = new Group();
     g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
-    g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255)));
+    g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
 
     /*
     Circle c = new Circle(100,100,1,50,new Color(245, 0, 245, 255));
@@ -42,7 +42,9 @@ public class View {
 
   public Shape createMenu() {
     menu = new Group();
-    menu.add(new Rectangle(0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50)));
+    menu.add(
+        new Rectangle(
+            0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
     menu.add(new ImageRectangle(MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png"));
     menu.add(
         new ImageRectangle(
@@ -87,7 +89,8 @@ public class View {
                 1,
                 Math.abs(position.x() - fromSelection.x()),
                 Math.abs(position.y() - fromSelection.y()),
-                new Color(255, 0, 0, 255));
+                new Color(255, 0, 0, 255),
+                false);
         System.out.println("SELECTION: " + shape);
         Model.getInstance().getCanvas().add(shape);
         fromSelection = null;
