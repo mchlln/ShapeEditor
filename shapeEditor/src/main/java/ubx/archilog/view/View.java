@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.AddToToolBarCommand;
 import ubx.archilog.controller.commands.CloneToCanvasCommand;
+import ubx.archilog.controller.commands.EditShapeCommand;
 import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
 import ubx.archilog.model.visitor.IsInVisitor;
@@ -22,6 +23,8 @@ public class View {
   private Position fromSelection = null;
 
   private Render renderer;
+
+  private Shape selection;
 
   public View() {
     renderer = new AwtRenderer();
@@ -76,52 +79,30 @@ public class View {
   }
 
   public void clickOn(Position position, int button) {
+    Model.getInstance().getCanvas().remove(selection);
     if (button == 3) {
+      IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
+      Model.getInstance().getCanvas().accept(visitor);
+      List<Shape> in = visitor.getResult();
+      if (!in.isEmpty()) {
+        System.out.println("CLICKED ON = " + in);
+        Shape best = Model.getInstance().getBestZIndex(in);
+        System.out.println("best = " + best);
+        if (best.getZindex() > 0) {
+          BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
+        }
+      }
+
       if (fromSelection == null) {
         fromSelection = position;
       } else {
-        Shape shape =
-            new Rectangle(
-                fromSelection.x(),
-                fromSelection.y(),
-                0,
-                Math.abs(position.x() - fromSelection.x()),
-                Math.abs(position.y() - fromSelection.y()),
-                new Color(255, 0, 0, 255),
-                false);
-        System.out.println("SELECTION: " + shape);
-        // IsInVisitor visitor = new IsInVisitor()
-        Model.getInstance().getCanvas().add(shape);
-        ShapeInZoneVisitor zoneVisitor =
-            new ShapeInZoneVisitor(
-                fromSelection.x(),
-                fromSelection.y(),
-                Math.abs(position.x() - fromSelection.x()),
-                Math.abs(position.y() - fromSelection.y()));
-        Model.getInstance().getCanvas().accept(zoneVisitor);
-        List<Shape> zone = zoneVisitor.getResult();
-        if (!zone.isEmpty()) {
-          Group newGroup = new Group();
-          for (Shape s : zone) {
-            newGroup.add(s);
-          }
-          newGroup.updateChildZIndex();
-          Model.getInstance().getCanvas().add(newGroup);
-        }
         fromSelection = null;
       }
     }
-    // renderer.drawCircle(position.x(), position.y(), 100, new Color(189, 142, 231, 255));
-    IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
-    // menu.accept(visitor);
-    Model.getInstance().getComponents().accept(visitor);
-    for (Shape s : visitor.getResult()) {
-      if (!(s instanceof Group)) System.out.println("Menu clicked ? " + s.toString());
-    }
-    System.out.println("Mouse Clicked  " + position);
   }
 
   public void mouseDragged(Position from, Position to, int b) {
+    Model.getInstance().getCanvas().remove(selection);
     if (b == 1) {
       IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
       IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
@@ -159,6 +140,32 @@ public class View {
         if (toMove.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new MoveCommand(toMove, to));
         }
+      }
+    } else if (b == 3) {
+      selection =
+          new Rectangle(
+              from.x(),
+              from.y(),
+              0,
+              Math.abs(to.x() - from.x()),
+              Math.abs(to.y() - from.y()),
+              new Color(255, 0, 0, 255),
+              false);
+      System.out.println("SELECTION: " + selection);
+      // IsInVisitor visitor = new IsInVisitor()
+      Model.getInstance().getCanvas().add(selection);
+      ShapeInZoneVisitor zoneVisitor =
+          new ShapeInZoneVisitor(
+              from.x(), from.y(), Math.abs(to.x() - from.x()), Math.abs(to.y() - from.y()));
+      Model.getInstance().getCanvas().accept(zoneVisitor);
+      List<Shape> zone = zoneVisitor.getResult();
+      if (!zone.isEmpty()) {
+        Group newGroup = new Group();
+        for (Shape s : zone) {
+          newGroup.add(s);
+        }
+        newGroup.updateChildZIndex();
+        Model.getInstance().getCanvas().add(newGroup);
       }
     }
   }

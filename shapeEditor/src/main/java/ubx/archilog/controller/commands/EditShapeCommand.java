@@ -5,15 +5,18 @@ import ubx.archilog.model.Circle;
 import ubx.archilog.model.Group;
 import ubx.archilog.model.Rectangle;
 import ubx.archilog.model.Shape;
+import ubx.archilog.view.Render;
 import ubx.archilog.view.editor.*;
 
 public class EditShapeCommand implements Command {
 
   private Shape shape;
   private ShapeEditorFactory editorFactory;
+  private Render render;
 
-  public EditShapeCommand(Shape shape) {
+  public EditShapeCommand(Shape shape, Render render) {
     this.shape = shape;
+    this.render = render;
     if (shape instanceof Rectangle) {
       this.editorFactory = new RectangleEditorFactory();
     } else if (shape instanceof Circle) {
@@ -28,7 +31,7 @@ public class EditShapeCommand implements Command {
   @Override
   public void execute() {
     ShapeEditor editor = editorFactory.createEditor();
-    editor.edit(shape);
+    editor.edit(shape, render);
   }
 
   @Override
