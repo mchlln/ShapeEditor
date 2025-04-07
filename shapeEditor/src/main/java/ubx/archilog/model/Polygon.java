@@ -12,4 +12,8 @@ public class Polygon extends AbstractShape {
     super(x, y, zIndex, width, height);
     this.sides = sides;
   }
+
+  public int getSides() {
+    return this.sides;
+  }
 }
