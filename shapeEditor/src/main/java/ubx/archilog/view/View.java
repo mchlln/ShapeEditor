@@ -100,7 +100,14 @@ public class View {
                 Math.abs(position.y() - fromSelection.y()));
         Model.getInstance().getCanvas().accept(zoneVisitor);
         List<Shape> zone = zoneVisitor.getResult();
-        System.out.println("ZONE: " + zone);
+        if (!zone.isEmpty()) {
+          Group newGroup = new Group();
+          for (Shape s : zone) {
+            newGroup.add(s);
+          }
+          newGroup.updateChildZIndex();
+          Model.getInstance().getCanvas().add(newGroup);
+        }
         fromSelection = null;
       }
     }
