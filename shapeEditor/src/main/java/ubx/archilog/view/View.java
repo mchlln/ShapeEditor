@@ -7,6 +7,10 @@ import ubx.archilog.controller.commands.AddToToolBarCommand;
 import ubx.archilog.controller.commands.CloneToCanvasCommand;
 import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
+import ubx.archilog.model.buttonActions.LoadAction;
+import ubx.archilog.model.buttonActions.RedoAction;
+import ubx.archilog.model.buttonActions.SaveAction;
+import ubx.archilog.model.buttonActions.UndoAction;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
@@ -43,10 +47,36 @@ public class View {
     menu.add(
         new Rectangle(
             0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
-    menu.add(new ImageRectangle(MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/undo.png"));
     menu.add(
         new ImageRectangle(
-            10 + 2 * MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/redo.png"));
+            MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/import.png", new LoadAction()));
+    menu.add(
+        new ImageRectangle(
+            10 + 2 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/export.png",
+            new SaveAction()));
+    menu.add(
+        new ImageRectangle(
+            10 + 3 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/undo.png",
+            new UndoAction()));
+    menu.add(
+        new ImageRectangle(
+            10 + 4 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/redo.png",
+            new RedoAction()));
     return menu;
   }
 

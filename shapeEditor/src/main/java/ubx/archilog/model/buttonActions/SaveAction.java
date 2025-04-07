@@ -1,4 +1,13 @@
 package ubx.archilog.model.buttonActions;
 
-public class SaveAction {
+import ubx.archilog.model.Shape;
+
+public class SaveAction implements ButtonAction {
+  @Override
+  public void onDrag(Shape shape) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void onClick() {}
 }
