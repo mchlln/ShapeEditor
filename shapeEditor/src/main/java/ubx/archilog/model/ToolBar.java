@@ -3,7 +3,8 @@ package ubx.archilog.model;
 import static ubx.archilog.view.View.MENU_MARGIN;
 import static ubx.archilog.view.View.WINDOW_HEIGHT;
 
-import ubx.archilog.model.buttonActions.DeleteAction;
+import ubx.archilog.controller.BagOfCommands;
+import ubx.archilog.controller.commands.DeleteCommand;
 
 public class ToolBar extends Group {
 
@@ -22,7 +23,7 @@ public class ToolBar extends Group {
             MENU_MARGIN,
             MENU_MARGIN,
             "/icons/bin.png",
-            new DeleteAction()));
+            () -> BagOfCommands.getInstance().addCommand(new DeleteCommand())));
     addShapeToToolBar(new Rectangle(0, 0, 1, 50, 50, new Color(0, 25, 230, 100), true));
     addShapeToToolBar(new Rectangle(0, 0, 1, 100, 50, new Color(100, 25, 200, 100), true));
     addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));

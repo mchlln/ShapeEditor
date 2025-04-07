@@ -8,10 +8,6 @@ import ubx.archilog.controller.commands.CloneToCanvasCommand;
 import ubx.archilog.controller.commands.EditShapeCommand;
 import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
-import ubx.archilog.model.buttonActions.LoadAction;
-import ubx.archilog.model.buttonActions.RedoAction;
-import ubx.archilog.model.buttonActions.SaveAction;
-import ubx.archilog.model.buttonActions.UndoAction;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
@@ -36,51 +32,12 @@ public class View {
     BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
-    model.addComponent(createMenu());
     Group g = new Group();
     g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
     g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     g.updateChildZIndex();
     model.getCanvas().add(g);
     updateView();
-  }
-
-  public Shape createMenu() {
-    menu = new Group();
-    menu.add(
-        new Rectangle(
-            0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
-    menu.add(
-        new ImageRectangle(
-            MENU_MARGIN, 37, 0, MENU_MARGIN, MENU_MARGIN, "/icons/import.png", new LoadAction()));
-    menu.add(
-        new ImageRectangle(
-            10 + 2 * MENU_MARGIN,
-            37,
-            0,
-            MENU_MARGIN,
-            MENU_MARGIN,
-            "/icons/export.png",
-            new SaveAction()));
-    menu.add(
-        new ImageRectangle(
-            10 + 3 * MENU_MARGIN,
-            37,
-            0,
-            MENU_MARGIN,
-            MENU_MARGIN,
-            "/icons/undo.png",
-            new UndoAction()));
-    menu.add(
-        new ImageRectangle(
-            10 + 4 * MENU_MARGIN,
-            37,
-            0,
-            MENU_MARGIN,
-            MENU_MARGIN,
-            "/icons/redo.png",
-            new RedoAction()));
-    return menu;
   }
 
   public void createCanva() {}
@@ -110,7 +67,18 @@ public class View {
 
   public void clickOn(Position position, int button) {
     Model.getInstance().getCanvas().remove(selection);
-    if (button == 3) {
+    if (button == 1) {
+      IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
+      Model.getInstance().getMenu().accept(visitor);
+      List<Shape> in = visitor.getResult();
+      if (!in.isEmpty()) {
+        for (Shape s : in) {
+          if (s instanceof ImageRectangle b) {
+            b.getAction().run();
+          }
+        }
+      }
+    } else if (button == 3) {
       IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
       Model.getInstance().getCanvas().accept(visitor);
       List<Shape> in = visitor.getResult();

@@ -1,14 +1,13 @@
 package ubx.archilog.model;
 
-import ubx.archilog.model.buttonActions.ButtonAction;
 import ubx.archilog.view.Render;
 
 public class ImageRectangle extends Rectangle {
   private final String path;
-  private final ButtonAction action;
+  private final Runnable action;
 
   public ImageRectangle(
-      int x, int y, int zIndex, int width, int height, String path, ButtonAction action) {
+      int x, int y, int zIndex, int width, int height, String path, Runnable action) {
     super(x, y, zIndex, width, height, false);
     this.path = path;
     this.action = action;
@@ -19,7 +18,7 @@ public class ImageRectangle extends Rectangle {
     render.drawImageRect(super.getX(), super.getY(), super.getWidth(), super.getHeight(), path);
   }
 
-  public ButtonAction getAction() {
+  public Runnable getAction() {
     return action;
   }
 }

@@ -3,6 +3,11 @@ package ubx.archilog.model;
 import static ubx.archilog.view.View.*;
 
 import java.util.List;
+import ubx.archilog.controller.BagOfCommands;
+import ubx.archilog.controller.commands.LoadCommand;
+import ubx.archilog.controller.commands.RedoCommand;
+import ubx.archilog.controller.commands.SaveCommand;
+import ubx.archilog.controller.commands.UndoCommand;
 import ubx.archilog.model.io.FileBuilder;
 
 public class Model {
@@ -11,11 +16,15 @@ public class Model {
 
   private ToolBar toolBar;
   private Group canvas;
+  private Group menu;
 
   private Model() {
     components = new Group();
     components.setZindex(0);
     toolBar = new ToolBar();
+    menu = new Group();
+    menu.setZindex(0);
+    buildMenu();
     canvas = new Group();
     canvas.setZindex(0);
     canvas.add(
@@ -29,6 +38,49 @@ public class Model {
             true));
     components.add(toolBar);
     components.add(canvas);
+    components.add(menu);
+  }
+
+  private void buildMenu() {
+    menu.add(
+        new Rectangle(
+            0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
+    menu.add(
+        new ImageRectangle(
+            MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/import.png",
+            () -> BagOfCommands.getInstance().addCommand(new LoadCommand())));
+    menu.add(
+        new ImageRectangle(
+            10 + 2 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/export.png",
+            () -> BagOfCommands.getInstance().addCommand(new SaveCommand())));
+    menu.add(
+        new ImageRectangle(
+            10 + 3 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/undo.png",
+            () -> BagOfCommands.getInstance().addCommand(new UndoCommand())));
+    menu.add(
+        new ImageRectangle(
+            10 + 4 * MENU_MARGIN,
+            37,
+            0,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/redo.png",
+            () -> BagOfCommands.getInstance().addCommand(new RedoCommand())));
   }
 
   public static Model getInstance() {
@@ -62,6 +114,10 @@ public class Model {
 
   public Group getCanvas() {
     return canvas;
+  }
+
+  public Group getMenu() {
+    return menu;
   }
 
   /**
