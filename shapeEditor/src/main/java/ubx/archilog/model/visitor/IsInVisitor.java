@@ -15,8 +15,16 @@ public class IsInVisitor implements ShapeVisitor {
     result = new ArrayList<Shape>();
   }
 
+  private boolean isInShape(Shape s) {
+    return xVisit >= s.getX()
+        && yVisit >= s.getY()
+        && xVisit <= s.getX() + s.getWidth()
+        && yVisit <= s.getY() + s.getHeight();
+  }
+
   @Override
   public void visit(Circle c) {
+    System.out.println("VISITING circle");
     double dx = xVisit - c.getX();
     double dy = yVisit - c.getY();
     if (dx * dx + dy * dy <= c.getRadius() * c.getRadius()) {
@@ -26,31 +34,28 @@ public class IsInVisitor implements ShapeVisitor {
 
   @Override
   public void visit(Square s) {
-    if (xVisit >= s.getX()
-        && yVisit >= s.getY()
-        && xVisit <= s.getX() + s.getWidth()
-        && yVisit <= s.getX() + s.getWidth()) {
+    if (isInShape(s)) {
       result.add(s);
     }
   }
 
   @Override
   public void visit(Rectangle r) {
-    if (xVisit >= r.getX()
-        && yVisit >= r.getY()
-        && xVisit <= r.getX() + r.getWidth()
-        && yVisit <= r.getY() + r.getHeight()) {
+    if (isInShape(r)) {
       result.add(r);
     }
   }
 
   @Override
   public void visit(Group g) {
-    for (Shape s : g.getShapes()) {
-      visit(s);
-      if (result.contains(s) && !result.contains(g)) {
-        result.add(g);
+    if (g.getZindex() == 0) {
+      for (Shape s : g.getShapes()) {
+        if (isInShape(s)) {
+          result.add(s);
+        }
       }
+    } else if (isInShape(g)) {
+      result.add(g);
     }
   }
 

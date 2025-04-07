@@ -67,7 +67,6 @@ public class Group implements Shape {
     }
     this.x = minX;
     this.y = minY;
-    System.out.println("x: " + this.x + " y: " + this.y);
   }
 
   private void setSize() {
@@ -83,7 +82,6 @@ public class Group implements Shape {
     }
     this.width = maxX - this.x;
     this.height = maxY - this.y;
-    System.out.println("width: " + this.width + ", height: " + this.height);
   }
 
   @Override
