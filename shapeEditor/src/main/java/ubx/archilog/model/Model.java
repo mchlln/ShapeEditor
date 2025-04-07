@@ -100,10 +100,12 @@ public class Model {
 
   public FileBuilder save(FileBuilder fb) {
     fb.beginDocument();
+    fb.beginMenu(menu);
+    fb.endMenu();
     fb.beginToolBar();
-    fb.beginGroup();
-    fb.endGroup();
     fb.endToolBar();
+    fb.beginCanvas();
+    fb.endCanvas();
     fb.endDocument();
     return fb;
   }

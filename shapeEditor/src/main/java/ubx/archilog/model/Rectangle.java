@@ -16,6 +16,10 @@ public class Rectangle extends Polygon {
     this.fill = fill;
   }
 
+  public boolean isFill() {
+    return this.fill;
+  }
+
   @Override
   public void rotate() {
     int tmp = super.getWidth();
