@@ -21,7 +21,8 @@ public class GroupEditor implements ShapeEditor {
               50,
               "/icons/redo.png",
               () -> BagOfCommands.getInstance().addCommand(new UngroupCommand((Group) shape)));
-      Model.getInstance().getMenu().add(button);
+      // Model.getInstance().getMenu().add(button);
+      Model.getInstance().setCurrentMenu(button);
       System.out.println("Editing Group");
     }
   }

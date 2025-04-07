@@ -16,8 +16,6 @@ public class View {
   public static final int WINDOW_HEIGHT = 600;
   public static final int MENU_MARGIN = 50;
 
-  private Group menu;
-
   private Position from;
 
   private Position fromSelection = null;
@@ -39,8 +37,6 @@ public class View {
     model.getCanvas().add(g);
     updateView();
   }
-
-  public void createCanva() {}
 
   public void updateView() {
     for (Shape s : Model.getInstance().getComponents().getShapes()) {
@@ -66,6 +62,7 @@ public class View {
   }
 
   public void clickOn(Position position, int button) {
+    // Model.getInstance().clearCurrentMenu();
     Model.getInstance().getCanvas().remove(selection);
     if (button == 1) {
       IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
@@ -166,5 +163,6 @@ public class View {
         Model.getInstance().getCanvas().add(newGroup);
       }
     }
+    Model.getInstance().clearCurrentMenu();
   }
 }

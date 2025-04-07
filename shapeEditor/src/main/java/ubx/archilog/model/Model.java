@@ -18,6 +18,8 @@ public class Model {
   private Group canvas;
   private Group menu;
 
+  private Shape currentMenu;
+
   private Model() {
     components = new Group();
     components.setZindex(0);
@@ -118,6 +120,16 @@ public class Model {
 
   public Group getMenu() {
     return menu;
+  }
+
+  public void setCurrentMenu(Shape s) {
+    currentMenu = s;
+    menu.add(currentMenu);
+  }
+
+  public void clearCurrentMenu() {
+    menu.remove(currentMenu);
+    currentMenu = null;
   }
 
   /**
