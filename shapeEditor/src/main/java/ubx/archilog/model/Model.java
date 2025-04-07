@@ -100,6 +100,22 @@ public class Model {
     components.add(s);
   }
 
+  public void setMenu(Group menu) {
+    this.menu = menu;
+  }
+
+  public void setToolBar(ToolBar toolBar) {
+    components.remove(this.toolBar);
+    this.toolBar = toolBar;
+    components.add(toolBar);
+  }
+
+  public void setCanvas(Group canvas) {
+    components.remove(this.canvas);
+    this.canvas = canvas;
+    components.add(canvas);
+  }
+
   public FileBuilder save(FileBuilder fb) {
     fb.beginDocument();
     fb.beginMenu(menu);

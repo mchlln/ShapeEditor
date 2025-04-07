@@ -61,6 +61,21 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  @Override
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  @Override
+  public void setY(int y) {
+    this.y = y;
+  }
+
+  @Override
   public int getZindex() {
     return zIndex;
   }

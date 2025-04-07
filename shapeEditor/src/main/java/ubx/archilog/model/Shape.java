@@ -8,6 +8,12 @@ public interface Shape {
 
   int getY();
 
+  void setX(int x);
+
+  void setY(int y);
+
+  void setColor(Color color);
+
   int getZindex();
 
   void setZindex(int z);

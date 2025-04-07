@@ -8,6 +8,7 @@ import ubx.archilog.controller.commands.CloneToCanvasCommand;
 import ubx.archilog.controller.commands.EditShapeCommand;
 import ubx.archilog.controller.commands.MoveCommand;
 import ubx.archilog.model.*;
+import ubx.archilog.model.io.XmlLoader;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
@@ -35,6 +36,13 @@ public class View {
     g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     g.updateChildZIndex();
     model.getCanvas().add(g);
+    XmlLoader a = new XmlLoader();
+    try {
+      // a.load("save.xml");
+    } catch (Exception e) {
+
+    }
+
     updateView();
   }
 

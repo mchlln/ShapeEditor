@@ -17,6 +17,10 @@ public class Circle extends Ellipsoid {
     return super.getWidth() / 2;
   }
 
+  public void setRadius(int radius) {
+    super.setWidth(radius);
+  }
+
   @Override
   public void rotate() {
     // no action needed for a circle
