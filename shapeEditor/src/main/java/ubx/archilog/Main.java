@@ -1,18 +1,12 @@
 package ubx.archilog;
 
 import ubx.archilog.model.*;
-import ubx.archilog.model.io.FileBuilder;
-import ubx.archilog.model.io.XmlBuilder;
 import ubx.archilog.view.View;
 
 public class Main {
   public static void main(String[] args) {
     View view = new View();
     Model.getInstance();
-    FileBuilder builder = Model.getInstance().save(new XmlBuilder());
-    if (builder instanceof XmlBuilder) {
-      System.out.println(((XmlBuilder) builder).getResult());
-    }
 
     /*
 
