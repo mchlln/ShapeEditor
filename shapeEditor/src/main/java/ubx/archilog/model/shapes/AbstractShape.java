@@ -1,5 +1,8 @@
-package ubx.archilog.model;
+package ubx.archilog.model.shapes;
 
+import ubx.archilog.model.Color;
+import ubx.archilog.model.Memento;
+import ubx.archilog.model.Position;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
@@ -179,14 +182,14 @@ public abstract class AbstractShape implements Shape {
     private final Color color;
     private final Shape originator;
 
-    public AbstractMemento(final AbstractShape s) {
-      this.originator = s;
-      this.x = s.getX();
-      this.y = s.getY();
-      this.zIndex = s.getZindex();
-      this.width = s.getWidth();
-      this.height = s.getHeight();
-      this.color = s.getColor();
+    public AbstractMemento(final AbstractShape shape) {
+      this.originator = shape;
+      this.x = shape.getX();
+      this.y = shape.getY();
+      this.zIndex = shape.getZindex();
+      this.width = shape.getWidth();
+      this.height = shape.getHeight();
+      this.color = shape.getColor();
     }
 
     public void restore() {

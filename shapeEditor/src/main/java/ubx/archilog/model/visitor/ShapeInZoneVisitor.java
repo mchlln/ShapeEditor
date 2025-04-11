@@ -2,14 +2,14 @@ package ubx.archilog.model.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
-import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.*;
 
 public class ShapeInZoneVisitor implements ShapeVisitor {
-  private int zoneX;
-  private int zoneY;
-  private int zoneWidth;
-  private int zoneHeight;
-  private List<Shape> result;
+  private final int zoneX;
+  private final int zoneY;
+  private final int zoneWidth;
+  private final int zoneHeight;
+  private final List<Shape> result;
 
   public ShapeInZoneVisitor(final int x, final int y, final int width, final int height) {
     this.zoneX = x;
@@ -36,57 +36,85 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(final Circle c) {
-    if (c.getZindex() > 0
+  public void visit(final Circle circle) {
+    if (circle.getZindex() > 0
         && intersects(
-            c.getX(), c.getY(), c.getWidth(), c.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
-      result.add(c);
+            circle.getX(),
+            circle.getY(),
+            circle.getWidth(),
+            circle.getHeight(),
+            zoneX,
+            zoneY,
+            zoneWidth,
+            zoneHeight)) {
+      result.add(circle);
     }
   }
 
   @Override
-  public void visit(final Square s) {
-    if (s.getZindex() > 0
+  public void visit(final Square square) {
+    if (square.getZindex() > 0
         && intersects(
-            s.getX(), s.getY(), s.getWidth(), s.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
-      result.add(s);
+            square.getX(),
+            square.getY(),
+            square.getWidth(),
+            square.getHeight(),
+            zoneX,
+            zoneY,
+            zoneWidth,
+            zoneHeight)) {
+      result.add(square);
     }
   }
 
   @Override
-  public void visit(final Rectangle r) {
-    if (r.getZindex() > 0
+  public void visit(final Rectangle rectangle) {
+    if (rectangle.getZindex() > 0
         && intersects(
-            r.getX(), r.getY(), r.getWidth(), r.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
-      result.add(r);
+            rectangle.getX(),
+            rectangle.getY(),
+            rectangle.getWidth(),
+            rectangle.getHeight(),
+            zoneX,
+            zoneY,
+            zoneWidth,
+            zoneHeight)) {
+      result.add(rectangle);
     }
   }
 
   @Override
-  public void visit(final Group g) {
-    if (g.getZindex() == 0) {
-      for (final Shape s : g.getShapes()) {
-        if (s.getZindex() > 0
+  public void visit(final Group group) {
+    if (group.getZindex() == 0) {
+      for (final Shape shape : group.getShapes()) {
+        if (shape.getZindex() > 0
             && intersects(
-                s.getX(),
-                s.getY(),
-                s.getWidth(),
-                s.getHeight(),
+                shape.getX(),
+                shape.getY(),
+                shape.getWidth(),
+                shape.getHeight(),
                 zoneX,
                 zoneY,
                 zoneWidth,
                 zoneHeight)) {
-          result.add(s);
+          result.add(shape);
         }
       }
     } else if (intersects(
-        g.getX(), g.getY(), g.getWidth(), g.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
-      result.add(g);
+        group.getX(),
+        group.getY(),
+        group.getWidth(),
+        group.getHeight(),
+        zoneX,
+        zoneY,
+        zoneWidth,
+        zoneHeight)) {
+      result.add(group);
     }
   }
 
   @Override
-  public void visit(final AbstractShape s) {
+  public void visit(final AbstractShape shape) {
     throw new UnsupportedOperationException();
   }
 

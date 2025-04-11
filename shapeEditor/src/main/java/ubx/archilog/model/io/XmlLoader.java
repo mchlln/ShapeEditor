@@ -4,6 +4,7 @@ import java.io.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.*;
 
 public class XmlLoader implements FileLoader {
 
@@ -55,19 +56,24 @@ public class XmlLoader implements FileLoader {
       final Node node = groupChildren.item(i);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         final Element element = (Element) node;
-        if (element.getTagName().equals("group")) {
-          final Group childGroup = new Group();
-          loadGroup(element, childGroup);
-          group.add(childGroup);
-        } else if (element.getTagName().equals("square")) {
-          final Square square = loadSquare(element);
-          group.add(square);
-        } else if (element.getTagName().equals("rectangle")) {
-          final Rectangle rectangle = loadRectangle(element);
-          group.add(rectangle);
-        } else if (element.getTagName().equals("circle")) {
-          final Circle circle = loadCircle(element);
-          group.add(circle);
+        switch (element.getTagName()) {
+          case "group" -> {
+            final Group childGroup = new Group();
+            loadGroup(element, childGroup);
+            group.add(childGroup);
+          }
+          case "square" -> {
+            final Square square = loadSquare(element);
+            group.add(square);
+          }
+          case "rectangle" -> {
+            final Rectangle rectangle = loadRectangle(element);
+            group.add(rectangle);
+          }
+          case "circle" -> {
+            final Circle circle = loadCircle(element);
+            group.add(circle);
+          }
         }
       }
     }

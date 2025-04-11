@@ -1,6 +1,8 @@
 package ubx.archilog.view.editor;
 
 import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.Rectangle;
+import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 
 public class RectangleEditor extends AbstractEditor {

@@ -18,9 +18,9 @@ public class LoadCommand implements Command {
   }
 
   private Void loadFile(final String fileName) {
-    final XmlLoader a = new XmlLoader();
+    final XmlLoader loader = new XmlLoader();
     try {
-      a.load(fileName);
+      loader.load(fileName);
     } catch (Exception e) {
 
     }

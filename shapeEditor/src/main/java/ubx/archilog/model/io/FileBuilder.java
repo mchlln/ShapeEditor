@@ -1,8 +1,6 @@
 package ubx.archilog.model.io;
 
-import ubx.archilog.model.*;
-import ubx.archilog.model.Polygon;
-import ubx.archilog.model.Rectangle;
+import ubx.archilog.model.shapes.*;
 
 public interface FileBuilder {
   void beginDocument();

@@ -16,9 +16,9 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   private boolean init = false;
 
   @Override
-  public void paint(final Graphics g) {
+  public void paint(final Graphics graphics) {
     for (final Shape shape : shapes) {
-      shape.draw(g);
+      shape.draw(graphics);
     }
     System.out.println(shapes.size() + " objects rendered");
     if (init) {
@@ -29,13 +29,19 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
   @Override
   public void drawRect(
-      final int x, final int y, final int w, final int h, final boolean fill, final Color color) {
-    shapes.add(new Rectangle(x, y, w, h, fill, color));
+      final int x,
+      final int y,
+      final int width,
+      final int height,
+      final boolean fill,
+      final Color color) {
+    shapes.add(new Rectangle(x, y, width, height, fill, color));
   }
 
   @Override
-  public void drawImageRect(final int x, final int y, final int w, final int h, final String path) {
-    shapes.add(new ImageRectangle(x, y, w, h, path));
+  public void drawImageRect(
+      final int x, final int y, final int width, final int height, final String path) {
+    shapes.add(new ImageRectangle(x, y, width, height, path));
   }
 
   @Override
@@ -127,8 +133,8 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public static class Rectangle implements Shape {
     private final int x;
     private final int y;
-    private final int w;
-    private final int h;
+    private final int width;
+    private final int height;
     private final boolean fill;
     private final Color color;
 
@@ -141,19 +147,19 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
         final Color color) {
       this.x = x;
       this.y = y;
-      this.w = width;
-      this.h = height;
+      this.width = width;
+      this.height = height;
       this.fill = fill;
       this.color = color;
     }
 
     @Override
-    public void draw(final Graphics g) {
-      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
+    public void draw(final Graphics graphics) {
+      graphics.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
       if (fill) {
-        g.fillRect(x, y, w, h);
+        graphics.fillRect(x, y, width, height);
       } else {
-        g.drawRect(x, y, w, h);
+        graphics.drawRect(x, y, width, height);
       }
     }
 
@@ -177,9 +183,9 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
 
     @Override
-    public void draw(final Graphics g) {
-      g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
-      g.fillOval(x, y, radius * 2, radius * 2);
+    public void draw(final Graphics graphics) {
+      graphics.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
+      graphics.fillOval(x, y, radius * 2, radius * 2);
     }
   }
 
@@ -205,11 +211,11 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
 
     @Override
-    public void draw(final Graphics g) {
+    public void draw(final Graphics graphics) {
       if (image != null) {
-        g.drawImage(image, x, y, w, h, this);
+        graphics.drawImage(image, x, y, w, h, this);
       } else {
-        g.drawRect(x, y, w, h);
+        graphics.drawRect(x, y, w, h);
       }
     }
   }

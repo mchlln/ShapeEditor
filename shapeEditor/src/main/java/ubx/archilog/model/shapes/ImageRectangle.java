@@ -1,4 +1,4 @@
-package ubx.archilog.model;
+package ubx.archilog.model.shapes;
 
 import ubx.archilog.view.Render;
 

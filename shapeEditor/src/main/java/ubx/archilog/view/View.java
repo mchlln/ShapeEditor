@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.*;
 import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
@@ -26,17 +27,17 @@ public class View {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     final Model model = Model.getInstance();
     model.buildMenu(renderer);
-    final Group g = new Group();
-    g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
-    g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
-    g.updateChildZIndex();
-    model.getCanvas().add(g);
+    final Group group = new Group();
+    group.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
+    group.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
+    group.updateChildZIndex();
+    model.getCanvas().add(group);
     updateView();
   }
 
   public void updateView() {
-    for (final Shape s : Model.getInstance().getComponents().getShapes()) {
-      s.draw(renderer);
+    for (final Shape shape : Model.getInstance().getComponents().getShapes()) {
+      shape.draw(renderer);
     }
     renderer.update();
   }
@@ -65,12 +66,12 @@ public class View {
       Model.getInstance().getMenu().accept(visitor);
       List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
-        for (final Shape s : in) {
-          if (s instanceof ImageRectangle b) {
-            b.getAction().run();
-          } else if (s instanceof Group g) {
+        for (final Shape shape : in) {
+          if (shape instanceof ImageRectangle imageRectangle) {
+            imageRectangle.getAction().run();
+          } else if (shape instanceof Group group) {
             visitor = new IsInVisitor(position.x(), position.y());
-            g.accept(visitor);
+            group.accept(visitor);
             in = visitor.getResult();
             System.out.println("IN: " + in);
             final Shape clickedButton = Model.getInstance().getBestZIndex(in);

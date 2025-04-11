@@ -9,6 +9,7 @@ import ubx.archilog.controller.commands.RedoCommand;
 import ubx.archilog.controller.commands.SaveCommand;
 import ubx.archilog.controller.commands.UndoCommand;
 import ubx.archilog.model.io.FileBuilder;
+import ubx.archilog.model.shapes.*;
 import ubx.archilog.view.Render;
 
 public class Model {
@@ -96,8 +97,8 @@ public class Model {
     return components;
   }
 
-  public void addComponent(final Shape s) {
-    components.add(s);
+  public void addComponent(final Shape shape) {
+    components.add(shape);
   }
 
   public void setMenu(final Group menu) {
@@ -116,14 +117,14 @@ public class Model {
     components.add(canvas);
   }
 
-  public FileBuilder save(final FileBuilder fb) {
-    fb.beginDocument();
-    fb.beginToolBar();
-    fb.endToolBar();
-    fb.beginCanvas();
-    fb.endCanvas();
-    fb.endDocument();
-    return fb;
+  public FileBuilder save(final FileBuilder fileBuilder) {
+    fileBuilder.beginDocument();
+    fileBuilder.beginToolBar();
+    fileBuilder.endToolBar();
+    fileBuilder.beginCanvas();
+    fileBuilder.endCanvas();
+    fileBuilder.endDocument();
+    return fileBuilder;
   }
 
   public ToolBar getToolBar() {
@@ -138,8 +139,8 @@ public class Model {
     return menu;
   }
 
-  public void setCurrentMenu(final Shape s) {
-    currentMenu = s;
+  public void setCurrentMenu(final Shape shape) {
+    currentMenu = shape;
     menu.add(currentMenu);
   }
 
@@ -156,9 +157,9 @@ public class Model {
    */
   public Shape getBestZIndex(final List<Shape> shapes) {
     Shape best = shapes.getFirst();
-    for (final Shape s : shapes) {
-      if (s.getZindex() > best.getZindex()) {
-        best = s;
+    for (final Shape shape : shapes) {
+      if (shape.getZindex() > best.getZindex()) {
+        best = shape;
       }
     }
     return best;

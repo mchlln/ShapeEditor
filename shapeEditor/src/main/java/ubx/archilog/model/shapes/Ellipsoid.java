@@ -1,4 +1,6 @@
-package ubx.archilog.model;
+package ubx.archilog.model.shapes;
+
+import ubx.archilog.model.Color;
 
 public class Ellipsoid extends AbstractShape {
 

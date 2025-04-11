@@ -1,10 +1,11 @@
-package ubx.archilog.model;
+package ubx.archilog.model.shapes;
 
 import static ubx.archilog.view.View.MENU_MARGIN;
 import static ubx.archilog.view.View.WINDOW_HEIGHT;
 
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.DeleteCommand;
+import ubx.archilog.model.Color;
 
 public class ToolBar extends Group {
 
@@ -29,18 +30,18 @@ public class ToolBar extends Group {
     addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));
   }
 
-  public void addShapeToToolBar(final Shape s) {
+  public void addShapeToToolBar(final Shape shape) {
     if (shapeCount >= 8) {
       return;
     }
-    s.scale((float) MENU_MARGIN / Math.max(s.getWidth(), s.getHeight()));
-    super.add(s);
-    s.translate(-s.getX(), shapeCount * 60 + MENU_MARGIN - s.getY());
+    shape.scale((float) MENU_MARGIN / Math.max(shape.getWidth(), shape.getHeight()));
+    super.add(shape);
+    shape.translate(-shape.getX(), shapeCount * 60 + MENU_MARGIN - shape.getY());
     shapeCount++;
   }
 
-  public void removeShapeFromToolBar(final Shape s) {
-    super.remove(s);
+  public void removeShapeFromToolBar(final Shape shape) {
+    super.remove(shape);
     shapeCount--;
   }
 }

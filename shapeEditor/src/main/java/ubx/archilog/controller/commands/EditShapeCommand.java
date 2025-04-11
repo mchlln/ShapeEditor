@@ -1,10 +1,10 @@
 package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
-import ubx.archilog.model.Circle;
-import ubx.archilog.model.Group;
-import ubx.archilog.model.Rectangle;
-import ubx.archilog.model.Shape;
+import ubx.archilog.model.shapes.Circle;
+import ubx.archilog.model.shapes.Group;
+import ubx.archilog.model.shapes.Rectangle;
+import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 import ubx.archilog.view.editor.*;
 
