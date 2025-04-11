@@ -11,7 +11,7 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   private int zoneHeight;
   private List<Shape> result;
 
-  public ShapeInZoneVisitor(int x, int y, int width, int height) {
+  public ShapeInZoneVisitor(final int x, final int y, final int width, final int height) {
     this.zoneX = x;
     this.zoneY = y;
     this.zoneWidth = width;
@@ -20,14 +20,14 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   private boolean intersects(
-      int shapeX,
-      int shapeY,
-      int shapeWidth,
-      int shapeHeight,
-      int zoneX,
-      int zoneY,
-      int zoneWidth,
-      int zoneHeight) {
+      final int shapeX,
+      final int shapeY,
+      final int shapeWidth,
+      final int shapeHeight,
+      final int zoneX,
+      final int zoneY,
+      final int zoneWidth,
+      final int zoneHeight) {
 
     return shapeX < zoneX + zoneWidth
         && shapeX + shapeWidth > zoneX
@@ -36,7 +36,7 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(Circle c) {
+  public void visit(final Circle c) {
     if (c.getZindex() > 0
         && intersects(
             c.getX(), c.getY(), c.getWidth(), c.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
@@ -45,7 +45,7 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(Square s) {
+  public void visit(final Square s) {
     if (s.getZindex() > 0
         && intersects(
             s.getX(), s.getY(), s.getWidth(), s.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
@@ -54,7 +54,7 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(Rectangle r) {
+  public void visit(final Rectangle r) {
     if (r.getZindex() > 0
         && intersects(
             r.getX(), r.getY(), r.getWidth(), r.getHeight(), zoneX, zoneY, zoneWidth, zoneHeight)) {
@@ -63,9 +63,9 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(Group g) {
+  public void visit(final Group g) {
     if (g.getZindex() == 0) {
-      for (Shape s : g.getShapes()) {
+      for (final Shape s : g.getShapes()) {
         if (s.getZindex() > 0
             && intersects(
                 s.getX(),
@@ -86,12 +86,12 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(AbstractShape s) {
+  public void visit(final AbstractShape s) {
     throw new UnsupportedOperationException();
   }
 
   public List<Shape> getResult() {
-    List<Shape> copy = List.copyOf(result);
+    final List<Shape> copy = List.copyOf(result);
     result.clear();
     return copy;
   }

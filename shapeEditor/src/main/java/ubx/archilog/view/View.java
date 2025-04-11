@@ -65,7 +65,7 @@ public class View {
       Model.getInstance().getMenu().accept(visitor);
       List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
-        for (Shape s : in) {
+        for (final Shape s : in) {
           if (s instanceof ImageRectangle b) {
             b.getAction().run();
           } else if (s instanceof Group g) {
@@ -73,7 +73,7 @@ public class View {
             g.accept(visitor);
             in = visitor.getResult();
             System.out.println("IN: " + in);
-            Shape clickedButton = Model.getInstance().getBestZIndex(in);
+            final Shape clickedButton = Model.getInstance().getBestZIndex(in);
             if (clickedButton instanceof ImageRectangle bu) {
               bu.getAction().run();
             }
@@ -81,9 +81,9 @@ public class View {
         }
       }
     } else if (button == 3) {
-      IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
+      final IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
       Model.getInstance().getCanvas().accept(visitor);
-      List<Shape> in = visitor.getResult();
+      final List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
         System.out.println("CLICKED ON = " + in);
         final Shape best = Model.getInstance().getBestZIndex(in);
@@ -98,8 +98,8 @@ public class View {
   public void mouseDragged(final Position from, final Position to, final int b) {
     Model.getInstance().getCanvas().remove(selection);
     if (b == 1) {
-      IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
-      IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
+      final IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
+      final IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
       final Model model = Model.getInstance();
 
       // Case adding shape to canvas
@@ -108,7 +108,7 @@ public class View {
       List<Shape> in = fromAppSector.getResult();
       List<Shape> out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        Shape toAdd = model.getBestZIndex(in).clone();
+        final Shape toAdd = model.getBestZIndex(in).clone();
         if (toAdd.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(toAdd, to));
         }
@@ -120,7 +120,7 @@ public class View {
       in = fromAppSector.getResult();
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        Shape toAdd = model.getBestZIndex(in).clone();
+        final Shape toAdd = model.getBestZIndex(in).clone();
         if (toAdd.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(toAdd));
         }
@@ -130,7 +130,7 @@ public class View {
       model.getCanvas().accept(toAppSector);
       out = toAppSector.getResult();
       if (!in.isEmpty() && !out.isEmpty()) {
-        Shape toMove = model.getBestZIndex(in);
+        final Shape toMove = model.getBestZIndex(in);
         if (toMove.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new MoveCommand(toMove, to));
         }

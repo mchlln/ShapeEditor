@@ -22,14 +22,14 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
-  public void beginGroup(Group group) {
+  public void beginGroup(final Group group) {
     sb.append("<group>\n");
     setCoordinates(group);
     setCompleteSize(group);
     parseGroup(group);
   }
 
-  public void parseGroup(Group group) {
+  public void parseGroup(final Group group) {
     for (final Shape s : group.getShapes()) {
       if (s instanceof Square) {
         buildSquare((Square) s);
@@ -53,7 +53,7 @@ public class XmlBuilder implements FileBuilder {
   @Override
   public void beginToolBar() {
     sb.append("<toolBar>\n");
-    ToolBar toolBar = Model.getInstance().getToolBar();
+    final ToolBar toolBar = Model.getInstance().getToolBar();
     setCoordinates(toolBar);
     setCompleteSize(toolBar);
     parseGroup(toolBar);
@@ -67,7 +67,7 @@ public class XmlBuilder implements FileBuilder {
   @Override
   public void beginCanvas() {
     sb.append("<canvas>\n");
-    Group canvas = Model.getInstance().getCanvas();
+    final Group canvas = Model.getInstance().getCanvas();
     setCoordinates(canvas);
     setCompleteSize(canvas);
     parseGroup(canvas);
@@ -79,17 +79,17 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
-  public void buildPolygon(Polygon polygon) {
+  public void buildPolygon(final Polygon polygon) {
     sb.append("<polygon>\n");
     sb.append("<sides>").append(polygon.getSides()).append("</sides>\n");
     sb.append("</polygon>\n");
   }
 
   @Override
-  public void buildEllipsoid(Ellipsoid ellipsoid) {}
+  public void buildEllipsoid(final Ellipsoid ellipsoid) {}
 
   @Override
-  public void buildCircle(Circle circle) {
+  public void buildCircle(final Circle circle) {
     sb.append("<circle>\n");
     setCoordinates(circle);
     sb.append("<radius>").append(circle.getRadius()).append("</radius>\n");
@@ -98,7 +98,7 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
-  public void buildRectangle(Rectangle rectangle) {
+  public void buildRectangle(final Rectangle rectangle) {
     sb.append("<rectangle>\n");
     setCoordinates(rectangle);
     setCompleteSize(rectangle);
@@ -108,7 +108,7 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
-  public void buildSquare(Square square) {
+  public void buildSquare(final Square square) {
     sb.append("<square>\n");
     setCoordinates(square);
     sb.append("<size>\n");
@@ -123,7 +123,7 @@ public class XmlBuilder implements FileBuilder {
     return sb.toString();
   }
 
-  private void setCoordinates(Shape s) {
+  private void setCoordinates(final Shape s) {
     sb.append("<coordinates>\n");
     sb.append("<x>").append(s.getX()).append("</x>\n");
     sb.append("<y>").append(s.getY()).append("</y>\n");
@@ -131,7 +131,7 @@ public class XmlBuilder implements FileBuilder {
     sb.append("</coordinates>\n");
   }
 
-  private void setColor(Color color) {
+  private void setColor(final Color color) {
     sb.append("<color>\n");
     sb.append("<r>").append(color.r()).append("</r>\n");
     sb.append("<g>").append(color.g()).append("</g>\n");
@@ -140,7 +140,7 @@ public class XmlBuilder implements FileBuilder {
     sb.append("</color>\n");
   }
 
-  private void setCompleteSize(Shape s) {
+  private void setCompleteSize(final Shape s) {
     sb.append("<size>\n");
     sb.append("<width>").append(s.getWidth()).append("</width>\n");
     sb.append("<height>").append(s.getHeight()).append("</height>\n");

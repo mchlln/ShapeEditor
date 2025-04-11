@@ -9,13 +9,13 @@ public class IsInVisitor implements ShapeVisitor {
   private final int yVisit;
   private final List<Shape> result;
 
-  public IsInVisitor(int xVisit, int yVisit) {
+  public IsInVisitor(final int xVisit, final int yVisit) {
     this.xVisit = xVisit;
     this.yVisit = yVisit;
     result = new ArrayList<Shape>();
   }
 
-  private boolean isInShape(Shape s) {
+  private boolean isInShape(final Shape s) {
     return xVisit >= s.getX()
         && yVisit >= s.getY()
         && xVisit <= s.getX() + s.getWidth()
@@ -23,33 +23,33 @@ public class IsInVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(Circle c) {
+  public void visit(final Circle c) {
     System.out.println("VISITING circle");
-    double dx = xVisit - c.getX();
-    double dy = yVisit - c.getY();
+    final double dx = xVisit - c.getX();
+    final double dy = yVisit - c.getY();
     if (dx * dx + dy * dy <= c.getRadius() * c.getRadius()) {
       result.add(c);
     }
   }
 
   @Override
-  public void visit(Square s) {
+  public void visit(final Square s) {
     if (isInShape(s)) {
       result.add(s);
     }
   }
 
   @Override
-  public void visit(Rectangle r) {
+  public void visit(final Rectangle r) {
     if (isInShape(r)) {
       result.add(r);
     }
   }
 
   @Override
-  public void visit(Group g) {
+  public void visit(final Group g) {
     if (g.getZindex() == 0) {
-      for (Shape s : g.getShapes()) {
+      for (final Shape s : g.getShapes()) {
         if (isInShape(s)) {
           result.add(s);
         }
@@ -59,7 +59,7 @@ public class IsInVisitor implements ShapeVisitor {
     }
   }
 
-  public void visit(Shape s) {
+  public void visit(final Shape s) {
     if (s instanceof Circle) {
       visit((Circle) s);
     } else if (s instanceof Square) {
@@ -72,12 +72,12 @@ public class IsInVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(AbstractShape s) {
+  public void visit(final AbstractShape s) {
     throw new UnsupportedOperationException();
   }
 
   public List<Shape> getResult() {
-    List<Shape> copy = List.copyOf(result);
+    final List<Shape> copy = List.copyOf(result);
     result.clear();
     return copy;
   }
