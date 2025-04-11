@@ -7,7 +7,7 @@ import ubx.archilog.model.ImageRectangle;
 import ubx.archilog.model.Shape;
 import ubx.archilog.view.Render;
 
-public class AbstractEditor implements ShapeEditor {
+public abstract class AbstractEditor implements ShapeEditor {
 
   protected Group group;
 
