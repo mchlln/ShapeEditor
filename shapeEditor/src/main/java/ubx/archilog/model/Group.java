@@ -236,4 +236,43 @@ public class Group implements Shape {
     sb.append("]");
     return sb.toString();
   }
+
+  @Override
+  public Memento save() {
+    return new GroupMemento(this);
+  }
+
+  private class GroupMemento implements Memento {
+    int x;
+    int y;
+    int zIndex;
+    int width;
+    int height;
+    List<Memento> list;
+    Group originator;
+
+    public GroupMemento(Group s) {
+      this.originator = s;
+      this.x = s.getX();
+      this.y = s.getY();
+      this.zIndex = s.getZindex();
+      this.width = s.getWidth();
+      this.height = s.getHeight();
+      List<Memento> list = new ArrayList<>();
+      for (Shape shape : s.shapesList) {
+        list.add(shape.save());
+      }
+    }
+
+    public void restore() {
+      originator.setX(x);
+      originator.setY(y);
+      originator.setZindex(zIndex);
+      originator.setWidth(width);
+      originator.setHeight(height);
+      for (Memento m : list) {
+        m.restore();
+      }
+    }
+  }
 }

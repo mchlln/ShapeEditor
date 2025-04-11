@@ -8,9 +8,11 @@ import ubx.archilog.model.Shape;
 
 public class UngroupCommand implements Command {
   private Group group;
+  private Group oldGroup;
 
   public UngroupCommand(Group group) {
     this.group = group;
+    oldGroup = (Group) group.clone();
   }
 
   @Override
@@ -33,5 +35,11 @@ public class UngroupCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    System.out.println("undo ungroup command");
+    for (Shape shape : oldGroup.getShapes()) {
+      Model.getInstance().getCanvas().remove(shape);
+    }
+    Model.getInstance().getCanvas().add(oldGroup);
+  }
 }

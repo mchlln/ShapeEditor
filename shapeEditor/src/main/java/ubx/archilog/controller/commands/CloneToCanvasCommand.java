@@ -22,5 +22,7 @@ public class CloneToCanvasCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    Model.getInstance().getCanvas().remove(shape);
+  }
 }

@@ -2,11 +2,15 @@ package ubx.archilog.controller;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BagOfCommands {
   private static BagOfCommands instance = null;
 
   private final Queue<Command> commands = new LinkedList<>();
+
+  private final Stack<Command> undoCommands = new Stack<>();
+  private final Stack<Command> redoCommands = new Stack<>();
 
   private BagOfCommands() {}
 
@@ -25,6 +29,9 @@ public class BagOfCommands {
   public void executeOne() {
     if (!commands.isEmpty()) {
       Command command = commands.remove();
+      undoCommands.push(command);
+      System.out.println("undo command pushed: " + undoCommands.peek());
+      redoCommands.clear();
       command.execute();
     }
   }
@@ -32,6 +39,31 @@ public class BagOfCommands {
   public void executeAll() {
     while (!commands.isEmpty()) {
       Command command = commands.remove();
+      undoCommands.push(command);
+      System.out.println("undo command pushed: " + undoCommands.peek());
+      redoCommands.clear();
+      command.execute();
+    }
+  }
+
+  public void undoLastCommand() {
+    if (undoCommands.size() > 1) {
+      undoCommands.pop(); // remove undo command
+      Command command = undoCommands.pop();
+      System.out.println("undo command popped: " + command);
+      redoCommands.push(command);
+      System.out.println("redo command pushed: " + redoCommands.peek());
+      command.undo();
+    }
+  }
+
+  public void redoLastCommand() {
+    if (redoCommands.size() > 1) {
+      redoCommands.pop(); // remove redo command
+      System.out.println("redo command popped: " + redoCommands.peek());
+      Command command = redoCommands.pop();
+      undoCommands.push(command);
+      System.out.println("undo command pushed: " + undoCommands.peek());
       command.execute();
     }
   }

@@ -39,4 +39,6 @@ public interface Shape {
   void accept(ShapeVisitor visitor);
 
   Shape clone();
+
+  Memento save();
 }

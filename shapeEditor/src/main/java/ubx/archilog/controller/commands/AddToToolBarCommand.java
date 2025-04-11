@@ -7,9 +7,11 @@ import ubx.archilog.model.Shape;
 public class AddToToolBarCommand implements Command {
 
   Shape shape;
+  Shape oldShape;
 
   public AddToToolBarCommand(Shape shape) {
     this.shape = shape;
+    this.oldShape = shape.clone();
   }
 
   @Override
@@ -19,5 +21,8 @@ public class AddToToolBarCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+
+    Model.getInstance().getToolBar().removeShapeFromToolBar(shape);
+  }
 }

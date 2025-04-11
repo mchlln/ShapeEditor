@@ -72,4 +72,35 @@ public class Circle extends Ellipsoid {
   public void accept(ShapeVisitor visitor) {
     visitor.visit(this);
   }
+
+  @Override
+  public Memento save() {
+    return new CircleMemento(this);
+  }
+
+  private class CircleMemento implements Memento {
+    int x;
+    int y;
+    int zIndex;
+    int radius;
+    Color color;
+    Circle originator;
+
+    public CircleMemento(Circle s) {
+      this.originator = s;
+      this.x = s.getX();
+      this.y = s.getY();
+      this.zIndex = s.getZindex();
+      this.radius = s.getRadius();
+      this.color = s.getColor(); // TODO : add a clone to color
+    }
+
+    public void restore() {
+      originator.setX(x);
+      originator.setY(y);
+      originator.setZindex(zIndex);
+      originator.setRadius(radius);
+      originator.setColor(color);
+    }
+  }
 }
