@@ -50,6 +50,11 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   }
 
   @Override
+  public void drawPolygon(int[] xCoords, int[] yCoords, int sides, Color color) {
+    shapes.add(new RegularPolygon(xCoords, yCoords, sides, color));
+  }
+
+  @Override
   public void showTextInputPopUp(final String text, final Function<String, Void> callBack) {
     final Dialog dialog = new Dialog(this, "Enter Text", true);
     dialog.setLayout(new FlowLayout());
@@ -219,6 +224,28 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
       } else {
         graphics.drawRect(x, y, w, h);
       }
+    }
+  }
+
+  public static class RegularPolygon implements Shape {
+    private final int[] xCoords;
+    private final int[] yCoords;
+    private final int sides;
+    private final Color color;
+
+    public RegularPolygon(
+        final int[] xCoords, final int[] yCoords, final int sides, final Color color) {
+      this.xCoords = xCoords;
+      this.yCoords = yCoords;
+      this.sides = sides;
+      this.color = color;
+    }
+
+    @Override
+    public void draw(final Graphics graphics) {
+
+      graphics.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
+      graphics.fillPolygon(xCoords, yCoords, sides);
     }
   }
 }

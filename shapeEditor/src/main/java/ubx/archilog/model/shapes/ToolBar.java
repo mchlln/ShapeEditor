@@ -28,6 +28,8 @@ public class ToolBar extends Group {
     addShapeToToolBar(new Rectangle(0, 0, 1, 50, 50, new Color(0, 25, 230, 100), true));
     addShapeToToolBar(new Rectangle(0, 0, 1, 100, 50, new Color(100, 25, 200, 100), true));
     addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));
+    addShapeToToolBar(new RegularPolygon(0, 0, 1, 30, 30, 3, new Color(230, 30, 230, 100)));
+    addShapeToToolBar(new RegularPolygon(0, 0, 1, 30, 30, 8, new Color(230, 30, 230, 100)));
   }
 
   public void addShapeToToolBar(final Shape shape) {

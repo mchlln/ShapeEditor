@@ -12,6 +12,8 @@ public interface Render {
 
   void drawCircle(int x, int y, int radius, Color color);
 
+  void drawPolygon(int[] xCoords, int[] yCoords, int sides, Color color);
+
   void showTextInputPopUp(String text, Function<String, Void> callBack);
 
   void update();

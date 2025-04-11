@@ -1,10 +1,7 @@
 package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
-import ubx.archilog.model.shapes.Circle;
-import ubx.archilog.model.shapes.Group;
-import ubx.archilog.model.shapes.Rectangle;
-import ubx.archilog.model.shapes.Shape;
+import ubx.archilog.model.shapes.*;
 import ubx.archilog.view.Render;
 import ubx.archilog.view.editor.*;
 
@@ -23,6 +20,8 @@ public class EditShapeCommand implements Command {
       this.editorFactory = new CircleEditorFactory();
     } else if (shape instanceof Group) {
       this.editorFactory = new GroupEditorFactory();
+    } else if (shape instanceof RegularPolygon) {
+      this.editorFactory = new RegularPolygonEditorFactory();
     } else {
       throw new UnsupportedOperationException("Unsupported shape: " + shape);
     }
