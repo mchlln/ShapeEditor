@@ -10,5 +10,7 @@ public class UndoCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    // undo can't be undone
+  }
 }

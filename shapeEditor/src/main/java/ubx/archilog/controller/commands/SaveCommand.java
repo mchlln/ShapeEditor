@@ -35,6 +35,6 @@ public class SaveCommand implements Command {
 
   @Override
   public void undo() {
-    throw new UnsupportedOperationException("Cannot \"unsave\" a document");
+    // save can't be undone
   }
 }

@@ -28,5 +28,7 @@ public class LoadCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    // load can't be undone
+  }
 }

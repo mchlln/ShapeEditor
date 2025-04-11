@@ -264,8 +264,12 @@ public class Group implements Shape {
       originator.setZindex(zIndex);
       originator.setWidth(width);
       originator.setHeight(height);
+
+      originator.shapesList.clear();
+      originator.shapesSet.clear();
       for (int i = 0; i < shapeRefs.size(); i++) {
         originator.shapesList.add(shapeRefs.get(i));
+        originator.shapesSet.add(shapeRefs.get(i));
         shapesMemento.get(i).restore();
       }
     }
