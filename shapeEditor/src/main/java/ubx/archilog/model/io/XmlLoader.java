@@ -11,7 +11,7 @@ public class XmlLoader implements FileLoader {
 
   public XmlLoader() {}
 
-  public void load(String filePath) throws Exception {
+  public void load(final String filePath) throws Exception {
     System.out.println("Loading " + filePath);
     final File file = new File(filePath);
     final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -140,7 +140,7 @@ public class XmlLoader implements FileLoader {
             coordinatesElement.getElementsByTagName("zIndex").item(0).getTextContent()));
 
     final Element colorElement = (Element) shapeElement.getElementsByTagName("color").item(0);
-    Color color =
+    final Color color =
         new Color(
             Integer.parseInt(colorElement.getElementsByTagName("r").item(0).getTextContent()),
             Integer.parseInt(colorElement.getElementsByTagName("g").item(0).getTextContent()),

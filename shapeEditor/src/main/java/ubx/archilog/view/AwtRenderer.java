@@ -16,7 +16,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   private boolean init = false;
 
   @Override
-  public void paint(Graphics g) {
+  public void paint(final Graphics g) {
     for (final Shape shape : shapes) {
       shape.draw(g);
     }
@@ -45,16 +45,16 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
   @Override
   public void showTextInputPopUp(final String text, final Function<String, Void> callBack) {
-    Dialog dialog = new Dialog(this, "Enter Text", true);
+    final Dialog dialog = new Dialog(this, "Enter Text", true);
     dialog.setLayout(new FlowLayout());
 
-    Label label = new Label(text);
-    TextField textField = new TextField(20);
-    Button okButton = new Button("OK");
+    final Label label = new Label(text);
+    final TextField textField = new TextField(20);
+    final Button okButton = new Button("OK");
 
     okButton.addActionListener(
         e -> {
-          String input = textField.getText();
+          final String input = textField.getText();
           callBack.apply(input);
           dialog.dispose();
         });
@@ -92,36 +92,36 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
     addWindowListener(
         new WindowAdapter() {
-          public void windowClosing(WindowEvent e) {
+          public void windowClosing(final WindowEvent e) {
             dispose();
           }
         });
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {}
+  public void actionPerformed(final ActionEvent actionEvent) {}
 
   @Override
-  public void mouseClicked(MouseEvent mouseEvent) {}
+  public void mouseClicked(final MouseEvent mouseEvent) {}
 
   @Override
-  public void mousePressed(MouseEvent mouseEvent) {
+  public void mousePressed(final MouseEvent mouseEvent) {
     mousePressed.apply(new Position(mouseEvent.getX(), mouseEvent.getY()), mouseEvent.getButton());
   }
 
   @Override
-  public void mouseReleased(MouseEvent mouseEvent) {
+  public void mouseReleased(final MouseEvent mouseEvent) {
     mouseReleased.apply(new Position(mouseEvent.getX(), mouseEvent.getY()), mouseEvent.getButton());
   }
 
   @Override
-  public void mouseEntered(MouseEvent mouseEvent) {}
+  public void mouseEntered(final MouseEvent mouseEvent) {}
 
   @Override
-  public void mouseExited(MouseEvent mouseEvent) {}
+  public void mouseExited(final MouseEvent mouseEvent) {}
 
   public interface Shape {
-    void draw(Graphics g);
+    void draw(final Graphics g);
   }
 
   public static class Rectangle implements Shape {
@@ -148,7 +148,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(final Graphics g) {
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
       if (fill) {
         g.fillRect(x, y, w, h);
@@ -177,7 +177,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(final Graphics g) {
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
       g.fillOval(x, y, radius * 2, radius * 2);
     }
@@ -188,7 +188,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int y;
     private final int w;
     private final int h;
-    Image image;
+    private Image image;
 
     public ImageRectangle(
         final int x, final int y, final int width, final int height, final String path) {
@@ -205,7 +205,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(final Graphics g) {
       if (image != null) {
         g.drawImage(image, x, y, w, h, this);
       } else {
