@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.Stack;
 import ubx.archilog.controller.commands.*;
 
-public class BagOfCommands {
+public final class BagOfCommands {
   private static BagOfCommands instance = null;
 
   private final Queue<Command> commands = new LinkedList<>();

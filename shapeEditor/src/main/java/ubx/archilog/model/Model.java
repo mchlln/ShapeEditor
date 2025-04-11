@@ -11,7 +11,7 @@ import ubx.archilog.controller.commands.UndoCommand;
 import ubx.archilog.model.io.FileBuilder;
 import ubx.archilog.view.Render;
 
-public class Model {
+public final class Model {
   private final Group components;
   private static Model instance;
 

@@ -121,7 +121,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public void mouseExited(final MouseEvent mouseEvent) {}
 
   public interface Shape {
-    void draw(final Graphics g);
+    void draw(Graphics g);
   }
 
   public static class Rectangle implements Shape {
