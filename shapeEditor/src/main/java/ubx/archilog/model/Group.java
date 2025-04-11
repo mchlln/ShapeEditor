@@ -124,7 +124,7 @@ public class Group implements Shape {
 
   @Override
   public void setWidth(int width) {
-    throw new UnsupportedOperationException();
+    this.width = width;
   }
 
   @Override
@@ -134,7 +134,7 @@ public class Group implements Shape {
 
   @Override
   public void setHeight(int height) {
-    throw new UnsupportedOperationException();
+    this.height = height;
   }
 
   @Override
@@ -248,7 +248,7 @@ public class Group implements Shape {
       this.zIndex = s.getZindex();
       this.width = s.getWidth();
       this.height = s.getHeight();
-      List<Memento> list = new ArrayList<>();
+      this.list = new ArrayList<>();
       for (Shape shape : s.shapesList) {
         list.add(shape.save());
       }

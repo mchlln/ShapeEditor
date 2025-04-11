@@ -3,6 +3,8 @@ package ubx.archilog.controller;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import ubx.archilog.controller.commands.RedoCommand;
+import ubx.archilog.controller.commands.UndoCommand;
 
 public class BagOfCommands {
   private static BagOfCommands instance = null;
@@ -29,9 +31,11 @@ public class BagOfCommands {
   public void executeOne() {
     if (!commands.isEmpty()) {
       Command command = commands.remove();
-      undoCommands.push(command);
-      System.out.println("undo command pushed: " + undoCommands.peek());
-      redoCommands.clear();
+      if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
+        undoCommands.push(command);
+        System.out.println("undo command pushed: " + undoCommands.peek());
+        redoCommands.clear();
+      }
       command.execute();
     }
   }
@@ -39,16 +43,17 @@ public class BagOfCommands {
   public void executeAll() {
     while (!commands.isEmpty()) {
       Command command = commands.remove();
-      undoCommands.push(command);
-      System.out.println("undo command pushed: " + undoCommands.peek());
-      redoCommands.clear();
+      if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
+        undoCommands.push(command);
+        System.out.println("undo command pushed: " + undoCommands.peek());
+        redoCommands.clear();
+      }
       command.execute();
     }
   }
 
   public void undoLastCommand() {
-    if (undoCommands.size() > 1) {
-      undoCommands.pop(); // remove undo command
+    if (!undoCommands.isEmpty()) {
       Command command = undoCommands.pop();
       System.out.println("undo command popped: " + command);
       redoCommands.push(command);
@@ -58,10 +63,9 @@ public class BagOfCommands {
   }
 
   public void redoLastCommand() {
-    if (redoCommands.size() > 1) {
-      redoCommands.pop(); // remove redo command
-      System.out.println("redo command popped: " + redoCommands.peek());
+    if (!redoCommands.isEmpty()) {
       Command command = redoCommands.pop();
+      System.out.println("redo command popped: " + command);
       undoCommands.push(command);
       System.out.println("undo command pushed: " + undoCommands.peek());
       command.execute();

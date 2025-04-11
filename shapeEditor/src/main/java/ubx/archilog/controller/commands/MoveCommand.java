@@ -1,15 +1,18 @@
 package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
+import ubx.archilog.model.Memento;
 import ubx.archilog.model.Position;
 import ubx.archilog.model.Shape;
 
 public class MoveCommand implements Command {
-  Shape shape;
-  Position to;
+  private Shape shape;
+  private Position to;
+  private Memento shapeMemento;
 
   public MoveCommand(Shape shape, Position to) {
     this.shape = shape;
+    this.shapeMemento = shape.save();
     this.to = to;
   }
 
@@ -19,5 +22,7 @@ public class MoveCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    shapeMemento.restore();
+  }
 }

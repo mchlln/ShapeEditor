@@ -1,6 +1,7 @@
 package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
+import ubx.archilog.model.Memento;
 import ubx.archilog.model.Model;
 import ubx.archilog.model.Position;
 import ubx.archilog.model.Shape;
@@ -8,9 +9,10 @@ import ubx.archilog.model.Shape;
 public class CloneToCanvasCommand implements Command {
   Shape shape;
   Position position;
+  Memento shapeMemento;
 
   public CloneToCanvasCommand(Shape shape, Position position) {
-    this.shape = shape;
+    this.shape = shape.clone();
     this.position = position;
   }
 

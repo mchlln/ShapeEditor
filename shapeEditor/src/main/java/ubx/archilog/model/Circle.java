@@ -18,7 +18,7 @@ public class Circle extends Ellipsoid {
   }
 
   public void setRadius(int radius) {
-    super.setWidth(radius);
+    super.setWidth(radius * 2);
   }
 
   @Override
@@ -82,7 +82,8 @@ public class Circle extends Ellipsoid {
     int x;
     int y;
     int zIndex;
-    int radius;
+    int width;
+    int height;
     Color color;
     Circle originator;
 
@@ -91,7 +92,8 @@ public class Circle extends Ellipsoid {
       this.x = s.getX();
       this.y = s.getY();
       this.zIndex = s.getZindex();
-      this.radius = s.getRadius();
+      this.width = s.getWidth();
+      this.height = s.getHeight();
       this.color = s.getColor(); // TODO : add a clone to color
     }
 
@@ -99,7 +101,8 @@ public class Circle extends Ellipsoid {
       originator.setX(x);
       originator.setY(y);
       originator.setZindex(zIndex);
-      originator.setRadius(radius);
+      originator.setWidth(width);
+      originator.setHeight(height);
       originator.setColor(color);
     }
   }
