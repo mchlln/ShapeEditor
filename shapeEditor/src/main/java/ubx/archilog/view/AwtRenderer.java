@@ -149,7 +149,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     @Override
     public void draw(Graphics g) {
       g.setColor(new java.awt.Color(color.r(), color.g(), color.b(), color.a()));
-      g.fillOval(x, y, radius, radius);
+      g.fillOval(x, y, radius * 2, radius * 2);
     }
   }
 
