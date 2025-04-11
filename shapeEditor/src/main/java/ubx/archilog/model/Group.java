@@ -233,13 +233,14 @@ public class Group implements Shape {
   }
 
   private class GroupMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    int height;
-    List<Memento> list;
-    Group originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final List<Memento> shapesMemento;
+    private final List<Shape> shapeRefs;
+    private final Group originator;
 
     public GroupMemento(Group s) {
       this.originator = s;
@@ -248,9 +249,12 @@ public class Group implements Shape {
       this.zIndex = s.getZindex();
       this.width = s.getWidth();
       this.height = s.getHeight();
-      this.list = new ArrayList<>();
-      for (Shape shape : s.shapesList) {
-        list.add(shape.save());
+      this.shapesMemento = new ArrayList<>();
+      this.shapeRefs = new ArrayList<>();
+
+      for (Shape shape : s.getShapes()) {
+        shapesMemento.add(shape.save());
+        shapeRefs.add(shape);
       }
     }
 
@@ -260,8 +264,9 @@ public class Group implements Shape {
       originator.setZindex(zIndex);
       originator.setWidth(width);
       originator.setHeight(height);
-      for (Memento m : list) {
-        m.restore();
+      for (int i = 0; i < shapeRefs.size(); i++) {
+        originator.shapesList.add(shapeRefs.get(i));
+        shapesMemento.get(i).restore();
       }
     }
   }

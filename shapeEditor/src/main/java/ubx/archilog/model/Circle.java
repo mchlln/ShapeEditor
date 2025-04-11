@@ -79,13 +79,13 @@ public class Circle extends Ellipsoid {
   }
 
   private class CircleMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    int height;
-    Color color;
-    Circle originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final Color color;
+    private final Circle originator;
 
     public CircleMemento(Circle s) {
       this.originator = s;

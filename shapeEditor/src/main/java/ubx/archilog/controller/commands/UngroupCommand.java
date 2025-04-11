@@ -3,16 +3,17 @@ package ubx.archilog.controller.commands;
 import java.util.List;
 import ubx.archilog.controller.Command;
 import ubx.archilog.model.Group;
+import ubx.archilog.model.Memento;
 import ubx.archilog.model.Model;
 import ubx.archilog.model.Shape;
 
 public class UngroupCommand implements Command {
   private Group group;
-  private Group oldGroup;
+  private Memento groupMemento;
 
   public UngroupCommand(Group group) {
     this.group = group;
-    oldGroup = (Group) group.clone();
+    this.groupMemento = group.save();
   }
 
   @Override
@@ -37,9 +38,7 @@ public class UngroupCommand implements Command {
   @Override
   public void undo() {
     System.out.println("undo ungroup command");
-    for (Shape shape : oldGroup.getShapes()) {
-      Model.getInstance().getCanvas().remove(shape);
-    }
-    Model.getInstance().getCanvas().add(oldGroup);
+    groupMemento.restore();
+    System.out.println("Ungroup restored : " + group.getShapes());
   }
 }

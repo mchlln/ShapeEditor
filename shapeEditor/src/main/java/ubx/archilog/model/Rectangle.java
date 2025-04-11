@@ -96,13 +96,13 @@ public class Rectangle extends Polygon {
   }
 
   private class RectangleMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    int height;
-    Color color;
-    Rectangle originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final Color color;
+    private final Rectangle originator;
 
     public RectangleMemento(Rectangle s) {
       this.originator = s;

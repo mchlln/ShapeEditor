@@ -73,12 +73,12 @@ public class Square extends Polygon {
   }
 
   private class SquareMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    Color color;
-    Square originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final Color color;
+    private final Square originator;
 
     public SquareMemento(Square s) {
       this.originator = s;
