@@ -3,10 +3,7 @@ package ubx.archilog.view;
 import java.util.List;
 import java.util.function.BiFunction;
 import ubx.archilog.controller.BagOfCommands;
-import ubx.archilog.controller.commands.AddToToolBarCommand;
-import ubx.archilog.controller.commands.CloneToCanvasCommand;
-import ubx.archilog.controller.commands.EditShapeCommand;
-import ubx.archilog.controller.commands.MoveCommand;
+import ubx.archilog.controller.commands.*;
 import ubx.archilog.model.*;
 import ubx.archilog.model.io.XmlLoader;
 import ubx.archilog.model.visitor.IsInVisitor;
@@ -18,8 +15,6 @@ public class View {
   public static final int MENU_MARGIN = 50;
 
   private Position from;
-
-  private Position fromSelection = null;
 
   private Render renderer;
 
@@ -104,12 +99,6 @@ public class View {
           BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
         }
       }
-
-      if (fromSelection == null) {
-        fromSelection = position;
-      } else {
-        fromSelection = null;
-      }
     }
   }
 
@@ -163,22 +152,13 @@ public class View {
               Math.abs(to.y() - from.y()),
               new Color(255, 0, 0, 255),
               false);
-      System.out.println("SELECTION: " + selection);
-      // IsInVisitor visitor = new IsInVisitor()
       Model.getInstance().getCanvas().add(selection);
       ShapeInZoneVisitor zoneVisitor =
           new ShapeInZoneVisitor(
               from.x(), from.y(), Math.abs(to.x() - from.x()), Math.abs(to.y() - from.y()));
       Model.getInstance().getCanvas().accept(zoneVisitor);
       List<Shape> zone = zoneVisitor.getResult();
-      if (!zone.isEmpty()) {
-        Group newGroup = new Group();
-        for (Shape s : zone) {
-          newGroup.add(s);
-        }
-        newGroup.updateChildZIndex();
-        Model.getInstance().getCanvas().add(newGroup);
-      }
+      BagOfCommands.getInstance().addCommand(new GroupCommand(zone));
     }
     Model.getInstance().clearCurrentMenu();
   }
