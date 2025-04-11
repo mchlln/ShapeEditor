@@ -3,8 +3,7 @@ package ubx.archilog.controller;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
-import ubx.archilog.controller.commands.RedoCommand;
-import ubx.archilog.controller.commands.UndoCommand;
+import ubx.archilog.controller.commands.*;
 
 public class BagOfCommands {
   private static BagOfCommands instance = null;
@@ -31,7 +30,11 @@ public class BagOfCommands {
   public void executeOne() {
     if (!commands.isEmpty()) {
       Command command = commands.remove();
-      if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
+      if (!(command instanceof UndoCommand)
+          && !(command instanceof RedoCommand)
+          && !(command instanceof EditShapeCommand)
+          && !(command instanceof LoadCommand)
+          && !(command instanceof SaveCommand)) {
         undoCommands.push(command);
         System.out.println("undo command pushed: " + undoCommands.peek());
         redoCommands.clear();
@@ -43,7 +46,11 @@ public class BagOfCommands {
   public void executeAll() {
     while (!commands.isEmpty()) {
       Command command = commands.remove();
-      if (!(command instanceof UndoCommand) && !(command instanceof RedoCommand)) {
+      if (!(command instanceof UndoCommand)
+          && !(command instanceof RedoCommand)
+          && !(command instanceof EditShapeCommand)
+          && !(command instanceof LoadCommand)
+          && !(command instanceof SaveCommand)) {
         undoCommands.push(command);
         System.out.println("undo command pushed: " + undoCommands.peek());
         redoCommands.clear();

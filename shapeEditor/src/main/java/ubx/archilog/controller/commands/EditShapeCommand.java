@@ -35,5 +35,7 @@ public class EditShapeCommand implements Command {
   }
 
   @Override
-  public void undo() {}
+  public void undo() {
+    // creation of an editor can't be undone
+  }
 }
