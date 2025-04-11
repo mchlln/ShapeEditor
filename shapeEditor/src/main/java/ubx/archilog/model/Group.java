@@ -152,17 +152,7 @@ public class Group implements Shape {
     for (Shape s : shapesList) {
       s.draw(render);
     }
-    render.drawRect(
-        x,
-        y,
-        width,
-        height,
-        false,
-        new Color(
-            (int) (Math.random() * 256),
-            (int) (Math.random() * 256),
-            (int) (Math.random() * 256),
-            255));
+    render.drawRect(x, y, width, height, false, new Color(0, 0, 0, 255));
   }
 
   @Override

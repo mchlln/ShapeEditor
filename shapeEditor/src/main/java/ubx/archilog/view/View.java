@@ -80,6 +80,15 @@ public class View {
         for (Shape s : in) {
           if (s instanceof ImageRectangle b) {
             b.getAction().run();
+          } else if (s instanceof Group g) {
+            visitor = new IsInVisitor(position.x(), position.y());
+            g.accept(visitor);
+            in = visitor.getResult();
+            System.out.println("IN: " + in);
+            Shape clickedButton = Model.getInstance().getBestZIndex(in);
+            if (clickedButton instanceof ImageRectangle bu) {
+              bu.getAction().run();
+            }
           }
         }
       }
