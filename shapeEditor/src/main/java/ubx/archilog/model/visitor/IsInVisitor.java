@@ -2,7 +2,7 @@ package ubx.archilog.model.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
-import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.*;
 
 public class IsInVisitor implements ShapeVisitor {
   private final int xVisit;
@@ -15,64 +15,64 @@ public class IsInVisitor implements ShapeVisitor {
     result = new ArrayList<Shape>();
   }
 
-  private boolean isInShape(final Shape s) {
-    return xVisit >= s.getX()
-        && yVisit >= s.getY()
-        && xVisit <= s.getX() + s.getWidth()
-        && yVisit <= s.getY() + s.getHeight();
+  private boolean isInShape(final Shape shape) {
+    return xVisit >= shape.getX()
+        && yVisit >= shape.getY()
+        && xVisit <= shape.getX() + shape.getWidth()
+        && yVisit <= shape.getY() + shape.getHeight();
   }
 
   @Override
-  public void visit(final Circle c) {
+  public void visit(final Circle circle) {
     System.out.println("VISITING circle");
-    final double dx = xVisit - c.getX();
-    final double dy = yVisit - c.getY();
-    if (dx * dx + dy * dy <= c.getRadius() * c.getRadius()) {
-      result.add(c);
+    final double dx = xVisit - circle.getX();
+    final double dy = yVisit - circle.getY();
+    if (dx * dx + dy * dy <= circle.getRadius() * circle.getRadius()) {
+      result.add(circle);
     }
   }
 
   @Override
-  public void visit(final Square s) {
-    if (isInShape(s)) {
-      result.add(s);
+  public void visit(final Square square) {
+    if (isInShape(square)) {
+      result.add(square);
     }
   }
 
   @Override
-  public void visit(final Rectangle r) {
-    if (isInShape(r)) {
-      result.add(r);
+  public void visit(final Rectangle rectangle) {
+    if (isInShape(rectangle)) {
+      result.add(rectangle);
     }
   }
 
   @Override
-  public void visit(final Group g) {
-    if (g.getZindex() == 0) {
-      for (final Shape s : g.getShapes()) {
-        if (isInShape(s)) {
-          result.add(s);
+  public void visit(final Group group) {
+    if (group.getZindex() == 0) {
+      for (final Shape shape : group.getShapes()) {
+        if (isInShape(shape)) {
+          result.add(shape);
         }
       }
-    } else if (isInShape(g)) {
-      result.add(g);
+    } else if (isInShape(group)) {
+      result.add(group);
     }
   }
 
-  public void visit(final Shape s) {
-    if (s instanceof Circle) {
-      visit((Circle) s);
-    } else if (s instanceof Square) {
-      visit((Square) s);
-    } else if (s instanceof Rectangle) {
-      visit((Rectangle) s);
-    } else if (s instanceof Group) {
-      visit((Group) s);
+  public void visit(final Shape shape) {
+    if (shape instanceof Circle) {
+      visit((Circle) shape);
+    } else if (shape instanceof Square) {
+      visit((Square) shape);
+    } else if (shape instanceof Rectangle) {
+      visit((Rectangle) shape);
+    } else if (shape instanceof Group) {
+      visit((Group) shape);
     }
   }
 
   @Override
-  public void visit(final AbstractShape s) {
+  public void visit(final AbstractShape shape) {
     throw new UnsupportedOperationException();
   }
 

@@ -3,6 +3,9 @@ package ubx.archilog.view.editor;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.ChangeColorCommand;
 import ubx.archilog.model.*;
+import ubx.archilog.model.shapes.Circle;
+import ubx.archilog.model.shapes.ImageRectangle;
+import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 
 public class CircleEditor extends AbstractEditor {

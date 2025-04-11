@@ -3,10 +3,10 @@ package ubx.archilog.controller.commands;
 import java.util.ArrayList;
 import java.util.List;
 import ubx.archilog.controller.Command;
-import ubx.archilog.model.Group;
 import ubx.archilog.model.Memento;
 import ubx.archilog.model.Model;
-import ubx.archilog.model.Shape;
+import ubx.archilog.model.shapes.Group;
+import ubx.archilog.model.shapes.Shape;
 
 public class GroupCommand implements Command {
 
@@ -22,9 +22,9 @@ public class GroupCommand implements Command {
   public void execute() {
     if (shapes.size() > 1) {
       newGroup = new Group();
-      for (final Shape s : shapes) {
-        shapesMemento.add(s.save());
-        newGroup.add(s);
+      for (final Shape shape : shapes) {
+        shapesMemento.add(shape.save());
+        newGroup.add(shape);
       }
       newGroup.updateChildZIndex();
       Model.getInstance().getCanvas().add(newGroup);
@@ -34,11 +34,11 @@ public class GroupCommand implements Command {
   @Override
   public void undo() {
     Model.getInstance().getCanvas().remove(newGroup);
-    for (final Memento m : shapesMemento) {
-      m.restore();
+    for (final Memento memento : shapesMemento) {
+      memento.restore();
     }
-    for (final Shape s : newGroup.getShapes()) {
-      Model.getInstance().getCanvas().add(s);
+    for (final Shape shape : newGroup.getShapes()) {
+      Model.getInstance().getCanvas().add(shape);
     }
   }
 }

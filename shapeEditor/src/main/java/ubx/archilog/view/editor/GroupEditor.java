@@ -2,10 +2,10 @@ package ubx.archilog.view.editor;
 
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.UngroupCommand;
-import ubx.archilog.model.Group;
-import ubx.archilog.model.ImageRectangle;
 import ubx.archilog.model.Model;
-import ubx.archilog.model.Shape;
+import ubx.archilog.model.shapes.Group;
+import ubx.archilog.model.shapes.ImageRectangle;
+import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 
 public class GroupEditor extends AbstractEditor {

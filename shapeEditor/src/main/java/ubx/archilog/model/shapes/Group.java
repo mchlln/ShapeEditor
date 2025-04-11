@@ -1,9 +1,12 @@
-package ubx.archilog.model;
+package ubx.archilog.model.shapes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import ubx.archilog.model.Color;
+import ubx.archilog.model.Memento;
+import ubx.archilog.model.Position;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
@@ -29,23 +32,23 @@ public class Group implements Shape {
   }
 
   public void updateChildZIndex() {
-    for (final Shape s : shapesList) {
-      s.setZindex(0);
+    for (final Shape shape : shapesList) {
+      shape.setZindex(0);
     }
   }
 
-  public void add(final Shape s) {
-    if (!shapesSet.contains(s)) {
-      shapesSet.add(s);
-      shapesList.add(s);
+  public void add(final Shape shape) {
+    if (!shapesSet.contains(shape)) {
+      shapesSet.add(shape);
+      shapesList.add(shape);
       setCorner();
       setSize();
     }
   }
 
-  public void remove(final Shape s) {
-    shapesSet.remove(s);
-    shapesList.remove(s);
+  public void remove(final Shape shape) {
+    shapesSet.remove(shape);
+    shapesList.remove(shape);
     setCorner();
     setSize();
   }
@@ -57,12 +60,12 @@ public class Group implements Shape {
   private void setCorner() {
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
-    for (final Shape s : shapesList) {
-      if (s.getX() < minX) {
-        minX = s.getX();
+    for (final Shape shape : shapesList) {
+      if (shape.getX() < minX) {
+        minX = shape.getX();
       }
-      if (s.getY() < minY) {
-        minY = s.getY();
+      if (shape.getY() < minY) {
+        minY = shape.getY();
       }
     }
     this.x = minX;
@@ -72,12 +75,12 @@ public class Group implements Shape {
   private void setSize() {
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
-    for (final Shape s : shapesList) {
-      if (s.getX() + s.getWidth() > maxX) {
-        maxX = s.getX() + s.getWidth();
+    for (final Shape shape : shapesList) {
+      if (shape.getX() + shape.getWidth() > maxX) {
+        maxX = shape.getX() + shape.getWidth();
       }
-      if (s.getY() + s.getHeight() > maxY) {
-        maxY = s.getY() + s.getHeight();
+      if (shape.getY() + shape.getHeight() > maxY) {
+        maxY = shape.getY() + shape.getHeight();
       }
     }
     this.width = maxX - this.x;
@@ -141,26 +144,27 @@ public class Group implements Shape {
   public void moveTo(final Position pos) {
     final int diffX = pos.x() - x;
     final int diffY = pos.y() - y;
-    for (final Shape s : shapesList) {
-      s.translate(diffX, diffY);
+    for (final Shape shape : shapesList) {
+      shape.translate(diffX, diffY);
     }
     setCorner();
   }
 
   @Override
   public void draw(final Render render) {
-    for (final Shape s : shapesList) {
-      s.draw(render);
+    for (final Shape shape : shapesList) {
+      shape.draw(render);
     }
     render.drawRect(x, y, width, height, false, new Color(0, 0, 0, 255));
   }
 
   @Override
   public void scale(final float factor) {
-    for (final Shape s : shapesList) {
-      s.scale(factor);
-      s.moveTo(
-          new Position((int) (x + (s.getX() - x) * factor), (int) (y + (s.getY() - y) * factor)));
+    for (final Shape shape : shapesList) {
+      shape.scale(factor);
+      shape.moveTo(
+          new Position(
+              (int) (x + (shape.getX() - x) * factor), (int) (y + (shape.getY() - y) * factor)));
     }
     setCorner();
     setSize();
@@ -173,8 +177,8 @@ public class Group implements Shape {
 
   @Override
   public void translate(final int xDiff, final int yDiff) {
-    for (final Shape s : shapesList) {
-      s.translate(xDiff, yDiff);
+    for (final Shape shape : shapesList) {
+      shape.translate(xDiff, yDiff);
     }
     setCorner();
   }
@@ -187,8 +191,8 @@ public class Group implements Shape {
   @Override
   public Shape clone() {
     final Group copy = new Group();
-    for (final Shape s : shapesList) {
-      copy.add(s.clone());
+    for (final Shape shape : shapesList) {
+      copy.add(shape.clone());
     }
     return copy;
   }
@@ -211,8 +215,9 @@ public class Group implements Shape {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
-    sb.append("Group x=")
+    final StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder
+        .append("Group x=")
         .append(x)
         .append(", y=")
         .append(y)
@@ -220,11 +225,11 @@ public class Group implements Shape {
         .append(zIndex)
         .append(" [");
     for (final Shape s : shapesList) {
-      sb.append(s.toString());
-      sb.append(" ");
+      stringBuilder.append(s.toString());
+      stringBuilder.append(" ");
     }
-    sb.append("]");
-    return sb.toString();
+    stringBuilder.append("]");
+    return stringBuilder.toString();
   }
 
   @Override
@@ -242,17 +247,17 @@ public class Group implements Shape {
     private final List<Shape> shapeRefs;
     private final Group originator;
 
-    public GroupMemento(final Group s) {
-      this.originator = s;
-      this.x = s.getX();
-      this.y = s.getY();
-      this.zIndex = s.getZindex();
-      this.width = s.getWidth();
-      this.height = s.getHeight();
+    public GroupMemento(final Group group) {
+      this.originator = group;
+      this.x = group.getX();
+      this.y = group.getY();
+      this.zIndex = group.getZindex();
+      this.width = group.getWidth();
+      this.height = group.getHeight();
       this.shapesMemento = new ArrayList<>();
       this.shapeRefs = new ArrayList<>();
 
-      for (final Shape shape : s.getShapes()) {
+      for (final Shape shape : group.getShapes()) {
         shapesMemento.add(shape.save());
         shapeRefs.add(shape);
       }

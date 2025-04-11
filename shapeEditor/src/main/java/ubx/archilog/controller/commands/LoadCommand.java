@@ -14,13 +14,13 @@ public class LoadCommand implements Command {
 
   @Override
   public void execute() {
-    renderer.showTextInputPopUp("Save to: ", this::loadFile);
+    renderer.showTextInputPopUp("Load from: ", this::loadFile);
   }
 
   private Void loadFile(final String fileName) {
-    final XmlLoader a = new XmlLoader();
+    final XmlLoader loader = new XmlLoader();
     try {
-      a.load(fileName);
+      loader.load(fileName);
     } catch (Exception e) {
 
     }
