@@ -173,7 +173,7 @@ public abstract class AbstractShape implements Shape {
     return new AbstractMemento(this);
   }
 
-  private class AbstractMemento implements Memento {
+  public class AbstractMemento implements Memento {
     private final int x;
     private final int y;
     private final int zIndex;

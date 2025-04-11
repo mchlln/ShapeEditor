@@ -1,7 +1,9 @@
 package ubx.archilog.view.editor;
 
 import ubx.archilog.controller.BagOfCommands;
+import ubx.archilog.controller.commands.AddSideCommand;
 import ubx.archilog.controller.commands.ChangeColorCommand;
+import ubx.archilog.controller.commands.RemoveSideCommand;
 import ubx.archilog.model.Color;
 import ubx.archilog.model.Model;
 import ubx.archilog.model.shapes.ImageRectangle;
@@ -48,9 +50,31 @@ public class RegularPolygonEditor extends AbstractEditor {
                   BagOfCommands.getInstance()
                       .addCommand(new ChangeColorCommand(shape, new Color(170, 241, 146, 255))));
 
+      final Shape addSideButton =
+          new ImageRectangle(
+              400,
+              37,
+              1,
+              50,
+              50,
+              "/icons/addSide.png",
+              () -> BagOfCommands.getInstance().addCommand(new AddSideCommand(shape)));
+
+      final Shape removeSideButton =
+          new ImageRectangle(
+              440,
+              37,
+              1,
+              50,
+              50,
+              "/icons/removeSide.png",
+              () -> BagOfCommands.getInstance().addCommand(new RemoveSideCommand(shape)));
+
       group.add(blueColorButton);
       group.add(purpleColorButton);
       group.add(greenColorButton);
+      group.add(addSideButton);
+      group.add(removeSideButton);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);
     }

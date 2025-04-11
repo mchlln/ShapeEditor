@@ -1,6 +1,7 @@
 package ubx.archilog.model.shapes;
 
 import ubx.archilog.model.Color;
+import ubx.archilog.model.Memento;
 import ubx.archilog.view.Render;
 
 public class RegularPolygon extends Polygon {
@@ -14,7 +15,8 @@ public class RegularPolygon extends Polygon {
     if (sides < 3) return;
     double angle = 2 * Math.PI / sides;
     double radius = getWidth() / 2.0;
-    double rotationRadians = Math.toRadians(0);
+    double rotationRadians =
+        Math.toRadians(0); // Keep magic number for future rotation implementation
 
     int centerX = getX() + getWidth() / 2;
     int centerY = getY() + getWidth() / 2;
@@ -34,5 +36,32 @@ public class RegularPolygon extends Polygon {
   public Shape clone() {
     return new RegularPolygon(
         getX(), getY(), getZindex(), getWidth(), getHeight(), getSides(), getColor());
+  }
+
+  @Override
+  public Memento save() {
+    return new RegularPolygonMemento(this);
+  }
+
+  private class RegularPolygonMemento extends AbstractMemento {
+    private final int sides;
+    private final Shape shape;
+
+    public RegularPolygonMemento(final AbstractShape shape) {
+      super(shape);
+      this.shape = shape;
+      if (shape instanceof RegularPolygon regularPolygon) {
+        this.sides = regularPolygon.getSides();
+      } else {
+        this.sides = -1;
+      }
+    }
+
+    public void restore() {
+      super.restore();
+      if (shape instanceof RegularPolygon regularPolygon) {
+        regularPolygon.setSides(sides);
+      }
+    }
   }
 }
