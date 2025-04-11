@@ -5,7 +5,6 @@ import java.util.function.BiFunction;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.*;
 import ubx.archilog.model.*;
-import ubx.archilog.model.io.XmlLoader;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
@@ -26,18 +25,12 @@ public class View {
     BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
     Model model = Model.getInstance();
+    model.buildMenu(renderer);
     Group g = new Group();
     g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
     g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     g.updateChildZIndex();
     model.getCanvas().add(g);
-    XmlLoader a = new XmlLoader();
-    try {
-      // a.load("save.xml");
-    } catch (Exception e) {
-
-    }
-
     updateView();
   }
 

@@ -9,6 +9,7 @@ import ubx.archilog.controller.commands.RedoCommand;
 import ubx.archilog.controller.commands.SaveCommand;
 import ubx.archilog.controller.commands.UndoCommand;
 import ubx.archilog.model.io.FileBuilder;
+import ubx.archilog.view.Render;
 
 public class Model {
   private Group components;
@@ -26,7 +27,6 @@ public class Model {
     toolBar = new ToolBar();
     menu = new Group();
     menu.setZindex(0);
-    buildMenu();
     canvas = new Group();
     canvas.setZindex(0);
     canvas.add(
@@ -43,7 +43,7 @@ public class Model {
     components.add(menu);
   }
 
-  private void buildMenu() {
+  public void buildMenu(Render renderer) {
     menu.add(
         new Rectangle(
             0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
@@ -55,7 +55,7 @@ public class Model {
             MENU_MARGIN,
             MENU_MARGIN,
             "/icons/import.png",
-            () -> BagOfCommands.getInstance().addCommand(new LoadCommand())));
+            () -> BagOfCommands.getInstance().addCommand(new LoadCommand(renderer))));
     menu.add(
         new ImageRectangle(
             10 + 2 * MENU_MARGIN,
@@ -64,7 +64,7 @@ public class Model {
             MENU_MARGIN,
             MENU_MARGIN,
             "/icons/export.png",
-            () -> BagOfCommands.getInstance().addCommand(new SaveCommand())));
+            () -> BagOfCommands.getInstance().addCommand(new SaveCommand(renderer))));
     menu.add(
         new ImageRectangle(
             10 + 3 * MENU_MARGIN,

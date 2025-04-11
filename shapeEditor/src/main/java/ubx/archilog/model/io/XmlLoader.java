@@ -12,6 +12,7 @@ public class XmlLoader implements FileLoader {
   public XmlLoader() {}
 
   public void load(String filePath) throws Exception {
+    System.out.println("Loading " + filePath);
     File file = new File(filePath);
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();

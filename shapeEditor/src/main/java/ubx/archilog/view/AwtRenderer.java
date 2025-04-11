@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
@@ -42,6 +43,31 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public void drawCircle(int x, int y, int radius, Color color) {
     shapes.add(new Circle(x, y, radius, color));
     // EventQueue.invokeLater(this::updateShapes);
+  }
+
+  @Override
+  public void showTextInputPopUp(String text, Function<String, Void> callBack) {
+    Dialog dialog = new Dialog(this, "Enter Text", true);
+    dialog.setLayout(new FlowLayout());
+
+    Label label = new Label(text);
+    TextField textField = new TextField(20);
+    Button okButton = new Button("OK");
+
+    okButton.addActionListener(
+        e -> {
+          String input = textField.getText();
+          callBack.apply(input);
+          dialog.dispose();
+        });
+
+    dialog.add(label);
+    dialog.add(textField);
+    dialog.add(okButton);
+
+    dialog.setSize(300, 120);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
   }
 
   @Override
