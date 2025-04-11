@@ -7,10 +7,10 @@ import ubx.archilog.view.Render;
 
 public class CircleEditor extends AbstractEditor {
   @Override
-  public void edit(Shape shape, Render render) {
+  public void edit(final Shape shape, final Render render) {
     if (shape instanceof Circle) {
       super.edit(shape, render);
-      Shape blueColorButton =
+      final Shape blueColorButton =
           new ImageRectangle(
               620,
               37,
@@ -21,7 +21,7 @@ public class CircleEditor extends AbstractEditor {
               () ->
                   BagOfCommands.getInstance()
                       .addCommand(new ChangeColorCommand(shape, new Color(0, 182, 203, 255))));
-      Shape purpleColorButton =
+      final Shape purpleColorButton =
           new ImageRectangle(
               680,
               37,
@@ -32,7 +32,7 @@ public class CircleEditor extends AbstractEditor {
               () ->
                   BagOfCommands.getInstance()
                       .addCommand(new ChangeColorCommand(shape, new Color(190, 146, 241, 255))));
-      Shape greenColorButton =
+      final Shape greenColorButton =
           new ImageRectangle(
               740,
               37,

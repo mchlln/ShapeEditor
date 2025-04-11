@@ -12,8 +12,8 @@ public abstract class AbstractEditor implements ShapeEditor {
   protected Group group;
 
   @Override
-  public void edit(Shape shape, Render render) {
-    Shape scaleIncreaseButton =
+  public void edit(final Shape shape, final Render render) {
+    final Shape scaleIncreaseButton =
         new ImageRectangle(
             500,
             37,
@@ -22,7 +22,7 @@ public abstract class AbstractEditor implements ShapeEditor {
             50,
             "/icons/plus.png",
             () -> BagOfCommands.getInstance().addCommand(new ResizeCommand(shape, 1.2f)));
-    Shape scaleDecreaseButton =
+    final Shape scaleDecreaseButton =
         new ImageRectangle(
             560,
             37,

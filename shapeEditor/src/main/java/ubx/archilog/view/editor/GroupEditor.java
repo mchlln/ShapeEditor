@@ -10,10 +10,10 @@ import ubx.archilog.view.Render;
 
 public class GroupEditor extends AbstractEditor {
   @Override
-  public void edit(Shape shape, Render render) {
+  public void edit(final Shape shape, final Render render) {
     if (shape instanceof Group) {
       super.edit(shape, render);
-      Shape ungroupButton =
+      final Shape ungroupButton =
           new ImageRectangle(
               440,
               37,
