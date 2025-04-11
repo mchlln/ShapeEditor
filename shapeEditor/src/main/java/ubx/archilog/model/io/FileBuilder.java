@@ -9,10 +9,6 @@ public interface FileBuilder {
 
   void endDocument();
 
-  void beginMenu(Group menu);
-
-  void endMenu();
-
   void beginGroup(Group group);
 
   void endGroup();

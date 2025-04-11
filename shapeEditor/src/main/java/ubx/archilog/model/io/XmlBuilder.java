@@ -22,19 +22,6 @@ public class XmlBuilder implements FileBuilder {
   }
 
   @Override
-  public void beginMenu(Group menu) {
-    sb.append("<menu>\n");
-    setCoordinates(menu);
-    setCompleteSize(menu);
-    parseGroup(menu);
-  }
-
-  @Override
-  public void endMenu() {
-    sb.append("</menu>\n");
-  }
-
-  @Override
   public void beginGroup(Group group) {
     sb.append("<group>\n");
     setCoordinates(group);

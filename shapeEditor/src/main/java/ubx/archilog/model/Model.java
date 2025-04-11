@@ -118,8 +118,6 @@ public class Model {
 
   public FileBuilder save(final FileBuilder fb) {
     fb.beginDocument();
-    fb.beginMenu(menu);
-    fb.endMenu();
     fb.beginToolBar();
     fb.endToolBar();
     fb.beginCanvas();

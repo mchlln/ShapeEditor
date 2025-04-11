@@ -31,14 +31,6 @@ public class XmlLoader implements FileLoader {
   }
 
   private void loadGroups(final Element parentElement) {
-    /* NodeList menuNodes = parentElement.getElementsByTagName("menu");
-    for (int i = 0; i < menuNodes.getLength(); i++) {
-        Element menuElement = (Element) menuNodes.item(i);
-        Group menu = new Group();
-        loadGroup(menuElement, menu);
-        Model.getInstance().setMenu(menu);
-    }*/
-
     final NodeList toolBarNodes = parentElement.getElementsByTagName("toolBar");
     for (int i = 0; i < toolBarNodes.getLength(); i++) {
       final Element toolBarElement = (Element) toolBarNodes.item(i);
