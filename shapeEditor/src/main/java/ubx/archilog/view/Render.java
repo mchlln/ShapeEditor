@@ -19,6 +19,7 @@ public interface Render {
   void initialize(
       int xSize,
       int ySize,
-      BiFunction<Position, Integer, Void> mousePressed,
-      BiFunction<Position, Integer, Void> mouseReleased);
+      BiFunction<Position, Integer, Void> mousePressedCallback,
+      BiFunction<Position, Integer, Void> mouseReleasedCallback,
+      Function<Void, Void> quitCallback);
 }

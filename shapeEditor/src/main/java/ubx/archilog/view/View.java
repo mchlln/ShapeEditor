@@ -2,6 +2,7 @@ package ubx.archilog.view;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.*;
 import ubx.archilog.model.*;
@@ -24,7 +25,8 @@ public class View {
     renderer = new AwtRenderer();
     final BiFunction<Position, Integer, Void> mousePressed = this::mousePressed;
     final BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
-    renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
+    final Function<Void, Void> quit = this::quitCallback;
+    renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased, quit);
     final Model model = Model.getInstance();
     model.buildMenu(renderer);
     final Group group = new Group();
@@ -33,6 +35,10 @@ public class View {
     group.updateChildZIndex();
     model.getCanvas().add(group);
     updateView();
+  }
+
+  public Void quitCallback(Void unused) {
+    return null;
   }
 
   public void updateView() {

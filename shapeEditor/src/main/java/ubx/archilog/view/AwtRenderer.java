@@ -83,13 +83,14 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   public void initialize(
       final int xSize,
       final int ySize,
-      final BiFunction<Position, Integer, Void> mousePressed,
-      final BiFunction<Position, Integer, Void> mouseReleased) {
+      final BiFunction<Position, Integer, Void> mousePressedCallback,
+      final BiFunction<Position, Integer, Void> mouseReleasedCallback,
+      final Function<Void, Void> quitCallback) {
     setLayout(new FlowLayout());
     setTitle("Basic AWT App");
 
-    this.mousePressed = mousePressed;
-    this.mouseReleased = mouseReleased;
+    this.mousePressed = mousePressedCallback;
+    this.mouseReleased = mouseReleasedCallback;
 
     setSize(xSize, ySize);
     setVisible(true);
@@ -99,6 +100,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     addWindowListener(
         new WindowAdapter() {
           public void windowClosing(final WindowEvent e) {
+            quitCallback.apply(null);
             dispose();
           }
         });
