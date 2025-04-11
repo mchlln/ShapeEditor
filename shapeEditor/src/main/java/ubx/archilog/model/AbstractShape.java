@@ -164,4 +164,38 @@ public abstract class AbstractShape implements Shape {
   public Color getColor() {
     return color;
   }
+
+  @Override
+  public Memento save() {
+    return new AbstractMemento(this);
+  }
+
+  private class AbstractMemento implements Memento {
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final Color color;
+    private final Shape originator;
+
+    public AbstractMemento(final AbstractShape s) {
+      this.originator = s;
+      this.x = s.getX();
+      this.y = s.getY();
+      this.zIndex = s.getZindex();
+      this.width = s.getWidth();
+      this.height = s.getHeight();
+      this.color = s.getColor();
+    }
+
+    public void restore() {
+      originator.setX(x);
+      originator.setY(y);
+      originator.setZindex(zIndex);
+      originator.setWidth(width);
+      originator.setHeight(height);
+      originator.setColor(color);
+    }
+  }
 }

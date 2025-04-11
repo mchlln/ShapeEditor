@@ -16,7 +16,6 @@ public class Square extends Polygon {
   @Override
   public void rotate() {
     // no action needed for a square
-    return;
   }
 
   @Override
@@ -65,36 +64,5 @@ public class Square extends Polygon {
         + ", color="
         + super.getColor()
         + "]";
-  }
-
-  @Override
-  public Memento save() {
-    return new SquareMemento(this);
-  }
-
-  private class SquareMemento implements Memento {
-    private final int x;
-    private final int y;
-    private final int zIndex;
-    private final int width;
-    private final Color color;
-    private final Square originator;
-
-    public SquareMemento(final Square s) {
-      this.originator = s;
-      this.x = s.getX();
-      this.y = s.getY();
-      this.zIndex = s.getZindex();
-      this.width = s.getWidth();
-      this.color = s.getColor(); // TODO : add a clone to color
-    }
-
-    public void restore() {
-      originator.setX(x);
-      originator.setY(y);
-      originator.setZindex(zIndex);
-      originator.setWidth(width);
-      originator.setColor(color);
-    }
   }
 }
