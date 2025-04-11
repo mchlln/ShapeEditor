@@ -4,7 +4,7 @@ import ubx.archilog.model.*;
 
 public class XmlBuilder implements FileBuilder {
 
-  StringBuilder sb;
+  private final StringBuilder sb;
 
   public XmlBuilder() {
     sb = new StringBuilder();
@@ -43,7 +43,7 @@ public class XmlBuilder implements FileBuilder {
   }
 
   public void parseGroup(Group group) {
-    for (Shape s : group.getShapes()) {
+    for (final Shape s : group.getShapes()) {
       if (s instanceof Square) {
         buildSquare((Square) s);
       } else if (s instanceof Rectangle) {
