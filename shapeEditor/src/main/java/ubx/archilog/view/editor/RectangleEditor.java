@@ -5,7 +5,7 @@ import ubx.archilog.view.Render;
 
 public class RectangleEditor extends AbstractEditor {
   @Override
-  public void edit(Shape shape, Render render) {
+  public void edit(final Shape shape, final Render render) {
     if (shape instanceof Rectangle) {
       super.edit(shape, render);
       Model.getInstance().clearCurrentMenu();

@@ -17,7 +17,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
   @Override
   public void paint(Graphics g) {
-    for (Shape shape : shapes) {
+    for (final Shape shape : shapes) {
       shape.draw(g);
     }
     System.out.println(shapes.size() + " objects rendered");
@@ -28,25 +28,23 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   }
 
   @Override
-  public void drawRect(int x, int y, int w, int h, boolean fill, Color color) {
+  public void drawRect(
+      final int x, final int y, final int w, final int h, final boolean fill, final Color color) {
     shapes.add(new Rectangle(x, y, w, h, fill, color));
-    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
-  public void drawImageRect(int x, int y, int w, int h, String path) {
+  public void drawImageRect(final int x, final int y, final int w, final int h, final String path) {
     shapes.add(new ImageRectangle(x, y, w, h, path));
-    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
-  public void drawCircle(int x, int y, int radius, Color color) {
+  public void drawCircle(final int x, final int y, final int radius, final Color color) {
     shapes.add(new Circle(x, y, radius, color));
-    // EventQueue.invokeLater(this::updateShapes);
   }
 
   @Override
-  public void showTextInputPopUp(String text, Function<String, Void> callBack) {
+  public void showTextInputPopUp(final String text, final Function<String, Void> callBack) {
     Dialog dialog = new Dialog(this, "Enter Text", true);
     dialog.setLayout(new FlowLayout());
 
@@ -77,10 +75,10 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
   @Override
   public void initialize(
-      int xSize,
-      int ySize,
-      BiFunction<Position, Integer, Void> mousePressed,
-      BiFunction<Position, Integer, Void> mouseReleased) {
+      final int xSize,
+      final int ySize,
+      final BiFunction<Position, Integer, Void> mousePressed,
+      final BiFunction<Position, Integer, Void> mouseReleased) {
     setLayout(new FlowLayout());
     setTitle("Basic AWT App");
 
@@ -134,7 +132,13 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final boolean fill;
     private final Color color;
 
-    public Rectangle(int x, int y, int width, int height, boolean fill, Color color) {
+    public Rectangle(
+        final int x,
+        final int y,
+        final int width,
+        final int height,
+        final boolean fill,
+        final Color color) {
       this.x = x;
       this.y = y;
       this.w = width;
@@ -165,7 +169,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int radius;
     private final Color color;
 
-    public Circle(int x, int y, int radius, Color color) {
+    public Circle(final int x, final int y, final int radius, final Color color) {
       this.x = x;
       this.y = y;
       this.radius = radius;
@@ -186,7 +190,8 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     private final int h;
     Image image;
 
-    public ImageRectangle(int x, int y, int width, int height, String path) {
+    public ImageRectangle(
+        final int x, final int y, final int width, final int height, final String path) {
       this.x = x;
       this.y = y;
       this.w = width;

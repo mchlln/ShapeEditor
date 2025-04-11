@@ -21,12 +21,12 @@ public class View {
 
   public View() {
     renderer = new AwtRenderer();
-    BiFunction<Position, Integer, Void> mousePressed = this::mousePressed;
-    BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
+    final BiFunction<Position, Integer, Void> mousePressed = this::mousePressed;
+    final BiFunction<Position, Integer, Void> mouseReleased = this::mouseReleased;
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased);
-    Model model = Model.getInstance();
+    final Model model = Model.getInstance();
     model.buildMenu(renderer);
-    Group g = new Group();
+    final Group g = new Group();
     g.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
     g.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     g.updateChildZIndex();
@@ -35,18 +35,18 @@ public class View {
   }
 
   public void updateView() {
-    for (Shape s : Model.getInstance().getComponents().getShapes()) {
+    for (final Shape s : Model.getInstance().getComponents().getShapes()) {
       s.draw(renderer);
     }
     renderer.update();
   }
 
-  public Void mousePressed(Position position, int button) {
+  public Void mousePressed(final Position position, final int button) {
     from = position;
     return null;
   }
 
-  public Void mouseReleased(Position position, int button) {
+  public Void mouseReleased(final Position position, final int button) {
     if (from.equals(position)) {
       clickOn(position, button);
     } else {
@@ -57,7 +57,7 @@ public class View {
     return null;
   }
 
-  public void clickOn(Position position, int button) {
+  public void clickOn(final Position position, final int button) {
     // Model.getInstance().clearCurrentMenu();
     Model.getInstance().getCanvas().remove(selection);
     if (button == 1) {
@@ -86,7 +86,7 @@ public class View {
       List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
         System.out.println("CLICKED ON = " + in);
-        Shape best = Model.getInstance().getBestZIndex(in);
+        final Shape best = Model.getInstance().getBestZIndex(in);
         System.out.println("best = " + best);
         if (best.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
@@ -95,12 +95,12 @@ public class View {
     }
   }
 
-  public void mouseDragged(Position from, Position to, int b) {
+  public void mouseDragged(final Position from, final Position to, final int b) {
     Model.getInstance().getCanvas().remove(selection);
     if (b == 1) {
       IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
       IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
-      Model model = Model.getInstance();
+      final Model model = Model.getInstance();
 
       // Case adding shape to canvas
       model.getToolBar().accept(fromAppSector);
@@ -146,11 +146,11 @@ public class View {
               new Color(255, 0, 0, 255),
               false);
       Model.getInstance().getCanvas().add(selection);
-      ShapeInZoneVisitor zoneVisitor =
+      final ShapeInZoneVisitor zoneVisitor =
           new ShapeInZoneVisitor(
               from.x(), from.y(), Math.abs(to.x() - from.x()), Math.abs(to.y() - from.y()));
       Model.getInstance().getCanvas().accept(zoneVisitor);
-      List<Shape> zone = zoneVisitor.getResult();
+      final List<Shape> zone = zoneVisitor.getResult();
       BagOfCommands.getInstance().addCommand(new GroupCommand(zone));
     }
     Model.getInstance().clearCurrentMenu();
