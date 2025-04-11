@@ -5,11 +5,11 @@ import ubx.archilog.view.Render;
 
 public class Square extends Polygon {
 
-  public Square(int x, int y, int zIndex, int width) {
+  public Square(final int x, final int y, final int zIndex, final int width) {
     super(x, y, zIndex, width, width, 4);
   }
 
-  public Square(int x, int y, int zIndex, int width, Color color) {
+  public Square(final int x, final int y, final int zIndex, final int width, final Color color) {
     super(x, y, zIndex, width, width, 4, color);
   }
 
@@ -20,13 +20,13 @@ public class Square extends Polygon {
   }
 
   @Override
-  public void draw(Render render) {
+  public void draw(final Render render) {
     render.drawRect(
         super.getX(), super.getY(), super.getWidth(), super.getHeight(), true, super.getColor());
   }
 
   @Override
-  public void accept(ShapeVisitor visitor) {
+  public void accept(final ShapeVisitor visitor) {
     visitor.visit(this);
   }
 
@@ -37,7 +37,7 @@ public class Square extends Polygon {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj instanceof Square) {
       return getWidth() == ((Square) obj).getWidth() && super.equals(obj);
     }
@@ -80,7 +80,7 @@ public class Square extends Polygon {
     private final Color color;
     private final Square originator;
 
-    public SquareMemento(Square s) {
+    public SquareMemento(final Square s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();

@@ -12,7 +12,7 @@ public class SaveCommand implements Command {
 
   private final Render renderer;
 
-  public SaveCommand(Render renderer) {
+  public SaveCommand(final Render renderer) {
     this.renderer = renderer;
   }
 
@@ -21,8 +21,8 @@ public class SaveCommand implements Command {
     renderer.showTextInputPopUp("Save to: ", this::saveFile);
   }
 
-  private Void saveFile(String fileName) {
-    FileBuilder builder = Model.getInstance().save(new XmlBuilder());
+  private Void saveFile(final String fileName) {
+    final FileBuilder builder = Model.getInstance().save(new XmlBuilder());
     if (builder instanceof XmlBuilder) {
       try (FileWriter writer = new FileWriter(fileName)) {
         writer.write(((XmlBuilder) builder).getResult());

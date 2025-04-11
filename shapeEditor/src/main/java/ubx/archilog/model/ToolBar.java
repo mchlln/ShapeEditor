@@ -29,7 +29,7 @@ public class ToolBar extends Group {
     addShapeToToolBar(new Circle(0, 0, 1, 100, new Color(230, 30, 230, 100)));
   }
 
-  public void addShapeToToolBar(Shape s) {
+  public void addShapeToToolBar(final Shape s) {
     if (shapeCount >= 8) {
       return;
     }
@@ -39,7 +39,7 @@ public class ToolBar extends Group {
     shapeCount++;
   }
 
-  public void removeShapeFromToolBar(Shape s) {
+  public void removeShapeFromToolBar(final Shape s) {
     super.remove(s);
     shapeCount--;
   }

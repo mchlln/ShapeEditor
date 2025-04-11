@@ -9,7 +9,7 @@ public class AddToToolBarCommand implements Command {
   Shape shape;
   Shape oldShape;
 
-  public AddToToolBarCommand(Shape shape) {
+  public AddToToolBarCommand(final Shape shape) {
     this.shape = shape;
     this.oldShape = shape.clone();
   }

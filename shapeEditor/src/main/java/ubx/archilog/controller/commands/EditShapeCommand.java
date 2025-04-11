@@ -10,11 +10,11 @@ import ubx.archilog.view.editor.*;
 
 public class EditShapeCommand implements Command {
 
-  private Shape shape;
-  private ShapeEditorFactory editorFactory;
-  private Render render;
+  private final Shape shape;
+  private final ShapeEditorFactory editorFactory;
+  private final Render render;
 
-  public EditShapeCommand(Shape shape, Render render) {
+  public EditShapeCommand(final Shape shape, final Render render) {
     this.shape = shape;
     this.render = render;
     if (shape instanceof Rectangle) {
@@ -30,7 +30,7 @@ public class EditShapeCommand implements Command {
 
   @Override
   public void execute() {
-    ShapeEditor editor = editorFactory.createEditor();
+    final ShapeEditor editor = editorFactory.createEditor();
     editor.edit(shape, render);
   }
 

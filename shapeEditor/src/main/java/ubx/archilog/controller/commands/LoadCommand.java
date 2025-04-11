@@ -8,7 +8,7 @@ public class LoadCommand implements Command {
 
   private final Render renderer;
 
-  public LoadCommand(Render renderer) {
+  public LoadCommand(final Render renderer) {
     this.renderer = renderer;
   }
 
@@ -17,8 +17,8 @@ public class LoadCommand implements Command {
     renderer.showTextInputPopUp("Save to: ", this::loadFile);
   }
 
-  private Void loadFile(String fileName) {
-    XmlLoader a = new XmlLoader();
+  private Void loadFile(final String fileName) {
+    final XmlLoader a = new XmlLoader();
     try {
       a.load(fileName);
     } catch (Exception e) {

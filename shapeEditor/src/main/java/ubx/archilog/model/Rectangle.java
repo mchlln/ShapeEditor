@@ -6,12 +6,25 @@ import ubx.archilog.view.Render;
 public class Rectangle extends Polygon {
   boolean fill;
 
-  public Rectangle(int x, int y, int zIndex, int width, int height, boolean fill) {
+  public Rectangle(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final boolean fill) {
     super(x, y, zIndex, width, height, 4);
     this.fill = fill;
   }
 
-  public Rectangle(int x, int y, int zIndex, int width, int height, Color color, boolean fill) {
+  public Rectangle(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final Color color,
+      final boolean fill) {
     super(x, y, zIndex, width, height, 4, color);
     this.fill = fill;
   }
@@ -20,25 +33,25 @@ public class Rectangle extends Polygon {
     return this.fill;
   }
 
-  public void setFill(boolean fill) {
+  public void setFill(final boolean fill) {
     this.fill = fill;
   }
 
   @Override
   public void rotate() {
-    int tmp = super.getWidth();
+    final int tmp = super.getWidth();
     super.setWidth(super.getHeight());
     super.setHeight(tmp);
   }
 
   @Override
-  public void draw(Render render) {
+  public void draw(final Render render) {
     render.drawRect(
         super.getX(), super.getY(), super.getWidth(), super.getHeight(), fill, super.getColor());
   }
 
   @Override
-  public void accept(ShapeVisitor visitor) {
+  public void accept(final ShapeVisitor visitor) {
     visitor.visit(this);
   }
 
@@ -55,7 +68,7 @@ public class Rectangle extends Polygon {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj instanceof Rectangle) {
       return getHeight() == ((Rectangle) obj).getHeight()
           && getWidth() == ((Rectangle) obj).getWidth()
@@ -104,7 +117,7 @@ public class Rectangle extends Polygon {
     private final Color color;
     private final Rectangle originator;
 
-    public RectangleMemento(Rectangle s) {
+    public RectangleMemento(final Rectangle s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();

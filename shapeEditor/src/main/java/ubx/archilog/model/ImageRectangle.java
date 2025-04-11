@@ -7,14 +7,20 @@ public class ImageRectangle extends Rectangle {
   private final Runnable action;
 
   public ImageRectangle(
-      int x, int y, int zIndex, int width, int height, String path, Runnable action) {
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final String path,
+      final Runnable action) {
     super(x, y, zIndex, width, height, false);
     this.path = path;
     this.action = action;
   }
 
   @Override
-  public void draw(Render render) {
+  public void draw(final Render render) {
     render.drawImageRect(super.getX(), super.getY(), super.getWidth(), super.getHeight(), path);
   }
 

@@ -22,14 +22,14 @@ public class BagOfCommands {
     return instance;
   }
 
-  public void addCommand(Command command) {
+  public void addCommand(final Command command) {
     this.commands.add(command);
     executeAll();
   }
 
   public void executeOne() {
     if (!commands.isEmpty()) {
-      Command command = commands.remove();
+      final Command command = commands.remove();
       if (!(command instanceof UndoCommand)
           && !(command instanceof RedoCommand)
           && !(command instanceof EditShapeCommand)
@@ -45,7 +45,7 @@ public class BagOfCommands {
 
   public void executeAll() {
     while (!commands.isEmpty()) {
-      Command command = commands.remove();
+      final Command command = commands.remove();
       if (!(command instanceof UndoCommand)
           && !(command instanceof RedoCommand)
           && !(command instanceof EditShapeCommand)
@@ -61,7 +61,7 @@ public class BagOfCommands {
 
   public void undoLastCommand() {
     if (!undoCommands.isEmpty()) {
-      Command command = undoCommands.pop();
+      final Command command = undoCommands.pop();
       System.out.println("undo command popped: " + command);
       redoCommands.push(command);
       System.out.println("redo command pushed: " + redoCommands.peek());
@@ -71,7 +71,7 @@ public class BagOfCommands {
 
   public void redoLastCommand() {
     if (!redoCommands.isEmpty()) {
-      Command command = redoCommands.pop();
+      final Command command = redoCommands.pop();
       System.out.println("redo command popped: " + command);
       undoCommands.push(command);
       System.out.println("undo command pushed: " + undoCommands.peek());

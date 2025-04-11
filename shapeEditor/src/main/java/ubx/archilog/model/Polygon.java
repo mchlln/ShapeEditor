@@ -3,12 +3,25 @@ package ubx.archilog.model;
 public class Polygon extends AbstractShape {
   private int sides;
 
-  public Polygon(int x, int y, int zIndex, int width, int height, int sides, Color color) {
+  public Polygon(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final int sides,
+      final Color color) {
     super(x, y, zIndex, width, height, color);
     this.sides = sides;
   }
 
-  public Polygon(int x, int y, int zIndex, int width, int height, int sides) {
+  public Polygon(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final int sides) {
     super(x, y, zIndex, width, height);
     this.sides = sides;
   }
@@ -17,7 +30,7 @@ public class Polygon extends AbstractShape {
     return this.sides;
   }
 
-  public void setSides(int sides) {
+  public void setSides(final int sides) {
     this.sides = sides;
   }
 
@@ -27,16 +40,16 @@ public class Polygon extends AbstractShape {
   }
 
   private class PolygonMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    int height;
-    int sides;
-    Color color;
-    Polygon originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final int sides;
+    private final Color color;
+    private final Polygon originator;
 
-    public PolygonMemento(Polygon s) {
+    public PolygonMemento(final Polygon s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();

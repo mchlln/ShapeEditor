@@ -6,11 +6,11 @@ import ubx.archilog.model.Position;
 import ubx.archilog.model.Shape;
 
 public class MoveCommand implements Command {
-  private Shape shape;
-  private Position to;
-  private Memento shapeMemento;
+  private final Shape shape;
+  private final Position to;
+  private final Memento shapeMemento;
 
-  public MoveCommand(Shape shape, Position to) {
+  public MoveCommand(final Shape shape, final Position to) {
     this.shape = shape;
     this.shapeMemento = shape.save();
     this.to = to;

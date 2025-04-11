@@ -12,7 +12,7 @@ import ubx.archilog.model.io.FileBuilder;
 import ubx.archilog.view.Render;
 
 public class Model {
-  private Group components;
+  private final Group components;
   private static Model instance;
 
   private ToolBar toolBar;
@@ -43,7 +43,7 @@ public class Model {
     components.add(menu);
   }
 
-  public void buildMenu(Render renderer) {
+  public void buildMenu(final Render renderer) {
     menu.add(
         new Rectangle(
             0, 0, -1, WINDOW_WIDTH, MENU_MARGIN + 37, new Color(189, 142, 231, 50), true));
@@ -96,27 +96,27 @@ public class Model {
     return components;
   }
 
-  public void addComponent(Shape s) {
+  public void addComponent(final Shape s) {
     components.add(s);
   }
 
-  public void setMenu(Group menu) {
+  public void setMenu(final Group menu) {
     this.menu = menu;
   }
 
-  public void setToolBar(ToolBar toolBar) {
+  public void setToolBar(final ToolBar toolBar) {
     components.remove(this.toolBar);
     this.toolBar = toolBar;
     components.add(toolBar);
   }
 
-  public void setCanvas(Group canvas) {
+  public void setCanvas(final Group canvas) {
     components.remove(this.canvas);
     this.canvas = canvas;
     components.add(canvas);
   }
 
-  public FileBuilder save(FileBuilder fb) {
+  public FileBuilder save(final FileBuilder fb) {
     fb.beginDocument();
     fb.beginMenu(menu);
     fb.endMenu();
@@ -140,7 +140,7 @@ public class Model {
     return menu;
   }
 
-  public void setCurrentMenu(Shape s) {
+  public void setCurrentMenu(final Shape s) {
     currentMenu = s;
     menu.add(currentMenu);
   }
@@ -156,9 +156,9 @@ public class Model {
    * @param shapes The list to lookup.
    * @return The shape with the highest Z-index.
    */
-  public Shape getBestZIndex(List<Shape> shapes) {
+  public Shape getBestZIndex(final List<Shape> shapes) {
     Shape best = shapes.getFirst();
-    for (Shape s : shapes) {
+    for (final Shape s : shapes) {
       if (s.getZindex() > best.getZindex()) {
         best = s;
       }

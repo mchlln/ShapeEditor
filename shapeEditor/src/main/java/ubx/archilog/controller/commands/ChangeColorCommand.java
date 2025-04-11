@@ -11,7 +11,7 @@ public class ChangeColorCommand implements Command {
   private final Color color;
   private final Memento shapeMemento;
 
-  public ChangeColorCommand(Shape shape, Color color) {
+  public ChangeColorCommand(final Shape shape, final Color color) {
     this.shape = shape;
     this.color = color;
     this.shapeMemento = shape.save();

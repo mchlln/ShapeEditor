@@ -8,19 +8,19 @@ import ubx.archilog.model.Model;
 import ubx.archilog.model.Shape;
 
 public class UngroupCommand implements Command {
-  private Group group;
-  private Memento groupMemento;
+  private final Group group;
+  private final Memento groupMemento;
 
-  public UngroupCommand(Group group) {
+  public UngroupCommand(final Group group) {
     this.group = group;
     this.groupMemento = group.save();
   }
 
   @Override
   public void execute() {
-    List<Shape> shapes = List.copyOf(group.getShapes());
+    final List<Shape> shapes = List.copyOf(group.getShapes());
     System.out.println("To ungroup: " + shapes);
-    for (Shape shape : shapes) {
+    for (final Shape shape : shapes) {
       System.out.println("Ungrouping shape: " + shape);
       if (shape instanceof Group) {
         shape.setZindex(1);

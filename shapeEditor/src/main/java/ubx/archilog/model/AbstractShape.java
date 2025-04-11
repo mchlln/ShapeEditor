@@ -11,7 +11,13 @@ public abstract class AbstractShape implements Shape {
   private int height;
   private Color color = new Color(245, 40, 145, 255);
 
-  public AbstractShape(int x, int y, int zIndex, int width, int height, Color color) {
+  public AbstractShape(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final Color color) {
     this.x = x;
     this.y = y;
     this.zIndex = zIndex;
@@ -20,7 +26,8 @@ public abstract class AbstractShape implements Shape {
     this.color = color;
   }
 
-  public AbstractShape(int x, int y, int zIndex, int width, int height) {
+  public AbstractShape(
+      final int x, final int y, final int zIndex, final int width, final int height) {
     this.x = x;
     this.y = y;
     this.zIndex = zIndex;
@@ -29,7 +36,7 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void draw(Render render) {
+  public void draw(final Render render) {
     throw new UnsupportedOperationException();
   }
 
@@ -39,13 +46,13 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void scale(float factor) {
+  public void scale(final float factor) {
     width *= factor;
     height *= factor;
   }
 
   @Override
-  public void translate(int xDiff, int yDiff) {
+  public void translate(final int xDiff, final int yDiff) {
     x += xDiff;
     y += yDiff;
   }
@@ -61,17 +68,17 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void setX(int x) {
+  public void setX(final int x) {
     this.x = x;
   }
 
   @Override
-  public void setColor(Color color) {
+  public void setColor(final Color color) {
     this.color = color;
   }
 
   @Override
-  public void setY(int y) {
+  public void setY(final int y) {
     this.y = y;
   }
 
@@ -81,7 +88,7 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void setZindex(int zIndex) {
+  public void setZindex(final int zIndex) {
     this.zIndex = zIndex;
   }
 
@@ -91,7 +98,7 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void setWidth(int width) {
+  public void setWidth(final int width) {
     this.width = width;
   }
 
@@ -101,18 +108,18 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public void setHeight(int height) {
+  public void setHeight(final int height) {
     this.height = height;
   }
 
   @Override
-  public void moveTo(Position pos) {
+  public void moveTo(final Position pos) {
     this.x = pos.x();
     this.y = pos.y();
   }
 
   @Override
-  public void accept(ShapeVisitor visitor) {
+  public void accept(final ShapeVisitor visitor) {
     visitor.visit(this);
   }
 
@@ -122,7 +129,7 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj instanceof AbstractShape) {
       return this.x == ((AbstractShape) obj).x
           && this.y == ((AbstractShape) obj).y

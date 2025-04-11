@@ -3,7 +3,7 @@ package ubx.archilog.model;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
-public interface Shape {
+public interface Shape extends Cloneable {
   int getX();
 
   int getY();

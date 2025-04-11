@@ -2,11 +2,17 @@ package ubx.archilog.model;
 
 public class Ellipsoid extends AbstractShape {
 
-  public Ellipsoid(int x, int y, int zIndex, int width, int height, Color color) {
+  public Ellipsoid(
+      final int x,
+      final int y,
+      final int zIndex,
+      final int width,
+      final int height,
+      final Color color) {
     super(x, y, zIndex, width, height, color);
   }
 
-  public Ellipsoid(int x, int y, int zIndex, int width, int height) {
+  public Ellipsoid(final int x, final int y, final int zIndex, final int width, final int height) {
     super(x, y, zIndex, width, height);
   }
 
@@ -16,15 +22,15 @@ public class Ellipsoid extends AbstractShape {
   }
 
   private class EllipsoidMemento implements Memento {
-    int x;
-    int y;
-    int zIndex;
-    int width;
-    int height;
-    Color color;
-    Ellipsoid originator;
+    private final int x;
+    private final int y;
+    private final int zIndex;
+    private final int width;
+    private final int height;
+    private final Color color;
+    private final Ellipsoid originator;
 
-    public EllipsoidMemento(Ellipsoid s) {
+    public EllipsoidMemento(final Ellipsoid s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();

@@ -22,19 +22,19 @@ public class Group implements Shape {
     this.zIndex = 1;
   }
 
-  public Group(int zIndex) {
+  public Group(final int zIndex) {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
     this.zIndex = zIndex;
   }
 
   public void updateChildZIndex() {
-    for (Shape s : shapesList) {
+    for (final Shape s : shapesList) {
       s.setZindex(0);
     }
   }
 
-  public void add(Shape s) {
+  public void add(final Shape s) {
     if (!shapesSet.contains(s)) {
       shapesSet.add(s);
       shapesList.add(s);
@@ -43,7 +43,7 @@ public class Group implements Shape {
     }
   }
 
-  public void remove(Shape s) {
+  public void remove(final Shape s) {
     shapesSet.remove(s);
     shapesList.remove(s);
     setCorner();
@@ -57,7 +57,7 @@ public class Group implements Shape {
   private void setCorner() {
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
-    for (Shape s : shapesList) {
+    for (final Shape s : shapesList) {
       if (s.getX() < minX) {
         minX = s.getX();
       }
@@ -72,7 +72,7 @@ public class Group implements Shape {
   private void setSize() {
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
-    for (Shape s : shapesList) {
+    for (final Shape s : shapesList) {
       if (s.getX() + s.getWidth() > maxX) {
         maxX = s.getX() + s.getWidth();
       }
@@ -95,17 +95,17 @@ public class Group implements Shape {
   }
 
   @Override
-  public void setX(int x) {
+  public void setX(final int x) {
     this.x = x;
   }
 
   @Override
-  public void setY(int y) {
+  public void setY(final int y) {
     this.y = y;
   }
 
   @Override
-  public void setColor(Color color) {}
+  public void setColor(final Color color) {}
 
   @Override
   public int getZindex() {
@@ -113,7 +113,7 @@ public class Group implements Shape {
   }
 
   @Override
-  public void setZindex(int z) {
+  public void setZindex(final int z) {
     this.zIndex = z;
   }
 
@@ -123,7 +123,7 @@ public class Group implements Shape {
   }
 
   @Override
-  public void setWidth(int width) {
+  public void setWidth(final int width) {
     this.width = width;
   }
 
@@ -133,31 +133,31 @@ public class Group implements Shape {
   }
 
   @Override
-  public void setHeight(int height) {
+  public void setHeight(final int height) {
     this.height = height;
   }
 
   @Override
-  public void moveTo(Position pos) {
-    int diffX = pos.x() - x;
-    int diffY = pos.y() - y;
-    for (Shape s : shapesList) {
+  public void moveTo(final Position pos) {
+    final int diffX = pos.x() - x;
+    final int diffY = pos.y() - y;
+    for (final Shape s : shapesList) {
       s.translate(diffX, diffY);
     }
     setCorner();
   }
 
   @Override
-  public void draw(Render render) {
-    for (Shape s : shapesList) {
+  public void draw(final Render render) {
+    for (final Shape s : shapesList) {
       s.draw(render);
     }
     render.drawRect(x, y, width, height, false, new Color(0, 0, 0, 255));
   }
 
   @Override
-  public void scale(float factor) {
-    for (Shape s : shapesList) {
+  public void scale(final float factor) {
+    for (final Shape s : shapesList) {
       s.scale(factor);
       s.moveTo(
           new Position((int) (x + (s.getX() - x) * factor), (int) (y + (s.getY() - y) * factor)));
@@ -172,29 +172,29 @@ public class Group implements Shape {
   }
 
   @Override
-  public void translate(int xDiff, int yDiff) {
-    for (Shape s : shapesList) {
+  public void translate(final int xDiff, final int yDiff) {
+    for (final Shape s : shapesList) {
       s.translate(xDiff, yDiff);
     }
     setCorner();
   }
 
   @Override
-  public void accept(ShapeVisitor visitor) {
+  public void accept(final ShapeVisitor visitor) {
     visitor.visit(this);
   }
 
   @Override
   public Shape clone() {
-    Group copy = new Group();
-    for (Shape s : shapesList) {
+    final Group copy = new Group();
+    for (final Shape s : shapesList) {
       copy.add(s.clone());
     }
     return copy;
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) return true;
     if (!(obj instanceof Group o)) return false;
     return shapesList.equals(o.shapesList);
@@ -203,7 +203,7 @@ public class Group implements Shape {
   @Override
   public int hashCode() {
     int result = 1;
-    for (Shape shape : shapesList) {
+    for (final Shape shape : shapesList) {
       result = 31 * result + (shape == null ? 0 : shape.hashCode());
     }
     return result;
@@ -211,7 +211,7 @@ public class Group implements Shape {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder();
     sb.append("Group x=")
         .append(x)
         .append(", y=")
@@ -219,7 +219,7 @@ public class Group implements Shape {
         .append(", zIndex=")
         .append(zIndex)
         .append(" [");
-    for (Shape s : shapesList) {
+    for (final Shape s : shapesList) {
       sb.append(s.toString());
       sb.append(" ");
     }
@@ -242,7 +242,7 @@ public class Group implements Shape {
     private final List<Shape> shapeRefs;
     private final Group originator;
 
-    public GroupMemento(Group s) {
+    public GroupMemento(final Group s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();
@@ -252,7 +252,7 @@ public class Group implements Shape {
       this.shapesMemento = new ArrayList<>();
       this.shapeRefs = new ArrayList<>();
 
-      for (Shape shape : s.getShapes()) {
+      for (final Shape shape : s.getShapes()) {
         shapesMemento.add(shape.save());
         shapeRefs.add(shape);
       }

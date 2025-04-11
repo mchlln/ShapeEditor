@@ -9,7 +9,7 @@ public class CloneToCanvasCommand implements Command {
   Shape shape;
   Position position;
 
-  public CloneToCanvasCommand(Shape shape, Position position) {
+  public CloneToCanvasCommand(final Shape shape, final Position position) {
     this.shape = shape.clone();
     this.position = position;
   }

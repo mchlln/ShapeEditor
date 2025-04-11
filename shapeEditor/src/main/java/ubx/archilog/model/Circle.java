@@ -5,11 +5,11 @@ import ubx.archilog.view.Render;
 
 public class Circle extends Ellipsoid {
 
-  public Circle(int x, int y, int zIndex, int radius, Color color) {
+  public Circle(final int x, final int y, final int zIndex, final int radius, final Color color) {
     super(x, y, zIndex, radius * 2, radius * 2, color);
   }
 
-  public Circle(int x, int y, int zIndex, int radius) {
+  public Circle(final int x, final int y, final int zIndex, final int radius) {
     super(x, y, zIndex, radius * 2, radius * 2);
   }
 
@@ -17,7 +17,7 @@ public class Circle extends Ellipsoid {
     return super.getWidth() / 2;
   }
 
-  public void setRadius(int radius) {
+  public void setRadius(final int radius) {
     super.setWidth(radius * 2);
   }
 
@@ -28,7 +28,7 @@ public class Circle extends Ellipsoid {
   }
 
   @Override
-  public void draw(Render render) {
+  public void draw(final Render render) {
     render.drawCircle(super.getX(), super.getY(), getRadius(), super.getColor());
   }
 
@@ -38,7 +38,7 @@ public class Circle extends Ellipsoid {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj instanceof Circle) {
       return this.getRadius() == ((Circle) obj).getRadius() && super.equals(obj);
     }
@@ -69,7 +69,7 @@ public class Circle extends Ellipsoid {
   }
 
   @Override
-  public void accept(ShapeVisitor visitor) {
+  public void accept(final ShapeVisitor visitor) {
     visitor.visit(this);
   }
 
@@ -87,7 +87,7 @@ public class Circle extends Ellipsoid {
     private final Color color;
     private final Circle originator;
 
-    public CircleMemento(Circle s) {
+    public CircleMemento(final Circle s) {
       this.originator = s;
       this.x = s.getX();
       this.y = s.getY();

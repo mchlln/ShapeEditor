@@ -6,11 +6,11 @@ import ubx.archilog.model.Shape;
 
 public class ResizeCommand implements Command {
 
-  private float scale;
-  private Shape shape;
-  private Memento shapeMemento;
+  private final float scale;
+  private final Shape shape;
+  private final Memento shapeMemento;
 
-  public ResizeCommand(Shape shape, float scale) {
+  public ResizeCommand(final Shape shape, final float scale) {
     this.shape = shape;
     this.scale = scale;
     this.shapeMemento = shape.save();
