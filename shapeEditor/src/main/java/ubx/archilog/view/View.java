@@ -92,9 +92,7 @@ public class View {
       Model.getInstance().getCanvas().accept(visitor);
       final List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
-        System.out.println("CLICKED ON = " + in);
         final Shape best = Model.getInstance().getBestZIndex(in);
-        System.out.println("best = " + best);
         if (best.getZindex() > 0) {
           BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
         }
@@ -139,23 +137,19 @@ public class View {
       if (!in.isEmpty() && !out.isEmpty()) {
         final Shape toMove = model.getBestZIndex(in);
         if (toMove.getZindex() > 0) {
-          BagOfCommands.getInstance().addCommand(new MoveCommand(toMove, to));
+          final int deltaX = to.x() - from.x();
+          final int deltaY = to.y() - from.y();
+          BagOfCommands.getInstance().addCommand(new TranslateCommand(toMove, deltaX, deltaY));
         }
       }
     } else if (b == 3) {
-      selection =
-          new Rectangle(
-              from.x(),
-              from.y(),
-              0,
-              Math.abs(to.x() - from.x()),
-              Math.abs(to.y() - from.y()),
-              new Color(255, 0, 0, 255),
-              false);
+      final int x = Math.min(from.x(), to.x());
+      final int y = Math.min(from.y(), to.y());
+      final int width = Math.abs(to.x() - from.x());
+      final int height = Math.abs(to.y() - from.y());
+      selection = new Rectangle(x, y, 0, width, height, new Color(255, 0, 0, 255), false);
       Model.getInstance().getCanvas().add(selection);
-      final ShapeInZoneVisitor zoneVisitor =
-          new ShapeInZoneVisitor(
-              from.x(), from.y(), Math.abs(to.x() - from.x()), Math.abs(to.y() - from.y()));
+      ShapeInZoneVisitor zoneVisitor = new ShapeInZoneVisitor(x, y, width, height);
       Model.getInstance().getCanvas().accept(zoneVisitor);
       final List<Shape> zone = zoneVisitor.getResult();
       BagOfCommands.getInstance().addCommand(new GroupCommand(zone));
