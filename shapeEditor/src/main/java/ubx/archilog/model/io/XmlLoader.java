@@ -13,9 +13,9 @@ public class XmlLoader implements FileLoader {
 
   public void load(String filePath) throws Exception {
     System.out.println("Loading " + filePath);
-    File file = new File(filePath);
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
+    final File file = new File(filePath);
+    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    final DocumentBuilder builder = factory.newDocumentBuilder();
     document = builder.parse(file);
     document.getDocumentElement().normalize();
 
@@ -23,14 +23,14 @@ public class XmlLoader implements FileLoader {
   }
 
   private void loadDocument() {
-    NodeList shapeEditorNodes = document.getElementsByTagName("shapeEditor");
+    final NodeList shapeEditorNodes = document.getElementsByTagName("shapeEditor");
     if (shapeEditorNodes.getLength() > 0) {
-      Element shapeEditorElement = (Element) shapeEditorNodes.item(0);
+      final Element shapeEditorElement = (Element) shapeEditorNodes.item(0);
       loadGroups(shapeEditorElement);
     }
   }
 
-  private void loadGroups(Element parentElement) {
+  private void loadGroups(final Element parentElement) {
     /* NodeList menuNodes = parentElement.getElementsByTagName("menu");
     for (int i = 0; i < menuNodes.getLength(); i++) {
         Element menuElement = (Element) menuNodes.item(i);
@@ -39,51 +39,50 @@ public class XmlLoader implements FileLoader {
         Model.getInstance().setMenu(menu);
     }*/
 
-    NodeList toolBarNodes = parentElement.getElementsByTagName("toolBar");
+    final NodeList toolBarNodes = parentElement.getElementsByTagName("toolBar");
     for (int i = 0; i < toolBarNodes.getLength(); i++) {
-      Element toolBarElement = (Element) toolBarNodes.item(i);
-      ToolBar toolBar = new ToolBar();
+      final Element toolBarElement = (Element) toolBarNodes.item(i);
+      final ToolBar toolBar = new ToolBar();
       loadGroup(toolBarElement, toolBar);
       Model.getInstance().setToolBar(toolBar);
     }
 
-    NodeList canvasNodes = parentElement.getElementsByTagName("canvas");
+    final NodeList canvasNodes = parentElement.getElementsByTagName("canvas");
     for (int i = 0; i < canvasNodes.getLength(); i++) {
-      Element canvasElement = (Element) canvasNodes.item(i);
-      Group canvas = new Group();
+      final Element canvasElement = (Element) canvasNodes.item(i);
+      final Group canvas = new Group();
       loadGroup(canvasElement, canvas);
       canvas.setZindex(0);
       Model.getInstance().setCanvas(canvas);
-      System.out.println("CANVAS = " + Model.getInstance().getCanvas());
     }
   }
 
-  private void loadGroup(Element groupElement, Group group) {
-    NodeList groupChildren = groupElement.getChildNodes();
+  private void loadGroup(final Element groupElement, final Group group) {
+    final NodeList groupChildren = groupElement.getChildNodes();
     for (int i = 0; i < groupChildren.getLength(); i++) {
-      Node node = groupChildren.item(i);
+      final Node node = groupChildren.item(i);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
-        Element element = (Element) node;
+        final Element element = (Element) node;
         if (element.getTagName().equals("group")) {
-          Group childGroup = new Group();
+          final Group childGroup = new Group();
           loadGroup(element, childGroup);
           group.add(childGroup);
         } else if (element.getTagName().equals("square")) {
-          Square square = loadSquare(element);
+          final Square square = loadSquare(element);
           group.add(square);
         } else if (element.getTagName().equals("rectangle")) {
-          Rectangle rectangle = loadRectangle(element);
+          final Rectangle rectangle = loadRectangle(element);
           group.add(rectangle);
         } else if (element.getTagName().equals("circle")) {
-          Circle circle = loadCircle(element);
+          final Circle circle = loadCircle(element);
           group.add(circle);
         }
       }
     }
   }
 
-  private Square loadSquare(Element squareElement) {
-    Square square = new Square(0, 0, 0, 0);
+  private Square loadSquare(final Element squareElement) {
+    final Square square = new Square(0, 0, 0, 0);
     loadShapeAttributes(squareElement, square);
     square.setWidth(
         Integer.parseInt(
@@ -96,8 +95,8 @@ public class XmlLoader implements FileLoader {
     return square;
   }
 
-  private Rectangle loadRectangle(Element rectangleElement) {
-    Rectangle rectangle = new Rectangle(0, 0, 0, 0, 0, false);
+  private Rectangle loadRectangle(final Element rectangleElement) {
+    final Rectangle rectangle = new Rectangle(0, 0, 0, 0, 0, false);
     loadShapeAttributes(rectangleElement, rectangle);
     rectangle.setWidth(
         Integer.parseInt(
@@ -121,16 +120,17 @@ public class XmlLoader implements FileLoader {
     return rectangle;
   }
 
-  private Circle loadCircle(Element circleElement) {
-    Circle circle = new Circle(0, 0, 0, 0);
+  private Circle loadCircle(final Element circleElement) {
+    final Circle circle = new Circle(0, 0, 0, 0);
     loadShapeAttributes(circleElement, circle);
     circle.setRadius(
         Integer.parseInt(circleElement.getElementsByTagName("radius").item(0).getTextContent()));
     return circle;
   }
 
-  private void loadShapeAttributes(Element shapeElement, Shape shape) {
-    Element coordinatesElement = (Element) shapeElement.getElementsByTagName("coordinates").item(0);
+  private void loadShapeAttributes(final Element shapeElement, final Shape shape) {
+    final Element coordinatesElement =
+        (Element) shapeElement.getElementsByTagName("coordinates").item(0);
     shape.setX(
         Integer.parseInt(coordinatesElement.getElementsByTagName("x").item(0).getTextContent()));
     shape.setY(
@@ -139,7 +139,7 @@ public class XmlLoader implements FileLoader {
         Integer.parseInt(
             coordinatesElement.getElementsByTagName("zIndex").item(0).getTextContent()));
 
-    Element colorElement = (Element) shapeElement.getElementsByTagName("color").item(0);
+    final Element colorElement = (Element) shapeElement.getElementsByTagName("color").item(0);
     Color color =
         new Color(
             Integer.parseInt(colorElement.getElementsByTagName("r").item(0).getTextContent()),
