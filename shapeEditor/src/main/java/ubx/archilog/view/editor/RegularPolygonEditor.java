@@ -6,6 +6,7 @@ import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 import ubx.archilog.view.View;
 import ubx.archilog.view.editor.templates.ColorEditor;
+import ubx.archilog.view.editor.templates.RotationEditor;
 import ubx.archilog.view.editor.templates.SidesEditor;
 
 public class RegularPolygonEditor extends AbstractEditor {
@@ -15,8 +16,10 @@ public class RegularPolygonEditor extends AbstractEditor {
       super.edit(shape, render);
       ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
       SidesEditor sidesEditor = new SidesEditor(group, 580, View.TOP_PADDING);
+      RotationEditor rotationEditor = new RotationEditor(group, 700, View.TOP_PADDING);
       colorEditor.edit(shape, render);
       sidesEditor.edit(shape, render);
+      rotationEditor.edit(shape);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);
     }

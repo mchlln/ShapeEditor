@@ -5,8 +5,16 @@ import ubx.archilog.model.Memento;
 import ubx.archilog.view.Render;
 
 public class RegularPolygon extends Polygon {
+  private int rotation;
+
   public RegularPolygon(int x, int y, int zIndex, int width, int height, int sides, Color color) {
     super(x, y, zIndex, width, height, sides, color);
+  }
+
+  private RegularPolygon(
+      int x, int y, int zIndex, int width, int height, int sides, Color color, int rotation) {
+    super(x, y, zIndex, width, height, sides, color);
+    this.rotation = rotation;
   }
 
   @Override
@@ -16,7 +24,7 @@ public class RegularPolygon extends Polygon {
     double angle = 2 * Math.PI / sides;
     double radius = getWidth() / 2.0;
     double rotationRadians =
-        Math.toRadians(0); // Keep magic number for future rotation implementation
+        Math.toRadians(rotation); // Keep magic number for future rotation implementation
 
     int centerX = getX() + getWidth() / 2;
     int centerY = getY() + getWidth() / 2;
@@ -35,7 +43,7 @@ public class RegularPolygon extends Polygon {
   @Override
   public Shape clone() {
     return new RegularPolygon(
-        getX(), getY(), getZindex(), getWidth(), getHeight(), getSides(), getColor());
+        getX(), getY(), getZindex(), getWidth(), getHeight(), getSides(), getColor(), rotation);
   }
 
   @Override
@@ -43,17 +51,25 @@ public class RegularPolygon extends Polygon {
     return new RegularPolygonMemento(this);
   }
 
+  @Override
+  public void rotate() {
+    rotation += 10;
+  }
+
   private class RegularPolygonMemento extends AbstractMemento {
     private final int sides;
     private final Shape shape;
+    private final int rotation;
 
     public RegularPolygonMemento(final AbstractShape shape) {
       super(shape);
       this.shape = shape;
       if (shape instanceof RegularPolygon regularPolygon) {
         this.sides = regularPolygon.getSides();
+        this.rotation = regularPolygon.rotation;
       } else {
         this.sides = -1;
+        this.rotation = -1;
       }
     }
 
@@ -61,6 +77,7 @@ public class RegularPolygon extends Polygon {
       super.restore();
       if (shape instanceof RegularPolygon regularPolygon) {
         regularPolygon.setSides(sides);
+        regularPolygon.rotation = rotation;
       }
     }
   }

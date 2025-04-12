@@ -6,6 +6,7 @@ import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
 import ubx.archilog.view.View;
 import ubx.archilog.view.editor.templates.ColorEditor;
+import ubx.archilog.view.editor.templates.RotationEditor;
 
 public class RectangleEditor extends AbstractEditor {
   @Override
@@ -14,6 +15,8 @@ public class RectangleEditor extends AbstractEditor {
       super.edit(shape, render);
       ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
       colorEditor.edit(shape, render);
+      RotationEditor rotationEditor = new RotationEditor(group, 580, View.TOP_PADDING);
+      rotationEditor.edit(shape);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);
     }

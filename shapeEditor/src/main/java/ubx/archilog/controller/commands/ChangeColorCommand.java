@@ -12,6 +12,8 @@ public class ChangeColorCommand implements Command {
   private final Shape shape;
   private final Memento shapeMemento;
   private final Render renderer;
+  private boolean firstRun = true;
+  private Color selectedColor;
 
   public ChangeColorCommand(final Shape shape, Render renderer) {
     this.shape = shape;
@@ -21,11 +23,18 @@ public class ChangeColorCommand implements Command {
 
   @Override
   public void execute() {
-    if (shape instanceof AbstractShape abstractShape)
-      renderer.showColorPickerPopUp("", abstractShape.getColor(), this::changeColor);
+    if (shape instanceof AbstractShape abstractShape) {
+      if (firstRun) {
+        renderer.showColorPickerPopUp("", abstractShape.getColor(), this::changeColor);
+        firstRun = false;
+      } else {
+        abstractShape.setColor(selectedColor);
+      }
+    }
   }
 
   public Void changeColor(final Color color) {
+    this.selectedColor = color;
     shape.setColor(color);
     return null;
   }
