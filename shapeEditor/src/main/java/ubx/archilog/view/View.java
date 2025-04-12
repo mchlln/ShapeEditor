@@ -124,6 +124,19 @@ public class View {
       model.getToolBar().accept(toAppSector);
       in = fromAppSector.getResult();
       out = toAppSector.getResult();
+
+      // Special case for delete from canvas
+      model.getToolBar().getBin().accept(toAppSector);
+      final List<Shape> outBin = toAppSector.getResult();
+      if (!in.isEmpty() && !outBin.isEmpty()) {
+        final Shape toAdd = model.getBestZIndex(in).clone();
+        if (toAdd.getZindex() > 0) {
+          BagOfCommands.getInstance()
+              .addCommand(new DeleteCommand(toAdd, Model.getInstance().getCanvas()));
+          return;
+        }
+      }
+
       if (!in.isEmpty() && !out.isEmpty()) {
         final Shape toAdd = model.getBestZIndex(in).clone();
         if (toAdd.getZindex() > 0) {
@@ -140,6 +153,19 @@ public class View {
           final int deltaX = to.x() - from.x();
           final int deltaY = to.y() - from.y();
           BagOfCommands.getInstance().addCommand(new TranslateCommand(toMove, deltaX, deltaY));
+        }
+      }
+
+      model.getToolBar().accept(fromAppSector);
+      model.getToolBar().getBin().accept(toAppSector);
+      in = fromAppSector.getResult();
+      out = toAppSector.getResult();
+      if (!in.isEmpty() && !out.isEmpty()) {
+        final Shape toAdd = model.getBestZIndex(in).clone();
+        if (toAdd.getZindex() > 0) {
+          BagOfCommands.getInstance()
+              .addCommand(new DeleteCommand(toAdd, Model.getInstance().getToolBar()));
+          return;
         }
       }
     } else if (b == 3) {
