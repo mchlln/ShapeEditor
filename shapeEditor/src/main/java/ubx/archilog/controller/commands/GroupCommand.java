@@ -32,7 +32,7 @@ public class GroupCommand implements Command {
   }
 
   @Override
-  public void undo() {
+  public void undo() { // TODO: Don't do a group if size < 1
     Model.getInstance().getCanvas().remove(newGroup);
     for (final Memento memento : shapesMemento) {
       memento.restore();

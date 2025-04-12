@@ -212,6 +212,9 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
       try {
         image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(path));
+        MediaTracker tracker = new MediaTracker(new Component() {});
+        tracker.addImage(image, 0);
+        tracker.waitForID(0);
       } catch (Exception e) {
         System.out.println("Error loading image: " + e.getMessage());
       }
