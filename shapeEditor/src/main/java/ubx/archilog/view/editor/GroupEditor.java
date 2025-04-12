@@ -7,6 +7,7 @@ import ubx.archilog.model.shapes.Group;
 import ubx.archilog.model.shapes.ImageRectangle;
 import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
+import ubx.archilog.view.View;
 
 public class GroupEditor extends AbstractEditor {
   @Override
@@ -15,11 +16,11 @@ public class GroupEditor extends AbstractEditor {
       super.edit(shape, render);
       final Shape ungroupButton =
           new ImageRectangle(
-              440,
-              37,
-              1,
-              50,
-              50,
+              520,
+              View.TOP_PADDING,
+              View.DEFAULT_Z_INDEX,
+              View.DEFAULT_ICON_SIZE,
+              View.DEFAULT_ICON_SIZE,
               "/icons/ungroup.png",
               () -> BagOfCommands.getInstance().addCommand(new UngroupCommand((Group) shape)));
 

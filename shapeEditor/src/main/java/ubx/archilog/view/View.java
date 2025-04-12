@@ -14,6 +14,9 @@ public class View {
   public static final int WINDOW_WIDTH = 800;
   public static final int WINDOW_HEIGHT = 600;
   public static final int MENU_MARGIN = 50;
+  public static final int TOP_PADDING = 37;
+  public static final int DEFAULT_Z_INDEX = 1;
+  public static final int DEFAULT_ICON_SIZE = 50;
 
   private Position from;
 
