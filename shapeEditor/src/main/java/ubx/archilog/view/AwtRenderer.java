@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.swing.*;
 import ubx.archilog.model.Color;
 import ubx.archilog.model.Position;
 
@@ -75,6 +76,53 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
     dialog.add(okButton);
 
     dialog.setSize(300, 120);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+  }
+
+  @Override
+  public void showColorPickerPopUp(String text, Color color, Function<Color, Void> callBack) {
+    final Dialog dialog = new Dialog(this, "Pick a Color", true);
+    dialog.setLayout(new FlowLayout());
+    final java.awt.Color initialColor =
+        new java.awt.Color(color.r(), color.g(), color.b(), color.a());
+    final Label label = new Label(text);
+    final Button colorButton = new Button("Choose Color");
+    final Panel colorPreview = new Panel();
+    colorPreview.setBackground(initialColor);
+    colorPreview.setPreferredSize(new Dimension(40, 40));
+
+    final Button okButton = new Button("OK");
+
+    final java.awt.Color[] selectedColor = {initialColor};
+
+    colorButton.addActionListener(
+        e -> {
+          java.awt.Color newColor =
+              JColorChooser.showDialog(dialog, "Choose a color", selectedColor[0]);
+          if (newColor != null) {
+            selectedColor[0] = newColor;
+            colorPreview.setBackground(newColor);
+          }
+        });
+
+    okButton.addActionListener(
+        e -> {
+          callBack.apply(
+              new Color(
+                  selectedColor[0].getRed(),
+                  selectedColor[0].getGreen(),
+                  selectedColor[0].getBlue(),
+                  selectedColor[0].getAlpha()));
+          dialog.dispose();
+        });
+
+    dialog.add(label);
+    dialog.add(colorButton);
+    dialog.add(colorPreview);
+    dialog.add(okButton);
+
+    dialog.setSize(350, 150);
     dialog.setLocationRelativeTo(this);
     dialog.setVisible(true);
   }

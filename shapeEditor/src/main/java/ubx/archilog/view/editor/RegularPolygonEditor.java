@@ -4,7 +4,6 @@ import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.AddSideCommand;
 import ubx.archilog.controller.commands.ChangeColorCommand;
 import ubx.archilog.controller.commands.RemoveSideCommand;
-import ubx.archilog.model.Color;
 import ubx.archilog.model.Model;
 import ubx.archilog.model.shapes.ImageRectangle;
 import ubx.archilog.model.shapes.RegularPolygon;
@@ -16,40 +15,15 @@ public class RegularPolygonEditor extends AbstractEditor {
   public void edit(final Shape shape, final Render render) {
     if (shape instanceof RegularPolygon) {
       super.edit(shape, render);
-      final Shape blueColorButton =
+      final Shape colorButton =
           new ImageRectangle(
               620,
               37,
               1,
               50,
               50,
-              "/icons/colors/blue.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(0, 182, 203, 255))));
-      final Shape purpleColorButton =
-          new ImageRectangle(
-              680,
-              37,
-              1,
-              50,
-              50,
-              "/icons/colors/purple.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(190, 146, 241, 255))));
-      final Shape greenColorButton =
-          new ImageRectangle(
-              740,
-              37,
-              1,
-              50,
-              50,
-              "/icons/colors/green.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(170, 241, 146, 255))));
-
+              "/icons/colors.png",
+              () -> BagOfCommands.getInstance().addCommand(new ChangeColorCommand(shape, render)));
       final Shape addSideButton =
           new ImageRectangle(
               400,
@@ -70,9 +44,7 @@ public class RegularPolygonEditor extends AbstractEditor {
               "/icons/removeSide.png",
               () -> BagOfCommands.getInstance().addCommand(new RemoveSideCommand(shape)));
 
-      group.add(blueColorButton);
-      group.add(purpleColorButton);
-      group.add(greenColorButton);
+      group.add(colorButton);
       group.add(addSideButton);
       group.add(removeSideButton);
       Model.getInstance().clearCurrentMenu();

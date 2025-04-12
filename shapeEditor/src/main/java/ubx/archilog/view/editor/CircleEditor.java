@@ -13,43 +13,16 @@ public class CircleEditor extends AbstractEditor {
   public void edit(final Shape shape, final Render render) {
     if (shape instanceof Circle) {
       super.edit(shape, render);
-      final Shape blueColorButton =
+      final Shape colorButton =
           new ImageRectangle(
               620,
               37,
               1,
               50,
               50,
-              "/icons/colors/blue.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(0, 182, 203, 255))));
-      final Shape purpleColorButton =
-          new ImageRectangle(
-              680,
-              37,
-              1,
-              50,
-              50,
-              "/icons/colors/purple.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(190, 146, 241, 255))));
-      final Shape greenColorButton =
-          new ImageRectangle(
-              740,
-              37,
-              1,
-              50,
-              50,
-              "/icons/colors/green.png",
-              () ->
-                  BagOfCommands.getInstance()
-                      .addCommand(new ChangeColorCommand(shape, new Color(170, 241, 146, 255))));
-
-      group.add(blueColorButton);
-      group.add(purpleColorButton);
-      group.add(greenColorButton);
+              "/icons/colors.png",
+              () -> BagOfCommands.getInstance().addCommand(new ChangeColorCommand(shape, render)));
+      group.add(colorButton);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);
     }

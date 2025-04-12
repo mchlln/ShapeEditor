@@ -3,23 +3,31 @@ package ubx.archilog.controller.commands;
 import ubx.archilog.controller.Command;
 import ubx.archilog.model.Color;
 import ubx.archilog.model.Memento;
+import ubx.archilog.model.shapes.AbstractShape;
 import ubx.archilog.model.shapes.Shape;
+import ubx.archilog.view.Render;
 
 public class ChangeColorCommand implements Command {
 
   private final Shape shape;
-  private final Color color;
   private final Memento shapeMemento;
+  private final Render renderer;
 
-  public ChangeColorCommand(final Shape shape, final Color color) {
+  public ChangeColorCommand(final Shape shape, Render renderer) {
     this.shape = shape;
-    this.color = color;
     this.shapeMemento = shape.save();
+    this.renderer = renderer;
   }
 
   @Override
   public void execute() {
+    if (shape instanceof AbstractShape abstractShape)
+      renderer.showColorPickerPopUp("", abstractShape.getColor(), this::changeColor);
+  }
+
+  public Void changeColor(final Color color) {
     shape.setColor(color);
+    return null;
   }
 
   @Override

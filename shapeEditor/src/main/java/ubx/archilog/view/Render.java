@@ -16,6 +16,8 @@ public interface Render {
 
   void showTextInputPopUp(String text, Function<String, Void> callBack);
 
+  void showColorPickerPopUp(String text, Color color, Function<Color, Void> callBack);
+
   void update();
 
   void initialize(
