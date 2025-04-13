@@ -137,7 +137,19 @@ Leur constructeur est également privé. Ils possèdent tous deux la méthode pu
 d'accéder à l'instance unique de l'objet n'importe où dans le programme.
 
 \subsection{Visitor}
-
+Nous avons décidé d'ajouter des Visitors afin d'éviter de rajouter trop de fonctions dans nos classes,
+de regrouper les opérations de même genre et d'appliquer des opérations sur certaines formes.
+Comme indiqué sur la Figure \ref{Visitor}, nous avons créé une interface \textit{ShapeVisitor}, qui
+peut visiter des objets de type Group, Abstract Shape, Rectangle ainsi que Circle. Nous aurions pu rajouter plus de classes à
+visiter mais cela ne semblait pas nécessaire pour l'usage que nous avons.
+La classe \textit{IsInVisitor} implémente cette interface. Elle rajoute dans une liste les formes présentes à une position donnée.
+La fonction \textit{getResult()} renvoie cette liste.
+On se sert de ce visitor pour savoir quel type d'action on a réalisé : quel menu cliqué, ou lors d'un drag : quels sont les
+conteneurs de source et de destination (toolbar, menu, canevas).
+La classe \textit{ShapeInZoneVisitor} implémente également notre interface de Visitor.
+Ce Visitor permet de savoir quelles formes sont présentes dans la zone envoyée au constructeur. Il est utilisé lors de la création de groupe:
+on regarde si quelles sont les formes présentes dans le canevas se trouvant également dans la zone demandée.
+La fonction \textit{getResult()} renvoie également cette liste.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{visitor.png}
