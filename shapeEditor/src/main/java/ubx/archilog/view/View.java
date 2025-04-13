@@ -11,6 +11,7 @@ import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
 public class View {
+  private static final int MOUSE_TOLERANCE = 5;
   public static final int WINDOW_WIDTH = 800;
   public static final int WINDOW_HEIGHT = 600;
   public static final int MENU_MARGIN = 50;
@@ -56,8 +57,14 @@ public class View {
     return null;
   }
 
+  private boolean isWithinTolerance(Position a, Position b) {
+    int dx = a.x() - b.x();
+    int dy = a.y() - b.y();
+    return dx * dx + dy * dy <= MOUSE_TOLERANCE * MOUSE_TOLERANCE;
+  }
+
   public Void mouseReleased(final Position position, final int button) {
-    if (from.equals(position)) {
+    if (from != null && isWithinTolerance(from, position)) {
       clickOn(position, button);
     } else {
       mouseDragged(from, position, button);
@@ -103,74 +110,70 @@ public class View {
     }
   }
 
+  private Shape detect(
+      final Shape in, final Shape out, final Position from, final Position to, boolean clone) {
+    final IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
+    final IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
+
+    in.accept(fromAppSector);
+    out.accept(toAppSector);
+    List<Shape> inShapes = fromAppSector.getResult();
+    List<Shape> outShapes = toAppSector.getResult();
+    if (!inShapes.isEmpty() && !outShapes.isEmpty()) {
+      if (clone) {
+        return Model.getInstance().getBestZIndex(inShapes).clone();
+      } else {
+        return Model.getInstance().getBestZIndex(inShapes);
+      }
+    }
+    return null;
+  }
+
   public void mouseDragged(final Position from, final Position to, final int b) {
     Model.getInstance().getCanvas().remove(selection);
     if (b == 1) {
-      final IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
-      final IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
       final Model model = Model.getInstance();
 
       // Case adding shape to canvas
-      model.getToolBar().accept(fromAppSector);
-      model.getCanvas().accept(toAppSector);
-      List<Shape> in = fromAppSector.getResult();
-      List<Shape> out = toAppSector.getResult();
-      if (!in.isEmpty() && !out.isEmpty()) {
-        final Shape toAdd = model.getBestZIndex(in).clone();
-        if (toAdd.getZindex() > 0) {
-          BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(toAdd, to));
-        }
+      Shape s = detect(model.getToolBar(), model.getCanvas(), from, to, true);
+      if (s != null && s.getZindex() > 0) {
+        BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(s, to));
       }
 
       // Case adding shape to toolbar
-      model.getCanvas().accept(fromAppSector);
-      model.getToolBar().accept(toAppSector);
-      in = fromAppSector.getResult();
-      out = toAppSector.getResult();
-
       // Special case for delete from canvas
-      model.getToolBar().getBin().accept(toAppSector);
-      final List<Shape> outBin = toAppSector.getResult();
-      if (!in.isEmpty() && !outBin.isEmpty()) {
-        final Shape toAdd = model.getBestZIndex(in).clone();
-        if (toAdd.getZindex() > 0) {
-          BagOfCommands.getInstance()
-              .addCommand(new DeleteCommand(toAdd, Model.getInstance().getCanvas()));
-          return;
-        }
+      s = detect(model.getCanvas(), model.getToolBar().getBin(), from, to, true);
+      if (s != null && s.getZindex() > 0) {
+        BagOfCommands.getInstance()
+            .addCommand(new DeleteCommand(s, Model.getInstance().getCanvas()));
       }
 
-      if (!in.isEmpty() && !out.isEmpty()) {
-        final Shape toAdd = model.getBestZIndex(in).clone();
-        if (toAdd.getZindex() > 0) {
-          BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(toAdd));
-        }
+      s = detect(model.getCanvas(), model.getToolBar(), from, to, true);
+      if (s != null && s.getZindex() > 0) {
+        BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(s));
       }
 
       // Moving shape from canvas
-      model.getCanvas().accept(toAppSector);
-      out = toAppSector.getResult();
-      if (!in.isEmpty() && !out.isEmpty()) {
-        final Shape toMove = model.getBestZIndex(in);
-        if (toMove.getZindex() > 0) {
-          final int deltaX = to.x() - from.x();
-          final int deltaY = to.y() - from.y();
-          BagOfCommands.getInstance().addCommand(new TranslateCommand(toMove, deltaX, deltaY));
-        }
+      s = detect(model.getCanvas(), model.getCanvas(), from, to, false);
+      if (s != null && s.getZindex() > 0) {
+        final int deltaX = to.x() - from.x();
+        final int deltaY = to.y() - from.y();
+        BagOfCommands.getInstance().addCommand(new TranslateCommand(s, deltaX, deltaY));
       }
 
-      model.getToolBar().accept(fromAppSector);
-      model.getToolBar().getBin().accept(toAppSector);
-      in = fromAppSector.getResult();
-      out = toAppSector.getResult();
-      if (!in.isEmpty() && !out.isEmpty()) {
-        final Shape toAdd = model.getBestZIndex(in).clone();
-        if (toAdd.getZindex() > 0) {
-          BagOfCommands.getInstance()
-              .addCommand(new DeleteCommand(toAdd, Model.getInstance().getToolBar()));
-          return;
-        }
+      // Special case to forbid bin deletion
+      s = detect(model.getToolBar().getBin(), model.getToolBar().getBin(), from, to, true);
+      if (s != null && s.getZindex() > 0) {
+        return;
       }
+
+      s = detect(model.getToolBar(), model.getToolBar().getBin(), from, to, true);
+      if (s != null && s.getZindex() > 0) {
+        BagOfCommands.getInstance()
+            .addCommand(new DeleteCommand(s, Model.getInstance().getToolBar()));
+        return;
+      }
+
     } else if (b == 3) {
       final int x = Math.min(from.x(), to.x());
       final int y = Math.min(from.y(), to.y());
