@@ -127,6 +127,14 @@ public final class Model {
     return fileBuilder;
   }
 
+  public FileBuilder saveToolbar(final FileBuilder fileBuilder) {
+    fileBuilder.beginDocument();
+    fileBuilder.beginToolBar();
+    fileBuilder.endToolBar();
+    fileBuilder.endDocument();
+    return fileBuilder;
+  }
+
   public ToolBar getToolBar() {
     return toolBar;
   }

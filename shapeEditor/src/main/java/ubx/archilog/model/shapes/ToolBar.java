@@ -63,4 +63,21 @@ public class ToolBar extends Group {
   public ImageRectangle getBin() {
     return bin;
   }
+
+  public ToolBar(boolean empty) {
+    super();
+    this.setZindex(0);
+    this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0), true));
+    bin =
+        new ImageRectangle(
+            0,
+            WINDOW_HEIGHT - (MENU_MARGIN + 10),
+            1,
+            MENU_MARGIN,
+            MENU_MARGIN,
+            "/icons/bin.png",
+            () -> {});
+
+    this.add(bin);
+  }
 }

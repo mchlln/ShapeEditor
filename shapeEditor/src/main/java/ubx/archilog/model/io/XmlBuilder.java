@@ -32,15 +32,18 @@ public class XmlBuilder implements FileBuilder {
 
   public void parseGroup(final Group group) {
     for (final Shape shape : group.getShapes()) {
-      if (shape instanceof Square) {
+      if (shape instanceof ImageRectangle) {
+        continue;
+      } else if (shape instanceof Square) {
         buildSquare((Square) shape);
       } else if (shape instanceof Rectangle) {
         buildRectangle((Rectangle) shape);
       } else if (shape instanceof Circle) {
         buildCircle((Circle) shape);
+      } else if (shape instanceof RegularPolygon) {
+        buildRegularPolygon((RegularPolygon) shape);
       } else if (shape instanceof Group) {
         beginGroup((Group) shape);
-        parseGroup((Group) shape);
         endGroup();
       }
     }
@@ -84,6 +87,17 @@ public class XmlBuilder implements FileBuilder {
     stringBuilder.append("<polygon>\n");
     stringBuilder.append("<sides>").append(polygon.getSides()).append("</sides>\n");
     stringBuilder.append("</polygon>\n");
+  }
+
+  @Override
+  public void buildRegularPolygon(final RegularPolygon polygon) {
+    stringBuilder.append("<regularPolygon>\n");
+    setCoordinates(polygon);
+    setCompleteSize(polygon);
+    stringBuilder.append("<sides>").append(polygon.getSides()).append("</sides>\n");
+    stringBuilder.append("<rotation>").append(polygon.rotation()).append("</rotation>\n");
+    setColor(polygon.getColor());
+    stringBuilder.append("</regularPolygon>\n");
   }
 
   @Override
