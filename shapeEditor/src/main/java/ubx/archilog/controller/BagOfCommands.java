@@ -83,12 +83,12 @@ public final class BagOfCommands implements Observable {
   }
 
   @Override
-  public void addObserver(Observer obs) {
+  public void addObserver(final Observer obs) {
     observers.add(obs);
   }
 
   @Override
-  public void removeObserver(Observer obs) {
+  public void removeObserver(final Observer obs) {
     observers.remove(obs);
   }
 

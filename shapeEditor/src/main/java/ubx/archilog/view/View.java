@@ -42,7 +42,7 @@ public class View implements Observer {
   }
 
   private void loadToolbar() {
-    XmlLoader loader = new XmlLoader();
+    final XmlLoader loader = new XmlLoader();
     try {
       loader.load(".defaultToolbar.xml");
     } catch (Exception e) {
@@ -51,7 +51,7 @@ public class View implements Observer {
   }
 
   public Void quitCallback(Void unused) {
-    XmlBuilder builder = new XmlBuilder();
+    final XmlBuilder builder = new XmlBuilder();
     Model.getInstance().saveToolbar(builder);
     try (FileWriter writer = new FileWriter(".defaultToolbar.xml")) {
       writer.write(builder.getResult());
@@ -73,9 +73,9 @@ public class View implements Observer {
     return null;
   }
 
-  private boolean isWithinTolerance(Position a, Position b) {
-    int dx = a.x() - b.x();
-    int dy = a.y() - b.y();
+  private boolean isWithinTolerance(final Position a, final Position b) {
+    final int dx = a.x() - b.x();
+    final int dy = a.y() - b.y();
     return dx * dx + dy * dy <= MOUSE_TOLERANCE * MOUSE_TOLERANCE;
   }
 
@@ -112,7 +112,7 @@ public class View implements Observer {
       }
     } else if (button == 3) {
 
-      Shape s = detect(Model.getInstance().getCanvas(),  Model.getInstance().getCanvas(), from, from, false);
+      final Shape s = detect(Model.getInstance().getCanvas(),  Model.getInstance().getCanvas(), from, from, false);
       if (s != null && s.zIndex() > 0) {
         BagOfCommands.getInstance().addCommand(new EditShapeCommand(s, renderer));
       }
@@ -120,14 +120,14 @@ public class View implements Observer {
   }
 
   private Shape detect(
-      final Shape in, final Shape out, final Position from, final Position to, boolean clone) {
+      final Shape in, final Shape out, final Position from, final Position to, final boolean clone) {
     final IsInVisitor fromAppSector = new IsInVisitor(from.x(), from.y());
     final IsInVisitor toAppSector = new IsInVisitor(to.x(), to.y());
 
     in.accept(fromAppSector);
     out.accept(toAppSector);
-    List<Shape> inShapes = fromAppSector.getResult();
-    List<Shape> outShapes = toAppSector.getResult();
+    final List<Shape> inShapes = fromAppSector.getResult();
+    final List<Shape> outShapes = toAppSector.getResult();
     if (!inShapes.isEmpty() && !outShapes.isEmpty()) {
       if (clone) {
         return Model.getInstance().getBestZIndex(inShapes).clone();
@@ -190,7 +190,7 @@ public class View implements Observer {
       final int height = Math.abs(to.y() - from.y());
       selection = new Rectangle(x, y, 0, width, height, new Color(255, 0, 0, 255), false);
       Model.getInstance().getCanvas().add(selection);
-      ShapeInZoneVisitor zoneVisitor = new ShapeInZoneVisitor(x, y, width, height);
+      final ShapeInZoneVisitor zoneVisitor = new ShapeInZoneVisitor(x, y, width, height);
       Model.getInstance().getCanvas().accept(zoneVisitor);
       final List<Shape> zone = zoneVisitor.getResult();
       BagOfCommands.getInstance().addCommand(new GroupCommand(zone));

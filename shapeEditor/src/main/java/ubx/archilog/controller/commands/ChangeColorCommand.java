@@ -15,7 +15,7 @@ public class ChangeColorCommand implements Command {
   private boolean firstRun = true;
   private Color selectedColor;
 
-  public ChangeColorCommand(final Shape shape, Render renderer) {
+  public ChangeColorCommand(final Shape shape, final Render renderer) {
     this.shape = shape;
     this.shapeMemento = shape.save();
     this.renderer = renderer;

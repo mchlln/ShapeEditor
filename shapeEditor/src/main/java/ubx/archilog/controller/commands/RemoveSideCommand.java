@@ -6,9 +6,9 @@ import ubx.archilog.model.shapes.Shape;
 
 public class RemoveSideCommand implements Command {
 
-  Shape shape;
+  private final Shape shape;
 
-  public RemoveSideCommand(Shape shape) {
+  public RemoveSideCommand(final Shape shape) {
     this.shape = shape;
   }
 

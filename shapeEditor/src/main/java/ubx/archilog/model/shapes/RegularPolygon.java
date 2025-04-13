@@ -6,12 +6,12 @@ import ubx.archilog.view.Render;
 public class RegularPolygon extends Polygon {
   private int rotation;
 
-  public RegularPolygon(int x, int y, int zIndex, int width, int height, int sides, Color color) {
+  public RegularPolygon(final int x, final int y, final int zIndex, final int width, final int height, final int sides, final Color color) {
     super(x, y, zIndex, width, height, sides, color);
   }
 
   private RegularPolygon(
-      int x, int y, int zIndex, int width, int height, int sides, Color color, int rotation) {
+      final int x, final int y, final int zIndex, final int width, final int height, final int sides, final Color color, final int rotation) {
     super(x, y, zIndex, width, height, sides, color);
     this.rotation = rotation;
   }
@@ -20,19 +20,19 @@ public class RegularPolygon extends Polygon {
   public void draw(final Render render) {
     final int sides = sides();
     if (sides < 3) return;
-    double angle = 2 * Math.PI / sides;
-    double radius = width() / 2.0;
-    double rotationRadians =
+    final double angle = 2 * Math.PI / sides;
+    final double radius = width() / 2.0;
+    final double rotationRadians =
         Math.toRadians(rotation); // Keep magic number for future rotation implementation
 
-    int centerX = x() + width() / 2;
-    int centerY = y() + width() / 2;
+    final int centerX = x() + width() / 2;
+    final int centerY = y() + width() / 2;
 
-    int[] xPoints = new int[sides];
-    int[] yPoints = new int[sides];
+    final int[] xPoints = new int[sides];
+    final int[] yPoints = new int[sides];
 
     for (int i = 0; i < sides; i++) {
-      double theta = i * angle - Math.PI / 2 + rotationRadians;
+      final double theta = i * angle - Math.PI / 2 + rotationRadians;
       xPoints[i] = (int) (centerX + radius * Math.cos(theta));
       yPoints[i] = (int) (centerY + radius * Math.sin(theta));
     }
@@ -48,7 +48,7 @@ public class RegularPolygon extends Polygon {
     return this.rotation;
   }
 
-  public void rotation(int rotation) {
+  public void rotation(final int rotation) {
     this.rotation = rotation;
   }
 
@@ -101,6 +101,7 @@ public class RegularPolygon extends Polygon {
       }
     }
 
+    @Override
     public void restore() {
       super.restore();
       if (shape instanceof RegularPolygon regularPolygon) {

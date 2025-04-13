@@ -10,7 +10,7 @@ public class AddSideCommand implements Command {
   private final Shape shape;
   private final Memento shapeMemento;
 
-  public AddSideCommand(Shape shape) {
+  public AddSideCommand(final Shape shape) {
     this.shape = shape;
     shapeMemento = shape.save();
   }

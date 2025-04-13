@@ -17,16 +17,16 @@ public class Group implements Shape {
   private int zIndex;
   private int width;
   private int height;
-  private boolean borders;
+  private final boolean borders;
 
-  public Group(boolean borders) {
+  public Group(final boolean borders) {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
     this.zIndex = 1;
     this.borders = borders;
   }
 
-  public Group(final int zIndex, boolean borders) {
+  public Group(final int zIndex, final boolean borders) {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
     this.zIndex = zIndex;

@@ -6,7 +6,6 @@ import ubx.archilog.controller.commands.RemoveSideCommand;
 import ubx.archilog.model.shapes.Group;
 import ubx.archilog.model.shapes.ImageRectangle;
 import ubx.archilog.model.shapes.Shape;
-import ubx.archilog.view.Render;
 import ubx.archilog.view.View;
 
 public class SidesEditor {
@@ -14,13 +13,13 @@ public class SidesEditor {
   private final int x;
   private final int y;
 
-  public SidesEditor(Group group, int x, int y) {
+  public SidesEditor(final Group group, final int x, final int y) {
     this.group = group;
     this.x = x;
     this.y = y;
   }
 
-  public void edit(final Shape shape, final Render render) {
+  public void edit(final Shape shape) {
     final Shape addSideButton =
         new ImageRectangle(
             x,

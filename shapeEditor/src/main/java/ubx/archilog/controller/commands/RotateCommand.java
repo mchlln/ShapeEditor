@@ -9,7 +9,7 @@ public class RotateCommand implements Command {
   private final Shape shape;
   private final Memento memento;
 
-  public RotateCommand(Shape shape) {
+  public RotateCommand(final Shape shape) {
     this.shape = shape;
     this.memento = shape.save();
   }

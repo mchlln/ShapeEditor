@@ -51,7 +51,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   }
 
   @Override
-  public void drawPolygon(int[] xCoords, int[] yCoords, int sides, Color color) {
+  public void drawPolygon(final int[] xCoords, final int[] yCoords, final int sides, final Color color) {
     shapes.add(new RegularPolygon(xCoords, yCoords, sides, color));
   }
 
@@ -81,7 +81,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
   }
 
   @Override
-  public void showColorPickerPopUp(String text, Color color, Function<Color, Void> callBack) {
+  public void showColorPickerPopUp(final String text, final Color color, final Function<Color, Void> callBack) {
     final Dialog dialog = new Dialog(this, "Pick a Color", true);
     dialog.setLayout(new FlowLayout());
     final java.awt.Color initialColor =
@@ -98,7 +98,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
     colorButton.addActionListener(
         e -> {
-          java.awt.Color newColor =
+          final java.awt.Color newColor =
               JColorChooser.showDialog(dialog, "Choose a color", selectedColor[0]);
           if (newColor != null) {
             selectedColor[0] = newColor;
@@ -260,7 +260,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
 
       try {
         image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(path));
-        MediaTracker tracker = new MediaTracker(new Component() {});
+        final MediaTracker tracker = new MediaTracker(new Component() {});
         tracker.addImage(image, 0);
         tracker.waitForID(0);
       } catch (Exception e) {
