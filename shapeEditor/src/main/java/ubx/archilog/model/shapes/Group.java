@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import ubx.archilog.model.Color;
-import ubx.archilog.model.Memento;
 import ubx.archilog.model.Position;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;

@@ -2,7 +2,7 @@ package ubx.archilog.controller.commands;
 
 import java.util.List;
 import ubx.archilog.controller.Command;
-import ubx.archilog.model.Memento;
+import ubx.archilog.model.shapes.Memento;
 import ubx.archilog.model.Model;
 import ubx.archilog.model.shapes.Group;
 import ubx.archilog.model.shapes.Shape;

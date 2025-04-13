@@ -2,11 +2,10 @@ package ubx.archilog.controller;
 
 import java.util.*;
 import ubx.archilog.controller.commands.*;
-import ubx.archilog.model.Observable;
-import ubx.archilog.model.ShapeObserver;
+import ubx.archilog.model.Observer;
 
 public final class BagOfCommands implements Observable {
-  private List<ShapeObserver> observers = new ArrayList<>();
+  private List<Observer> observers = new ArrayList<>();
   private static BagOfCommands instance = null;
 
   private final Queue<Command> commands = new LinkedList<>();
@@ -84,17 +83,17 @@ public final class BagOfCommands implements Observable {
   }
 
   @Override
-  public void addObserver(ShapeObserver obs) {
+  public void addObserver(Observer obs) {
     observers.add(obs);
   }
 
   @Override
-  public void removeObserver(ShapeObserver obs) {
+  public void removeObserver(Observer obs) {
     observers.remove(obs);
   }
 
   @Override
   public void notifyObservers() {
-    observers.forEach(ShapeObserver::update);
+    observers.forEach(Observer::update);
   }
 }

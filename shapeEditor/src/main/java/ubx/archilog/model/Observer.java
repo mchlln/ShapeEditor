@@ -1,5 +1,5 @@
 package ubx.archilog.model;
 
-public interface ShapeObserver {
+public interface Observer {
   void update();
 }
