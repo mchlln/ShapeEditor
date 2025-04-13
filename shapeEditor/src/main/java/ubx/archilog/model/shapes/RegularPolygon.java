@@ -46,6 +46,36 @@ public class RegularPolygon extends Polygon {
         getX(), getY(), getZindex(), getWidth(), getHeight(), getSides(), getColor(), rotation);
   }
 
+  public int rotation() {
+    return this.rotation;
+  }
+
+  public void setRotation(int rotation) {
+    this.rotation = rotation;
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName()
+        + " [x="
+        + getX()
+        + ", y="
+        + getY()
+        + ", zIndex="
+        + super.getZindex()
+        + ", sides="
+        + getSides()
+        + ", width= "
+        + getWidth()
+        + ", height="
+        + getHeight()
+        + ", rotation="
+        + rotation
+        + ", color="
+        + getColor()
+        + "]";
+  }
+
   @Override
   public Memento save() {
     return new RegularPolygonMemento(this);

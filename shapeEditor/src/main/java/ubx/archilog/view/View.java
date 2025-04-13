@@ -1,11 +1,15 @@
 package ubx.archilog.view;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import ubx.archilog.controller.BagOfCommands;
 import ubx.archilog.controller.commands.*;
 import ubx.archilog.model.*;
+import ubx.archilog.model.io.XmlBuilder;
+import ubx.archilog.model.io.XmlLoader;
 import ubx.archilog.model.shapes.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
@@ -38,10 +42,28 @@ public class View {
     group.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     group.updateChildZIndex();
     model.getCanvas().add(group);
+    loadToolbar();
     updateView();
   }
 
+  private void loadToolbar() {
+    XmlLoader loader = new XmlLoader();
+    try {
+      loader.load(".defaultToolbar.xml");
+      System.out.println("TOOLBAR :" + Model.getInstance().getToolBar());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public Void quitCallback(Void unused) {
+    XmlBuilder builder = new XmlBuilder();
+    Model.getInstance().saveToolbar(builder);
+    try (FileWriter writer = new FileWriter(".defaultToolbar.xml")) {
+      writer.write(builder.getResult());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 

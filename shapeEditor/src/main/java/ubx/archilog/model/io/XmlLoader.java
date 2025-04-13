@@ -1,6 +1,8 @@
 package ubx.archilog.model.io;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import ubx.archilog.model.*;
@@ -35,8 +37,13 @@ public class XmlLoader implements FileLoader {
     final NodeList toolBarNodes = parentElement.getElementsByTagName("toolBar");
     for (int i = 0; i < toolBarNodes.getLength(); i++) {
       final Element toolBarElement = (Element) toolBarNodes.item(i);
-      final ToolBar toolBar = new ToolBar();
-      loadGroup(toolBarElement, toolBar);
+      final ToolBar toolBar = new ToolBar(true);
+      List<Shape> toAdd = loadGroup(toolBarElement, toolBar);
+      for (Shape shape : toAdd) {
+        if (shape.getZindex() != 0) {
+          toolBar.addShapeToToolBar(shape);
+        }
+      }
       Model.getInstance().setToolBar(toolBar);
     }
 
@@ -44,13 +51,17 @@ public class XmlLoader implements FileLoader {
     for (int i = 0; i < canvasNodes.getLength(); i++) {
       final Element canvasElement = (Element) canvasNodes.item(i);
       final Group canvas = new Group();
-      loadGroup(canvasElement, canvas);
+      List<Shape> toAdd = loadGroup(canvasElement, canvas);
+      for (Shape shape : toAdd) {
+        canvas.add(shape);
+      }
       canvas.setZindex(0);
       Model.getInstance().setCanvas(canvas);
     }
   }
 
-  private void loadGroup(final Element groupElement, final Group group) {
+  private List<Shape> loadGroup(final Element groupElement, final Group group) {
+    List<Shape> children = new ArrayList<>();
     final NodeList groupChildren = groupElement.getChildNodes();
     for (int i = 0; i < groupChildren.getLength(); i++) {
       final Node node = groupChildren.item(i);
@@ -59,24 +70,32 @@ public class XmlLoader implements FileLoader {
         switch (element.getTagName()) {
           case "group" -> {
             final Group childGroup = new Group();
-            loadGroup(element, childGroup);
-            group.add(childGroup);
+            List<Shape> toAdd = loadGroup(element, childGroup);
+            for (Shape shape : toAdd) {
+              childGroup.add(shape);
+            }
+            children.add(childGroup);
           }
           case "square" -> {
             final Square square = loadSquare(element);
-            group.add(square);
+            children.add(square);
           }
           case "rectangle" -> {
             final Rectangle rectangle = loadRectangle(element);
-            group.add(rectangle);
+            children.add(rectangle);
           }
           case "circle" -> {
             final Circle circle = loadCircle(element);
-            group.add(circle);
+            children.add(circle);
+          }
+          case "regularPolygon" -> {
+            final RegularPolygon polygon = loadPolygon(element);
+            children.add(polygon);
           }
         }
       }
     }
+    return children;
   }
 
   private Square loadSquare(final Element squareElement) {
@@ -124,6 +143,38 @@ public class XmlLoader implements FileLoader {
     circle.setRadius(
         Integer.parseInt(circleElement.getElementsByTagName("radius").item(0).getTextContent()));
     return circle;
+  }
+
+  private RegularPolygon loadPolygon(final Element polygonElement) {
+    final RegularPolygon polygon = new RegularPolygon(0, 0, 0, 0, 0, 0, null);
+    loadShapeAttributes(polygonElement, polygon);
+    polygon.setSides(
+        Integer.parseInt(polygonElement.getElementsByTagName("sides").item(0).getTextContent()));
+    polygon.setWidth(
+        Integer.parseInt(
+            polygonElement
+                .getElementsByTagName("size")
+                .item(0)
+                .getChildNodes()
+                .item(1)
+                .getTextContent()));
+    polygon.setHeight(
+        Integer.parseInt(
+            polygonElement
+                .getElementsByTagName("size")
+                .item(0)
+                .getChildNodes()
+                .item(3)
+                .getTextContent()));
+    polygon.setRotation(
+        Integer.parseInt(
+            polygonElement
+                .getElementsByTagName("rotation")
+                .item(0)
+                .getChildNodes()
+                .item(0)
+                .getTextContent()));
+    return polygon;
   }
 
   private void loadShapeAttributes(final Element shapeElement, final Shape shape) {

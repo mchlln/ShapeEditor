@@ -23,7 +23,7 @@ public class GroupCommand implements Command {
     if (shapes.size() > 1) {
       newGroup = new Group();
       for (final Shape shape : shapes) {
-        Model.getInstance().getCanvas().getShapes().remove(shape); // Unlink from canvas
+        Model.getInstance().getCanvas().remove(shape); // Unlink from canvas
         shapesMemento.add(shape.save());
         newGroup.add(shape);
       }
