@@ -1,0 +1,14 @@
+@startuml
+User -> View: mouseClicked() + search for clicked shape
+View -> EditShapeCommand : new EditShapeCommand(clickedShape)
+EditShapeCommand -> ShapeEditorFactory : new ShapeEditorFactory(clickedShape)
+ShapeEditorFactory --> EditShapeCommand : editorFactory
+EditShapeCommand --> View : command
+View -> BagOfCommand: addCommand(command)
+BagOfCommand -> BagOfCommand : executeAll()
+BagOfCommand -> EditShapeCommand : execute()
+EditShapeCommand -> ShapeEditorFactory : createEditor()
+ShapeEditorFactory --> EditShapeCommand : shapeEditor
+EditShapeCommand -> EditShapeCommand : shapeEditor.edit(clickedShape)
+EditShapeCommand --> User: showResult
+@enduml
