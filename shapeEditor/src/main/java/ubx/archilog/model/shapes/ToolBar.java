@@ -13,7 +13,7 @@ public class ToolBar extends Group {
 
   public ToolBar() {
     super(true);
-    this.setZindex(0);
+    this.zIndex(0);
     this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0), true));
     // this.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
     bin =
@@ -38,8 +38,8 @@ public class ToolBar extends Group {
     if (shapeCount >= 8) {
       return;
     }
-    shape.scale((float) MENU_MARGIN / Math.max(shape.getWidth(), shape.getHeight()));
-    shape.translate(-shape.getX(), shapeCount * 60 + MENU_MARGIN - shape.getY());
+    shape.scale((float) MENU_MARGIN / Math.max(shape.width(), shape.height()));
+    shape.translate(-shape.x(), shapeCount * 60 + MENU_MARGIN - shape.y());
     super.add(shape);
     shapeCount++;
   }
@@ -53,9 +53,9 @@ public class ToolBar extends Group {
 
   private void updatePositions() {
     int currentY = MENU_MARGIN;
-    for (final Shape shape : getShapes()) {
+    for (final Shape shape : shapes()) {
       if (shape.equals(bin)) continue;
-      shape.moveTo(new Position(shape.getX(), currentY));
+      shape.moveTo(new Position(shape.x(), currentY));
       currentY += 60;
     }
   }
@@ -66,7 +66,7 @@ public class ToolBar extends Group {
 
   public ToolBar(boolean empty) {
     super(true);
-    this.setZindex(0);
+    this.zIndex(0);
     this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0), true));
     bin =
         new ImageRectangle(

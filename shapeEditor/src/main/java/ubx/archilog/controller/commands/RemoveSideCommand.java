@@ -14,8 +14,8 @@ public class RemoveSideCommand implements Command {
 
   @Override
   public void execute() {
-    if (shape instanceof Polygon polygon && polygon.getSides() > 3) {
-      polygon.setSides(polygon.getSides() - 1);
+    if (shape instanceof Polygon polygon && polygon.sides() > 3) {
+      polygon.sides(polygon.sides() - 1);
     }
   }
 

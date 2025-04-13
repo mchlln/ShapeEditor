@@ -25,17 +25,17 @@ public class ChangeColorCommand implements Command {
   public void execute() {
     if (shape instanceof AbstractShape abstractShape) {
       if (firstRun) {
-        renderer.showColorPickerPopUp("", abstractShape.getColor(), this::changeColor);
+        renderer.showColorPickerPopUp("", abstractShape.color(), this::changeColor);
         firstRun = false;
       } else {
-        abstractShape.setColor(selectedColor);
+        abstractShape.color(selectedColor);
       }
     }
   }
 
   public Void changeColor(final Color color) {
     this.selectedColor = color;
-    shape.setColor(color);
+    shape.color(color);
     return null;
   }
 

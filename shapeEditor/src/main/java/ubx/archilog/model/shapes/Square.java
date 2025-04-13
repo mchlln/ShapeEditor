@@ -21,8 +21,7 @@ public class Square extends Polygon {
 
   @Override
   public void draw(final Render render) {
-    render.drawRect(
-        super.getX(), super.getY(), super.getWidth(), super.getHeight(), true, super.getColor());
+    render.drawRect(super.x(), super.y(), super.width(), super.height(), true, super.color());
   }
 
   @Override
@@ -32,14 +31,13 @@ public class Square extends Polygon {
 
   @Override
   public Shape clone() {
-    return new Square(
-        super.getX(), super.getY(), super.getZindex(), super.getWidth(), super.getColor());
+    return new Square(super.x(), super.y(), super.zIndex(), super.width(), super.color());
   }
 
   @Override
   public boolean equals(final Object obj) {
     if (obj instanceof Square) {
-      return getWidth() == ((Square) obj).getWidth() && super.equals(obj);
+      return width() == ((Square) obj).width() && super.equals(obj);
     }
     return false;
   }
@@ -47,7 +45,7 @@ public class Square extends Polygon {
   @Override
   public int hashCode() {
     int result = super.hashCode();
-    result = 31 * result + getWidth();
+    result = 31 * result + width();
     return result;
   }
 
@@ -55,15 +53,15 @@ public class Square extends Polygon {
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="
-        + super.getX()
+        + super.x()
         + ", y="
-        + super.getY()
+        + super.y()
         + ", zIndex="
-        + super.getZindex()
+        + super.zIndex()
         + ", size= "
-        + getWidth()
+        + width()
         + ", color="
-        + super.getColor()
+        + super.color()
         + "]";
   }
 }

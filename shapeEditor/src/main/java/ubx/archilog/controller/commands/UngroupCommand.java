@@ -18,20 +18,20 @@ public class UngroupCommand implements Command {
 
   @Override
   public void execute() {
-    final List<Shape> shapes = List.copyOf(group.getShapes());
+    final List<Shape> shapes = List.copyOf(group.shapes());
     System.out.println("To ungroup: " + shapes);
     for (final Shape shape : shapes) {
       System.out.println("Ungrouping shape: " + shape);
       if (shape instanceof Group) {
-        shape.setZindex(1);
+        shape.zIndex(1);
         ((Group) shape).updateChildZIndex();
 
       } else {
-        shape.setZindex(1);
+        shape.zIndex(1);
       }
       group.remove(shape);
       Model.getInstance().getCanvas().add(shape);
-      System.out.println("Remaining: " + group.getShapes() + " + in shape " + shapes);
+      System.out.println("Remaining: " + group.shapes() + " + in shape " + shapes);
     }
   }
 
@@ -39,6 +39,6 @@ public class UngroupCommand implements Command {
   public void undo() {
     System.out.println("undo ungroup command");
     groupMemento.restore();
-    System.out.println("Ungroup restored : " + group.getShapes());
+    System.out.println("Ungroup restored : " + group.shapes());
   }
 }

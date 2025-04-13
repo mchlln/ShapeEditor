@@ -68,7 +68,7 @@ public class View implements ShapeObserver {
   }
 
   public void updateView() {
-    for (final Shape shape : Model.getInstance().getComponents().getShapes()) {
+    for (final Shape shape : Model.getInstance().getComponents().shapes()) {
       shape.draw(renderer);
     }
     renderer.update();
@@ -106,7 +106,7 @@ public class View implements ShapeObserver {
       if (!in.isEmpty()) {
         for (final Shape shape : in) {
           if (shape instanceof ImageRectangle imageRectangle) {
-            imageRectangle.getAction().run();
+            imageRectangle.action().run();
           } else if (shape instanceof Group group) {
             visitor = new IsInVisitor(position.x(), position.y());
             group.accept(visitor);
@@ -114,7 +114,7 @@ public class View implements ShapeObserver {
             System.out.println("IN: " + in);
             final Shape clickedButton = Model.getInstance().getBestZIndex(in);
             if (clickedButton instanceof ImageRectangle bu) {
-              bu.getAction().run();
+              bu.action().run();
             }
           }
         }
@@ -125,7 +125,7 @@ public class View implements ShapeObserver {
       final List<Shape> in = visitor.getResult();
       if (!in.isEmpty()) {
         final Shape best = Model.getInstance().getBestZIndex(in);
-        if (best.getZindex() > 0) {
+        if (best.zIndex() > 0) {
           BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
         }
       }
@@ -158,26 +158,26 @@ public class View implements ShapeObserver {
 
       // Case adding shape to canvas
       Shape s = detect(model.getToolBar(), model.getCanvas(), from, to, true);
-      if (s != null && s.getZindex() > 0) {
+      if (s != null && s.zIndex() > 0) {
         BagOfCommands.getInstance().addCommand(new CloneToCanvasCommand(s, to));
       }
 
       // Case adding shape to toolbar
       // Special case for delete from canvas
       s = detect(model.getCanvas(), model.getToolBar().getBin(), from, to, true);
-      if (s != null && s.getZindex() > 0) {
+      if (s != null && s.zIndex() > 0) {
         BagOfCommands.getInstance()
             .addCommand(new DeleteCommand(s, Model.getInstance().getCanvas()));
       }
 
       s = detect(model.getCanvas(), model.getToolBar(), from, to, true);
-      if (s != null && s.getZindex() > 0) {
+      if (s != null && s.zIndex() > 0) {
         BagOfCommands.getInstance().addCommand(new AddToToolBarCommand(s));
       }
 
       // Moving shape from canvas
       s = detect(model.getCanvas(), model.getCanvas(), from, to, false);
-      if (s != null && s.getZindex() > 0) {
+      if (s != null && s.zIndex() > 0) {
         final int deltaX = to.x() - from.x();
         final int deltaY = to.y() - from.y();
         BagOfCommands.getInstance().addCommand(new TranslateCommand(s, deltaX, deltaY));
@@ -190,7 +190,7 @@ public class View implements ShapeObserver {
       }*/
 
       s = detect(model.getToolBar(), model.getToolBar().getBin(), from, to, true);
-      if (s != null && s.getZindex() > 0) {
+      if (s != null && s.zIndex() > 0) {
         BagOfCommands.getInstance()
             .addCommand(new DeleteCommand(s, Model.getInstance().getToolBar()));
         return;

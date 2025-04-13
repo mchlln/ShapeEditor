@@ -31,7 +31,7 @@ public class XmlBuilder implements FileBuilder {
   }
 
   public void parseGroup(final Group group) {
-    for (final Shape shape : group.getShapes()) {
+    for (final Shape shape : group.shapes()) {
       if (shape instanceof ImageRectangle) {
         continue;
       } else if (shape instanceof Square) {
@@ -85,7 +85,7 @@ public class XmlBuilder implements FileBuilder {
   @Override
   public void buildPolygon(final Polygon polygon) {
     stringBuilder.append("<polygon>\n");
-    stringBuilder.append("<sides>").append(polygon.getSides()).append("</sides>\n");
+    stringBuilder.append("<sides>").append(polygon.sides()).append("</sides>\n");
     stringBuilder.append("</polygon>\n");
   }
 
@@ -94,9 +94,9 @@ public class XmlBuilder implements FileBuilder {
     stringBuilder.append("<regularPolygon>\n");
     setCoordinates(polygon);
     setCompleteSize(polygon);
-    stringBuilder.append("<sides>").append(polygon.getSides()).append("</sides>\n");
+    stringBuilder.append("<sides>").append(polygon.sides()).append("</sides>\n");
     stringBuilder.append("<rotation>").append(polygon.rotation()).append("</rotation>\n");
-    setColor(polygon.getColor());
+    setColor(polygon.color());
     stringBuilder.append("</regularPolygon>\n");
   }
 
@@ -107,8 +107,8 @@ public class XmlBuilder implements FileBuilder {
   public void buildCircle(final Circle circle) {
     stringBuilder.append("<circle>\n");
     setCoordinates(circle);
-    stringBuilder.append("<radius>").append(circle.getRadius()).append("</radius>\n");
-    setColor(circle.getColor());
+    stringBuilder.append("<radius>").append(circle.radius()).append("</radius>\n");
+    setColor(circle.color());
     stringBuilder.append("</circle>\n");
   }
 
@@ -117,7 +117,7 @@ public class XmlBuilder implements FileBuilder {
     stringBuilder.append("<rectangle>\n");
     setCoordinates(rectangle);
     setCompleteSize(rectangle);
-    setColor(rectangle.getColor());
+    setColor(rectangle.color());
     stringBuilder.append("<fill>").append(rectangle.isFill()).append("</fill>\n");
     stringBuilder.append("</rectangle>\n");
   }
@@ -127,9 +127,9 @@ public class XmlBuilder implements FileBuilder {
     stringBuilder.append("<square>\n");
     setCoordinates(square);
     stringBuilder.append("<size>\n");
-    stringBuilder.append("<width>").append(square.getWidth()).append("</width>\n");
+    stringBuilder.append("<width>").append(square.width()).append("</width>\n");
     stringBuilder.append("</size>\n");
-    setColor(square.getColor());
+    setColor(square.color());
     stringBuilder.append("</square>\n");
   }
 
@@ -140,9 +140,9 @@ public class XmlBuilder implements FileBuilder {
 
   private void setCoordinates(final Shape shape) {
     stringBuilder.append("<coordinates>\n");
-    stringBuilder.append("<x>").append(shape.getX()).append("</x>\n");
-    stringBuilder.append("<y>").append(shape.getY()).append("</y>\n");
-    stringBuilder.append("<zIndex>").append(shape.getZindex()).append("</zIndex>\n");
+    stringBuilder.append("<x>").append(shape.x()).append("</x>\n");
+    stringBuilder.append("<y>").append(shape.y()).append("</y>\n");
+    stringBuilder.append("<zIndex>").append(shape.zIndex()).append("</zIndex>\n");
     stringBuilder.append("</coordinates>\n");
   }
 
@@ -157,8 +157,8 @@ public class XmlBuilder implements FileBuilder {
 
   private void setCompleteSize(final Shape shape) {
     stringBuilder.append("<size>\n");
-    stringBuilder.append("<width>").append(shape.getWidth()).append("</width>\n");
-    stringBuilder.append("<height>").append(shape.getHeight()).append("</height>\n");
+    stringBuilder.append("<width>").append(shape.width()).append("</width>\n");
+    stringBuilder.append("<height>").append(shape.height()).append("</height>\n");
     stringBuilder.append("</size>\n");
   }
 }

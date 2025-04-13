@@ -16,7 +16,7 @@ public class AddToToolBarCommand implements Command {
 
   @Override
   public void execute() {
-    shape.setZindex(1);
+    shape.zIndex(1);
     Model.getInstance().getToolBar().addShapeToToolBar(shape);
   }
 

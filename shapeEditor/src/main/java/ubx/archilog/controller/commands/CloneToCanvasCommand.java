@@ -20,7 +20,7 @@ public class CloneToCanvasCommand implements Command {
   public void execute() {
     if (shape == null) return;
     shape.moveTo(new Position(position.x(), position.y()));
-    shape.setZindex(1);
+    shape.zIndex(1);
     Model.getInstance().getCanvas().add(shape);
   }
 

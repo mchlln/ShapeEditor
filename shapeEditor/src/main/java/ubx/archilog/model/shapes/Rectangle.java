@@ -40,15 +40,14 @@ public class Rectangle extends Polygon {
 
   @Override
   public void rotate() {
-    final int tmp = super.getWidth();
-    super.setWidth(super.getHeight());
-    super.setHeight(tmp);
+    final int tmp = super.width();
+    super.width(super.height());
+    super.height(tmp);
   }
 
   @Override
   public void draw(final Render render) {
-    render.drawRect(
-        super.getX(), super.getY(), super.getWidth(), super.getHeight(), fill, super.getColor());
+    render.drawRect(super.x(), super.y(), super.width(), super.height(), fill, super.color());
   }
 
   @Override
@@ -59,20 +58,14 @@ public class Rectangle extends Polygon {
   @Override
   public Shape clone() {
     return new Rectangle(
-        super.getX(),
-        super.getY(),
-        super.getZindex(),
-        super.getWidth(),
-        super.getHeight(),
-        super.getColor(),
-        fill);
+        super.x(), super.y(), super.zIndex(), super.width(), super.height(), super.color(), fill);
   }
 
   @Override
   public boolean equals(final Object obj) {
     if (obj instanceof Rectangle) {
-      return getHeight() == ((Rectangle) obj).getHeight()
-          && getWidth() == ((Rectangle) obj).getWidth()
+      return height() == ((Rectangle) obj).height()
+          && width() == ((Rectangle) obj).width()
           && super.equals(obj);
     }
     return false;
@@ -81,8 +74,8 @@ public class Rectangle extends Polygon {
   @Override
   public int hashCode() {
     int result = super.hashCode();
-    result = 31 * result + getWidth();
-    result = 31 * result + getHeight();
+    result = 31 * result + width();
+    result = 31 * result + height();
     return result;
   }
 
@@ -90,17 +83,17 @@ public class Rectangle extends Polygon {
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="
-        + getX()
+        + x()
         + ", y="
-        + getY()
+        + y()
         + ", zIndex="
-        + super.getZindex()
+        + super.zIndex()
         + ", width= "
-        + getWidth()
+        + width()
         + ", height="
-        + getHeight()
+        + height()
         + ", color="
-        + getColor()
+        + color()
         + "]";
   }
 }

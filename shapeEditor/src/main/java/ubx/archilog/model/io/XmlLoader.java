@@ -40,7 +40,7 @@ public class XmlLoader implements FileLoader {
       final ToolBar toolBar = new ToolBar(true);
       List<Shape> toAdd = loadGroup(toolBarElement, toolBar);
       for (Shape shape : toAdd) {
-        if (shape.getZindex() != 0) {
+        if (shape.zIndex() != 0) {
           toolBar.addShapeToToolBar(shape);
         }
       }
@@ -55,7 +55,7 @@ public class XmlLoader implements FileLoader {
       for (Shape shape : toAdd) {
         canvas.add(shape);
       }
-      canvas.setZindex(0);
+      canvas.zIndex(0);
       Model.getInstance().setCanvas(canvas);
     }
   }
@@ -101,7 +101,7 @@ public class XmlLoader implements FileLoader {
   private Square loadSquare(final Element squareElement) {
     final Square square = new Square(0, 0, 0, 0);
     loadShapeAttributes(squareElement, square);
-    square.setWidth(
+    square.width(
         Integer.parseInt(
             squareElement
                 .getElementsByTagName("size")
@@ -115,7 +115,7 @@ public class XmlLoader implements FileLoader {
   private Rectangle loadRectangle(final Element rectangleElement) {
     final Rectangle rectangle = new Rectangle(0, 0, 0, 0, 0, false);
     loadShapeAttributes(rectangleElement, rectangle);
-    rectangle.setWidth(
+    rectangle.width(
         Integer.parseInt(
             rectangleElement
                 .getElementsByTagName("size")
@@ -123,7 +123,7 @@ public class XmlLoader implements FileLoader {
                 .getChildNodes()
                 .item(1)
                 .getTextContent()));
-    rectangle.setHeight(
+    rectangle.height(
         Integer.parseInt(
             rectangleElement
                 .getElementsByTagName("size")
@@ -140,7 +140,7 @@ public class XmlLoader implements FileLoader {
   private Circle loadCircle(final Element circleElement) {
     final Circle circle = new Circle(0, 0, 0, 0);
     loadShapeAttributes(circleElement, circle);
-    circle.setRadius(
+    circle.radius(
         Integer.parseInt(circleElement.getElementsByTagName("radius").item(0).getTextContent()));
     return circle;
   }
@@ -148,9 +148,9 @@ public class XmlLoader implements FileLoader {
   private RegularPolygon loadPolygon(final Element polygonElement) {
     final RegularPolygon polygon = new RegularPolygon(0, 0, 0, 0, 0, 0, null);
     loadShapeAttributes(polygonElement, polygon);
-    polygon.setSides(
+    polygon.sides(
         Integer.parseInt(polygonElement.getElementsByTagName("sides").item(0).getTextContent()));
-    polygon.setWidth(
+    polygon.width(
         Integer.parseInt(
             polygonElement
                 .getElementsByTagName("size")
@@ -158,7 +158,7 @@ public class XmlLoader implements FileLoader {
                 .getChildNodes()
                 .item(1)
                 .getTextContent()));
-    polygon.setHeight(
+    polygon.height(
         Integer.parseInt(
             polygonElement
                 .getElementsByTagName("size")
@@ -166,7 +166,7 @@ public class XmlLoader implements FileLoader {
                 .getChildNodes()
                 .item(3)
                 .getTextContent()));
-    polygon.setRotation(
+    polygon.rotation(
         Integer.parseInt(
             polygonElement
                 .getElementsByTagName("rotation")
@@ -180,11 +180,11 @@ public class XmlLoader implements FileLoader {
   private void loadShapeAttributes(final Element shapeElement, final Shape shape) {
     final Element coordinatesElement =
         (Element) shapeElement.getElementsByTagName("coordinates").item(0);
-    shape.setX(
+    shape.x(
         Integer.parseInt(coordinatesElement.getElementsByTagName("x").item(0).getTextContent()));
-    shape.setY(
+    shape.y(
         Integer.parseInt(coordinatesElement.getElementsByTagName("y").item(0).getTextContent()));
-    shape.setZindex(
+    shape.zIndex(
         Integer.parseInt(
             coordinatesElement.getElementsByTagName("zIndex").item(0).getTextContent()));
 
@@ -195,6 +195,6 @@ public class XmlLoader implements FileLoader {
             Integer.parseInt(colorElement.getElementsByTagName("g").item(0).getTextContent()),
             Integer.parseInt(colorElement.getElementsByTagName("b").item(0).getTextContent()),
             Integer.parseInt(colorElement.getElementsByTagName("a").item(0).getTextContent()));
-    shape.setColor(color);
+    shape.color(color);
   }
 }

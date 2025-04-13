@@ -7,27 +7,29 @@ import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;
 
 public interface Shape extends Cloneable {
-  int getX();
+  int x();
 
-  int getY();
+  int y();
 
-  void setX(int x);
+  void x(int x);
 
-  void setY(int y);
+  void y(int y);
 
-  void setColor(Color color);
+  Color color();
 
-  int getZindex();
+  void color(Color color);
 
-  void setZindex(int z);
+  int zIndex();
 
-  int getWidth();
+  void zIndex(int z);
 
-  void setWidth(int width);
+  int width();
 
-  int getHeight();
+  void width(int width);
 
-  void setHeight(int height);
+  int height();
+
+  void height(int height);
 
   void moveTo(Position pos);
 

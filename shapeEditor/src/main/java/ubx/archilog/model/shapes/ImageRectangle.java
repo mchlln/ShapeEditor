@@ -21,10 +21,10 @@ public class ImageRectangle extends Rectangle {
 
   @Override
   public void draw(final Render render) {
-    render.drawImageRect(super.getX(), super.getY(), super.getWidth(), super.getHeight(), path);
+    render.drawImageRect(super.x(), super.y(), super.width(), super.height(), path);
   }
 
-  public Runnable getAction() {
+  public Runnable action() {
     return action;
   }
 }

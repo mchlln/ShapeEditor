@@ -14,12 +14,12 @@ public class Circle extends Ellipsoid {
     super(x, y, zIndex, radius * 2, radius * 2);
   }
 
-  public int getRadius() {
-    return super.getWidth() / 2;
+  public int radius() {
+    return super.width() / 2;
   }
 
-  public void setRadius(final int radius) {
-    super.setWidth(radius * 2);
+  public void radius(final int radius) {
+    super.width(radius * 2);
   }
 
   @Override
@@ -30,18 +30,18 @@ public class Circle extends Ellipsoid {
 
   @Override
   public void draw(final Render render) {
-    render.drawCircle(super.getX(), super.getY(), getRadius(), super.getColor());
+    render.drawCircle(super.x(), super.y(), radius(), super.color());
   }
 
   @Override
   public Shape clone() {
-    return new Circle(super.getX(), super.getY(), super.getZindex(), getRadius(), super.getColor());
+    return new Circle(super.x(), super.y(), super.zIndex(), radius(), super.color());
   }
 
   @Override
   public boolean equals(final Object obj) {
     if (obj instanceof Circle) {
-      return this.getRadius() == ((Circle) obj).getRadius() && super.equals(obj);
+      return this.radius() == ((Circle) obj).radius() && super.equals(obj);
     }
     return false;
   }
@@ -49,7 +49,7 @@ public class Circle extends Ellipsoid {
   @Override
   public int hashCode() {
     int result = super.hashCode();
-    result = 31 * result + getRadius();
+    result = 31 * result + radius();
     return result;
   }
 
@@ -57,15 +57,15 @@ public class Circle extends Ellipsoid {
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="
-        + super.getX()
+        + super.x()
         + ", y="
-        + super.getY()
+        + super.y()
         + ", zIndex="
-        + super.getZindex()
+        + super.zIndex()
         + ", radius= "
-        + getRadius()
+        + radius()
         + ", color="
-        + super.getColor()
+        + super.color()
         + "]";
   }
 

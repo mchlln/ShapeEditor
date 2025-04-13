@@ -28,11 +28,11 @@ public class Polygon extends AbstractShape {
     this.sides = sides;
   }
 
-  public int getSides() {
+  public int sides() {
     return this.sides;
   }
 
-  public void setSides(final int sides) {
+  public void sides(final int sides) {
     this.sides = sides;
   }
 }

@@ -34,7 +34,7 @@ public abstract class AbstractEditor implements ShapeEditor {
             () -> BagOfCommands.getInstance().addCommand(new ResizeCommand(shape, 0.8f)));
 
     group = new Group(false);
-    group.setZindex(0);
+    group.zIndex(0);
     group.add(scaleIncreaseButton);
     group.add(scaleDecreaseButton);
   }

@@ -37,12 +37,12 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
 
   @Override
   public void visit(final Circle circle) {
-    if (circle.getZindex() > 0
+    if (circle.zIndex() > 0
         && intersects(
-            circle.getX(),
-            circle.getY(),
-            circle.getWidth(),
-            circle.getHeight(),
+            circle.x(),
+            circle.y(),
+            circle.width(),
+            circle.height(),
             zoneX,
             zoneY,
             zoneWidth,
@@ -53,12 +53,12 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
 
   @Override
   public void visit(final Square square) {
-    if (square.getZindex() > 0
+    if (square.zIndex() > 0
         && intersects(
-            square.getX(),
-            square.getY(),
-            square.getWidth(),
-            square.getHeight(),
+            square.x(),
+            square.y(),
+            square.width(),
+            square.height(),
             zoneX,
             zoneY,
             zoneWidth,
@@ -69,12 +69,12 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
 
   @Override
   public void visit(final Rectangle rectangle) {
-    if (rectangle.getZindex() > 0
+    if (rectangle.zIndex() > 0
         && intersects(
-            rectangle.getX(),
-            rectangle.getY(),
-            rectangle.getWidth(),
-            rectangle.getHeight(),
+            rectangle.x(),
+            rectangle.y(),
+            rectangle.width(),
+            rectangle.height(),
             zoneX,
             zoneY,
             zoneWidth,
@@ -85,14 +85,14 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
 
   @Override
   public void visit(final Group group) {
-    if (group.getZindex() == 0) {
-      for (final Shape shape : group.getShapes()) {
-        if (shape.getZindex() > 0
+    if (group.zIndex() == 0) {
+      for (final Shape shape : group.shapes()) {
+        if (shape.zIndex() > 0
             && intersects(
-                shape.getX(),
-                shape.getY(),
-                shape.getWidth(),
-                shape.getHeight(),
+                shape.x(),
+                shape.y(),
+                shape.width(),
+                shape.height(),
                 zoneX,
                 zoneY,
                 zoneWidth,
@@ -101,14 +101,7 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
         }
       }
     } else if (intersects(
-        group.getX(),
-        group.getY(),
-        group.getWidth(),
-        group.getHeight(),
-        zoneX,
-        zoneY,
-        zoneWidth,
-        zoneHeight)) {
+        group.x(), group.y(), group.width(), group.height(), zoneX, zoneY, zoneWidth, zoneHeight)) {
       result.add(group);
     }
   }

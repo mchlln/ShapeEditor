@@ -19,15 +19,15 @@ public class RegularPolygon extends Polygon {
 
   @Override
   public void draw(final Render render) {
-    final int sides = getSides();
+    final int sides = sides();
     if (sides < 3) return;
     double angle = 2 * Math.PI / sides;
-    double radius = getWidth() / 2.0;
+    double radius = width() / 2.0;
     double rotationRadians =
         Math.toRadians(rotation); // Keep magic number for future rotation implementation
 
-    int centerX = getX() + getWidth() / 2;
-    int centerY = getY() + getWidth() / 2;
+    int centerX = x() + width() / 2;
+    int centerY = y() + width() / 2;
 
     int[] xPoints = new int[sides];
     int[] yPoints = new int[sides];
@@ -37,20 +37,19 @@ public class RegularPolygon extends Polygon {
       xPoints[i] = (int) (centerX + radius * Math.cos(theta));
       yPoints[i] = (int) (centerY + radius * Math.sin(theta));
     }
-    render.drawPolygon(xPoints, yPoints, getSides(), super.getColor());
+    render.drawPolygon(xPoints, yPoints, sides(), super.color());
   }
 
   @Override
   public Shape clone() {
-    return new RegularPolygon(
-        getX(), getY(), getZindex(), getWidth(), getHeight(), getSides(), getColor(), rotation);
+    return new RegularPolygon(x(), y(), zIndex(), width(), height(), sides(), color(), rotation);
   }
 
   public int rotation() {
     return this.rotation;
   }
 
-  public void setRotation(int rotation) {
+  public void rotation(int rotation) {
     this.rotation = rotation;
   }
 
@@ -58,21 +57,21 @@ public class RegularPolygon extends Polygon {
   public String toString() {
     return this.getClass().getSimpleName()
         + " [x="
-        + getX()
+        + x()
         + ", y="
-        + getY()
+        + y()
         + ", zIndex="
-        + super.getZindex()
+        + super.zIndex()
         + ", sides="
-        + getSides()
+        + sides()
         + ", width= "
-        + getWidth()
+        + width()
         + ", height="
-        + getHeight()
+        + height()
         + ", rotation="
         + rotation
         + ", color="
-        + getColor()
+        + color()
         + "]";
   }
 
@@ -95,7 +94,7 @@ public class RegularPolygon extends Polygon {
       super(shape);
       this.shape = shape;
       if (shape instanceof RegularPolygon regularPolygon) {
-        this.sides = regularPolygon.getSides();
+        this.sides = regularPolygon.sides();
         this.rotation = regularPolygon.rotation;
       } else {
         this.sides = -1;
@@ -106,7 +105,7 @@ public class RegularPolygon extends Polygon {
     public void restore() {
       super.restore();
       if (shape instanceof RegularPolygon regularPolygon) {
-        regularPolygon.setSides(sides);
+        regularPolygon.sides(sides);
         regularPolygon.rotation = rotation;
       }
     }

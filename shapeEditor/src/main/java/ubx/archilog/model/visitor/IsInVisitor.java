@@ -16,18 +16,18 @@ public class IsInVisitor implements ShapeVisitor {
   }
 
   private boolean isInShape(final Shape shape) {
-    return xVisit >= shape.getX()
-        && yVisit >= shape.getY()
-        && xVisit <= shape.getX() + shape.getWidth()
-        && yVisit <= shape.getY() + shape.getHeight();
+    return xVisit >= shape.x()
+        && yVisit >= shape.y()
+        && xVisit <= shape.x() + shape.width()
+        && yVisit <= shape.y() + shape.height();
   }
 
   @Override
   public void visit(final Circle circle) {
     System.out.println("VISITING circle");
-    final double dx = xVisit - circle.getX();
-    final double dy = yVisit - circle.getY();
-    if (dx * dx + dy * dy <= circle.getRadius() * circle.getRadius()) {
+    final double dx = xVisit - circle.x();
+    final double dy = yVisit - circle.y();
+    if (dx * dx + dy * dy <= circle.radius() * circle.radius()) {
       result.add(circle);
     }
   }
@@ -48,8 +48,8 @@ public class IsInVisitor implements ShapeVisitor {
 
   @Override
   public void visit(final Group group) {
-    if (group.getZindex() == 0) {
-      for (final Shape shape : group.getShapes()) {
+    if (group.zIndex() == 0) {
+      for (final Shape shape : group.shapes()) {
         if (isInShape(shape)) {
           result.add(shape);
         }

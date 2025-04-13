@@ -36,7 +36,7 @@ public class Group implements Shape {
 
   public void updateChildZIndex() {
     for (final Shape shape : shapesList) {
-      shape.setZindex(0);
+      shape.zIndex(0);
     }
   }
 
@@ -56,7 +56,7 @@ public class Group implements Shape {
     setSize();
   }
 
-  public List<Shape> getShapes() {
+  public List<Shape> shapes() {
     return shapesList;
   }
 
@@ -64,11 +64,11 @@ public class Group implements Shape {
     int minX = Integer.MAX_VALUE;
     int minY = Integer.MAX_VALUE;
     for (final Shape shape : shapesList) {
-      if (shape.getX() < minX) {
-        minX = shape.getX();
+      if (shape.x() < minX) {
+        minX = shape.x();
       }
-      if (shape.getY() < minY) {
-        minY = shape.getY();
+      if (shape.y() < minY) {
+        minY = shape.y();
       }
     }
     this.x = minX;
@@ -79,11 +79,11 @@ public class Group implements Shape {
     int maxX = Integer.MIN_VALUE;
     int maxY = Integer.MIN_VALUE;
     for (final Shape shape : shapesList) {
-      if (shape.getX() + shape.getWidth() > maxX) {
-        maxX = shape.getX() + shape.getWidth();
+      if (shape.x() + shape.width() > maxX) {
+        maxX = shape.x() + shape.width();
       }
-      if (shape.getY() + shape.getHeight() > maxY) {
-        maxY = shape.getY() + shape.getHeight();
+      if (shape.y() + shape.height() > maxY) {
+        maxY = shape.y() + shape.height();
       }
     }
     this.width = maxX - this.x;
@@ -91,55 +91,60 @@ public class Group implements Shape {
   }
 
   @Override
-  public int getX() {
+  public int x() {
     return x;
   }
 
   @Override
-  public int getY() {
+  public int y() {
     return y;
   }
 
   @Override
-  public void setX(final int x) {
+  public void x(final int x) {
     this.x = x;
   }
 
   @Override
-  public void setY(final int y) {
+  public void y(final int y) {
     this.y = y;
   }
 
   @Override
-  public void setColor(final Color color) {}
+  public Color color() {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
-  public int getZindex() {
+  public void color(final Color color) {}
+
+  @Override
+  public int zIndex() {
     return zIndex;
   }
 
   @Override
-  public void setZindex(final int z) {
+  public void zIndex(final int z) {
     this.zIndex = z;
   }
 
   @Override
-  public int getWidth() {
+  public int width() {
     return width;
   }
 
   @Override
-  public void setWidth(final int width) {
+  public void width(final int width) {
     this.width = width;
   }
 
   @Override
-  public int getHeight() {
+  public int height() {
     return height;
   }
 
   @Override
-  public void setHeight(final int height) {
+  public void height(final int height) {
     this.height = height;
   }
 
@@ -168,8 +173,7 @@ public class Group implements Shape {
     for (final Shape shape : shapesList) {
       shape.scale(factor);
       shape.moveTo(
-          new Position(
-              (int) (x + (shape.getX() - x) * factor), (int) (y + (shape.getY() - y) * factor)));
+          new Position((int) (x + (shape.x() - x) * factor), (int) (y + (shape.y() - y) * factor)));
     }
     setCorner();
     setSize();
@@ -254,26 +258,26 @@ public class Group implements Shape {
 
     public GroupMemento(final Group group) {
       this.originator = group;
-      this.x = group.getX();
-      this.y = group.getY();
-      this.zIndex = group.getZindex();
-      this.width = group.getWidth();
-      this.height = group.getHeight();
+      this.x = group.x();
+      this.y = group.y();
+      this.zIndex = group.zIndex();
+      this.width = group.width();
+      this.height = group.height();
       this.shapesMemento = new ArrayList<>();
       this.shapeRefs = new ArrayList<>();
 
-      for (final Shape shape : group.getShapes()) {
+      for (final Shape shape : group.shapes()) {
         shapesMemento.add(shape.save());
         shapeRefs.add(shape);
       }
     }
 
     public void restore() {
-      originator.setX(x);
-      originator.setY(y);
-      originator.setZindex(zIndex);
-      originator.setWidth(width);
-      originator.setHeight(height);
+      originator.x(x);
+      originator.y(y);
+      originator.zIndex(zIndex);
+      originator.width(width);
+      originator.height(height);
 
       originator.shapesList.clear();
       originator.shapesSet.clear();

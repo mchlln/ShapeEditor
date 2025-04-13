@@ -24,12 +24,12 @@ public final class Model {
 
   private Model() {
     components = new Group(false);
-    components.setZindex(0);
+    components.zIndex(0);
     toolBar = new ToolBar();
     menu = new Group(true);
-    menu.setZindex(0);
+    menu.zIndex(0);
     canvas = new Group(false);
-    canvas.setZindex(0);
+    canvas.zIndex(0);
     canvas.add(
         new Rectangle(
             MENU_MARGIN,
@@ -166,7 +166,7 @@ public final class Model {
   public Shape getBestZIndex(final List<Shape> shapes) {
     Shape best = shapes.getFirst();
     for (final Shape shape : shapes) {
-      if (shape.getZindex() > best.getZindex()) {
+      if (shape.zIndex() > best.zIndex()) {
         best = shape;
       }
     }

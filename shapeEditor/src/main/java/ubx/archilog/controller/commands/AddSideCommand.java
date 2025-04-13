@@ -18,7 +18,7 @@ public class AddSideCommand implements Command {
   @Override
   public void execute() {
     if (shape instanceof Polygon polygon) {
-      polygon.setSides(polygon.getSides() + 1);
+      polygon.sides(polygon.sides() + 1);
     }
   }
 

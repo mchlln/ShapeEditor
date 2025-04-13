@@ -61,57 +61,57 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public int getX() {
+  public int x() {
     return x;
   }
 
   @Override
-  public int getY() {
+  public int y() {
     return y;
   }
 
   @Override
-  public void setX(final int x) {
+  public void x(final int x) {
     this.x = x;
   }
 
   @Override
-  public void setColor(final Color color) {
+  public void color(final Color color) {
     this.color = color;
   }
 
   @Override
-  public void setY(final int y) {
+  public void y(final int y) {
     this.y = y;
   }
 
   @Override
-  public int getZindex() {
+  public int zIndex() {
     return zIndex;
   }
 
   @Override
-  public void setZindex(final int zIndex) {
+  public void zIndex(final int zIndex) {
     this.zIndex = zIndex;
   }
 
   @Override
-  public int getWidth() {
+  public int width() {
     return width;
   }
 
   @Override
-  public void setWidth(final int width) {
+  public void width(final int width) {
     this.width = width;
   }
 
   @Override
-  public int getHeight() {
+  public int height() {
     return height;
   }
 
   @Override
-  public void setHeight(final int height) {
+  public void height(final int height) {
     this.height = height;
   }
 
@@ -164,7 +164,8 @@ public abstract class AbstractShape implements Shape {
         + "]";
   }
 
-  public Color getColor() {
+  @Override
+  public Color color() {
     return color;
   }
 
@@ -184,21 +185,21 @@ public abstract class AbstractShape implements Shape {
 
     public AbstractMemento(final AbstractShape shape) {
       this.originator = shape;
-      this.x = shape.getX();
-      this.y = shape.getY();
-      this.zIndex = shape.getZindex();
-      this.width = shape.getWidth();
-      this.height = shape.getHeight();
-      this.color = shape.getColor();
+      this.x = shape.x();
+      this.y = shape.y();
+      this.zIndex = shape.zIndex();
+      this.width = shape.width();
+      this.height = shape.height();
+      this.color = shape.color();
     }
 
     public void restore() {
-      originator.setX(x);
-      originator.setY(y);
-      originator.setZindex(zIndex);
-      originator.setWidth(width);
-      originator.setHeight(height);
-      originator.setColor(color);
+      originator.x(x);
+      originator.y(y);
+      originator.zIndex(zIndex);
+      originator.width(width);
+      originator.height(height);
+      originator.color(color);
     }
   }
 }
