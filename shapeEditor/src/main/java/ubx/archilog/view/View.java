@@ -14,7 +14,7 @@ import ubx.archilog.model.shapes.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
-public class View implements ShapeObserver {
+public class View implements Observer {
   private static final int MOUSE_TOLERANCE = 5;
   public static final int WINDOW_WIDTH = 800;
   public static final int WINDOW_HEIGHT = 600;
@@ -37,11 +37,6 @@ public class View implements ShapeObserver {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased, quit);
     final Model model = Model.getInstance();
     model.buildMenu(renderer);
-    final Group group = new Group(false);
-    group.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
-    group.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
-    group.updateChildZIndex();
-    model.getCanvas().add(group);
     loadToolbar();
     updateView();
   }
@@ -50,7 +45,6 @@ public class View implements ShapeObserver {
     XmlLoader loader = new XmlLoader();
     try {
       loader.load(".defaultToolbar.xml");
-      System.out.println("TOOLBAR :" + Model.getInstance().getToolBar());
     } catch (Exception e) {
       // ignore and use default toolbar
     }
@@ -92,12 +86,10 @@ public class View implements ShapeObserver {
       mouseDragged(from, position, button);
     }
     from = null;
-    // updateView();
     return null;
   }
 
   public void clickOn(final Position position, final int button) {
-    // Model.getInstance().clearCurrentMenu();
     Model.getInstance().getCanvas().remove(selection);
     if (button == 1) {
       IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
@@ -111,7 +103,6 @@ public class View implements ShapeObserver {
             visitor = new IsInVisitor(position.x(), position.y());
             group.accept(visitor);
             in = visitor.getResult();
-            System.out.println("IN: " + in);
             final Shape clickedButton = Model.getInstance().getBestZIndex(in);
             if (clickedButton instanceof ImageRectangle bu) {
               bu.action().run();
@@ -120,14 +111,10 @@ public class View implements ShapeObserver {
         }
       }
     } else if (button == 3) {
-      final IsInVisitor visitor = new IsInVisitor(position.x(), position.y());
-      Model.getInstance().getCanvas().accept(visitor);
-      final List<Shape> in = visitor.getResult();
-      if (!in.isEmpty()) {
-        final Shape best = Model.getInstance().getBestZIndex(in);
-        if (best.zIndex() > 0) {
-          BagOfCommands.getInstance().addCommand(new EditShapeCommand(best, renderer));
-        }
+
+      Shape s = detect(Model.getInstance().getCanvas(),  Model.getInstance().getCanvas(), from, from, false);
+      if (s != null && s.zIndex() > 0) {
+        BagOfCommands.getInstance().addCommand(new EditShapeCommand(s, renderer));
       }
     }
   }

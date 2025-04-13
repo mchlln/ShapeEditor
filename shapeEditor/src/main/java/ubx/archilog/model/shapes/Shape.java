@@ -1,7 +1,6 @@
 package ubx.archilog.model.shapes;
 
 import ubx.archilog.model.Color;
-import ubx.archilog.model.Memento;
 import ubx.archilog.model.Position;
 import ubx.archilog.model.visitor.ShapeVisitor;
 import ubx.archilog.view.Render;

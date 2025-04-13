@@ -2,7 +2,7 @@ package ubx.archilog.controller.commands;
 
 import ubx.archilog.controller.Command;
 import ubx.archilog.model.Color;
-import ubx.archilog.model.Memento;
+import ubx.archilog.model.shapes.Memento;
 import ubx.archilog.model.shapes.AbstractShape;
 import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.view.Render;
