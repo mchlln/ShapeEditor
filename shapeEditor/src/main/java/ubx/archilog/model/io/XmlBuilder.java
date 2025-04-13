@@ -34,8 +34,6 @@ public class XmlBuilder implements FileBuilder {
     for (final Shape shape : group.shapes()) {
       if (shape instanceof ImageRectangle) {
         continue;
-      } else if (shape instanceof Square) {
-        buildSquare((Square) shape);
       } else if (shape instanceof Rectangle) {
         buildRectangle((Rectangle) shape);
       } else if (shape instanceof Circle) {
@@ -107,6 +105,7 @@ public class XmlBuilder implements FileBuilder {
   public void buildCircle(final Circle circle) {
     stringBuilder.append("<circle>\n");
     setCoordinates(circle);
+    setCompleteSize(circle);
     stringBuilder.append("<radius>").append(circle.radius()).append("</radius>\n");
     setColor(circle.color());
     stringBuilder.append("</circle>\n");
@@ -120,17 +119,6 @@ public class XmlBuilder implements FileBuilder {
     setColor(rectangle.color());
     stringBuilder.append("<fill>").append(rectangle.isFill()).append("</fill>\n");
     stringBuilder.append("</rectangle>\n");
-  }
-
-  @Override
-  public void buildSquare(final Square square) {
-    stringBuilder.append("<square>\n");
-    setCoordinates(square);
-    stringBuilder.append("<size>\n");
-    stringBuilder.append("<width>").append(square.width()).append("</width>\n");
-    stringBuilder.append("</size>\n");
-    setColor(square.color());
-    stringBuilder.append("</square>\n");
   }
 
   public String getResult() {

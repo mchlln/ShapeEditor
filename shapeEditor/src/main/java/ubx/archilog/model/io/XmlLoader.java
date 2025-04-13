@@ -76,10 +76,6 @@ public class XmlLoader implements FileLoader {
             }
             children.add(childGroup);
           }
-          case "square" -> {
-            final Square square = loadSquare(element);
-            children.add(square);
-          }
           case "rectangle" -> {
             final Rectangle rectangle = loadRectangle(element);
             children.add(rectangle);
@@ -96,20 +92,6 @@ public class XmlLoader implements FileLoader {
       }
     }
     return children;
-  }
-
-  private Square loadSquare(final Element squareElement) {
-    final Square square = new Square(0, 0, 0, 0);
-    loadShapeAttributes(squareElement, square);
-    square.width(
-        Integer.parseInt(
-            squareElement
-                .getElementsByTagName("size")
-                .item(0)
-                .getChildNodes()
-                .item(1)
-                .getTextContent()));
-    return square;
   }
 
   private Rectangle loadRectangle(final Element rectangleElement) {
@@ -142,6 +124,22 @@ public class XmlLoader implements FileLoader {
     loadShapeAttributes(circleElement, circle);
     circle.radius(
         Integer.parseInt(circleElement.getElementsByTagName("radius").item(0).getTextContent()));
+    circle.width(
+        Integer.parseInt(
+            circleElement
+                .getElementsByTagName("size")
+                .item(0)
+                .getChildNodes()
+                .item(1)
+                .getTextContent()));
+    circle.height(
+        Integer.parseInt(
+            circleElement
+                .getElementsByTagName("size")
+                .item(0)
+                .getChildNodes()
+                .item(3)
+                .getTextContent()));
     return circle;
   }
 

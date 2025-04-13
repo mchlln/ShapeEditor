@@ -33,13 +33,6 @@ public class IsInVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(final Square square) {
-    if (isInShape(square)) {
-      result.add(square);
-    }
-  }
-
-  @Override
   public void visit(final Rectangle rectangle) {
     if (isInShape(rectangle)) {
       result.add(rectangle);
@@ -62,8 +55,6 @@ public class IsInVisitor implements ShapeVisitor {
   public void visit(final Shape shape) {
     if (shape instanceof Circle) {
       visit((Circle) shape);
-    } else if (shape instanceof Square) {
-      visit((Square) shape);
     } else if (shape instanceof Rectangle) {
       visit((Rectangle) shape);
     } else if (shape instanceof Group) {

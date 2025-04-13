@@ -27,7 +27,5 @@ public interface FileBuilder {
 
   void buildRectangle(Rectangle rectangle);
 
-  void buildSquare(Square square);
-
   void buildRegularPolygon(final RegularPolygon polygon);
 }

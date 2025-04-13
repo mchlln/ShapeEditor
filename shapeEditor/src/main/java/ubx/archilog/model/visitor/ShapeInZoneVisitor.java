@@ -52,22 +52,6 @@ public class ShapeInZoneVisitor implements ShapeVisitor {
   }
 
   @Override
-  public void visit(final Square square) {
-    if (square.zIndex() > 0
-        && intersects(
-            square.x(),
-            square.y(),
-            square.width(),
-            square.height(),
-            zoneX,
-            zoneY,
-            zoneWidth,
-            zoneHeight)) {
-      result.add(square);
-    }
-  }
-
-  @Override
   public void visit(final Rectangle rectangle) {
     if (rectangle.zIndex() > 0
         && intersects(
