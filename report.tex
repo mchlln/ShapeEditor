@@ -84,7 +84,8 @@ du fichier de sauvegarde. La classe \textit{XmlBuilder} correspond quant à elle
 de l'interface. Nous avons donc implémenté un builder de fichiers XML. Grâce à l'interface \textit{FileBuilder}, l'ajout de nouveaux builders concrets est facilitée.
 Par exemple, il est possible de rajouter des savers au format txt ou JSON en implémentant l'interface \textit{FileBuilder}.
 Ce qui va permettre la prise en charge différents formats de fichiers est le fait que la méthode \textit{getResult()} est présente uniquement dans les classes concrètes, ce qui ne va pas nous
-limiter quant au format de retour des builders.
+limiter quant au format de retour des builders. Nous avons donc basé la structure de l'application sur le pattern Composite puisque notre modèle repose sur un Group nommé \textit{components}
+comportant lui-même des groupes pour représenter la toolbar, le menu ou encore le canvas.
 
 \begin{figure}[h]
     \centering
@@ -100,6 +101,11 @@ qui possède une interface \textit{FileLoader} ainsi qu'une implémentation conc
 \subsection{Composite}
 
 Le pattern \textit{Composite} a été utilisé afin de simplifier la création de groupes de formes ainsi que de groupes de groupes de formes.
+Les groupes devant posséder les mêmes traitements que les formes simples (resize, move, ...) la classe groupe implémentant également l'interface \textit{Shape}. Nous pouvons donc 
+traiter de la même manière les groupes de formes et les formes individuelles telles que les polygones réguliers ou les cercles.  On utilise ici une liste couplée à un set de forme pour stocker
+les formes contenues dans un groupe afin de pouvoir itérer facilement sur les éléments mais également garantir qu'une forme n'apparait qu'une fois dans un groupe grâce aux propriétés du set.
+Nous possédons également un groupe particulier, la Toolbar. Elle possède les mêmes propriétés qu'un groupe, mais possède une fonction différente pour ajouter un nouvel élément. L'ajout est différencié
+car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide).
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=15.0cm,keepaspectratio]{Composite.png}
