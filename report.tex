@@ -43,6 +43,9 @@ Nous devions créer un logiciel de dessin vectoriel, où l'on peut manipuler dif
 Le but de ce cours étant l'application de Design Patterns afin d'avoir une architecture propre, extensible et facilement maintenable, 
 nous allons expliquer en section \ref{sec2} les patterns utilisés et leurs avantages pour notre implémentation.
 
+Nous avons suivi le style Google pour le formatage du code.
+Nous avons également essayé de suivre les recommandations d'outils de qualité de code comme PMD, ce qui explique les attributs, arguments et variables \textit{final}.
+
 Pour l'interface graphique, seulement quelques fonctions de \textit{Java AWT} étaient autorisées, comme les fonctions de dessin de rectangle, d'ovale ou de polygone, mais les types de formes devaient
 être les nôtres.
 Le logiciel présente plusieurs fonctionnalités clé qui sont les suivantes :
@@ -146,10 +149,10 @@ qui possède une interface \textit{FileLoader} ainsi qu'une implémentation conc
 Le pattern \textit{Composite} a été utilisé afin de simplifier la création de groupes de formes ainsi que de groupes de groupes de formes.
 Les groupes devant posséder les mêmes traitements que les formes simples (resize, move, \ldots), la classe groupe implémentant également l'interface \textit{Shape}. Nous pouvons donc 
 traiter de la même manière les groupes de formes et les formes individuelles telles que les polygones réguliers ou les cercles.  On utilise ici une liste couplée à un set de forme pour stocker
-les formes contenues dans un groupe afin de pouvoir itérer facilement sur les éléments mais également garantir qu'une forme n'apparait qu'une fois dans un groupe grâce aux propriétés du set.
+les formes contenues dans un groupe afin de pouvoir itérer facilement sur les éléments, mais également garantir qu'une forme n'apparait qu'une fois dans un groupe grâce aux propriétés du set.
 Nous possédons également un groupe particulier, la Toolbar. Elle possède les mêmes propriétés qu'un groupe, mais possède une fonction différente pour ajouter un nouvel élément. L'ajout est différencié
 car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide). Ce pattern est central à l'architecture de notre logiciel.
-En effet, on peut considérer toute la fenêtre comme un ensemble de groupe. Dans le model, on retrouve le groupe \textit{components} représentant la racine. On peut ensuite ajouter les groupes toolbar, menu et
+En effet, on peut considérer toute la fenêtre comme un ensemble de groupe. Dans le Modèle, on retrouve le groupe \textit{components} représentant la racine. On peut ensuite ajouter les groupes toolbar, menu et
 canevas représentant tous les trois des zones différentes de l'application avec des actions différentes (mouvement des formes sur le canevas, clique sur les boutons du menu, \ldots) pour définir l'aspect global de l'application. 
 \begin{figure}[h]
     \centering
@@ -186,7 +189,7 @@ Nous avons décidé d'ajouter des Visitors afin d'éviter de rajouter trop de fo
 de regrouper les opérations de même genre et d'appliquer des opérations sur certaines formes.
 Comme indiqué sur la Figure \ref{Visitor}, nous avons créé une interface \textit{ShapeVisitor}, qui
 peut visiter des objets de type Group, Abstract Shape, Rectangle ainsi que Circle. Nous aurions pu rajouter plus de classes à
-visiter mais cela ne semblait pas nécessaire pour l'usage que nous avons.
+visiter, mais cela ne semblait pas nécessaire pour l'usage que nous avons.
 La classe \textit{IsInVisitor} implémente cette interface. Elle rajoute dans une liste les formes présentes à une position donnée.
 La fonction \textit{getResult()} renvoie cette liste.
 On se sert de ce visitor pour savoir quel type d'action on a réalisé : quel menu cliqué, ou lors d'un drag : quels sont les
@@ -204,11 +207,11 @@ La fonction \textit{getResult()} renvoie également cette liste.
 \FloatBarrier
 \subsection{Method factory}
 Le pattern \textit{Method Factory} a été choisi afin de déléguer à d'autres classes la responsabilité de créer des éditeurs de formes
-spécifiques à la forme créée. En effet, nous avions besoin de pouvoir instancier un éditeur différent pour chaque type de forme car elles
+spécifiques à la forme créée. En effet, nous avions besoin de pouvoir instancier un éditeur différent pour chaque type de forme, car elles
 ne possèdent pas les mêmes traitements. Par exemple, il est possible de changer la couleur d'un cercle, d'un rectangle et d'un polygone régulier, mais pas celle d'un groupe.
 Ici, le choix de l'éditeur à instancier est confié à la commande \textit{EditShapeCommand} car elle a accès à la forme à éditer. Les formes pouvant toutes
 être re-dimensionnées, nous avons ajouté un \textit{AbstractEditor} afin de factoriser le code de cette opération et ainsi éviter la duplication de code.
-De plus, les traitements pouvant être rangés par catégories (changement de couleurs, rotation, changement du nombre de coté), nous avons rassemblé les traitements
+De plus, les traitements pouvant être rangés par catégories (changement de couleurs, rotation, changement du nombre de côtés), nous avons rassemblé les traitements
 dans différentes classes capables de créer le menu d'édition pour son type d'opération dans le but d'éviter encore une fois la duplication de code.
 \begin{figure}[h]
     \centering
@@ -274,7 +277,7 @@ De plus, on pourrait implémenter une version \textit{paresseuse} capable d'évi
 
 \subsection{Memento}
 Afin de pouvoir annuler et refaire des commandes (mécanisme de undo/redo), nous avons utilisé le pattern Memento.
-Pour cela, nous avons crée une interface \textit{Memento} qui possède la fonction \textit{restore} (remet l'objet sauvegardé à son état d'origine).
+Pour cela, nous avons créé une interface \textit{Memento} qui possède la fonction \textit{restore} (remet l'objet sauvegardé à son état d'origine).
 Les implémentations de \textit{Shape} ont une fonction \textit{save()} qui retourne un Memento ainsi que qu'une classe interne qui implémente cette interface.
 
 Sur la figure \ref{MementoGroupe}, on peut voir que la classe \textit{Group} a une classe interne \textit{GroupMemento} qui implémente \textit{Memento}, 
@@ -308,13 +311,31 @@ La plupart des commandes implémentées créent des Memento des formes données 
 \end{figure}
 \FloatBarrier
 
+Afin d'expliquer l'utilisation du Mémento dans nos commandes, la figure \ref{DSMemento} représente un diagramme de séquence sur la commande \textit{TranslateCommand} puis son annulation.
+L'utilisateur va cliquer sur une forme puis la déplacer sur le canevas. Après avoir trouvé la forme cliquée, ainsi que la translation effectuée,
+la Vue va créer une commande \textit{TranslateCommand}. Celle ci va créer un Mémento de la forme cliquée, qu'il va sauvegarder puis retourner l'instance de la commande.
+La vue va ensuite ajouter cette commande au BagOfCommands, qui va l'exécuter par la suite.
+La vue va donc se mettre à jour.
+Si l'utilisateur décide d'annuler l'action, il va cliquer sur le bouton de suppression. Cela va donc envoyer l'action correspondante, soit la création d'une \textit{UndoCommand}
+ainsi que son ajout au BagOfCommands. Celui ci va l'exécuter, ce qui appelle la fonction \textit{undoLastCommand()} qui appelle le \textit{undo} de
+la \textit{TranslateCommand} créée auparavant. La commande va appeler le restore du Memento, ce qui va redonner la position d'origine à l'objet.
+La vue va ensuite se mettre à jour.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{DS_memento.png}
+    \caption{Diagramme de séquence pour le undo d'une commande}
+    \label{DSMemento}
+\end{figure}
+\FloatBarrier
+
 \subsection{Command + Bag Of Commands} \label{BoC}
 
 Pour permettre des interactions entre la vue et le modèle, nous avons choisi de passer par les commandes. En effet,
 puisqu'il ne faut pas de logique métier dans notre vue, nous avons décidé de la mettre dans les commandes en réalisant 
-les différents appels au modèle. Par exemple lorsque que l'on clone un forme de la toolbar
+les différents appels au modèle. Par exemple lorsque que l'on clone une forme de la toolbar
 au canevas, la commande \textit{CloneToCanvasCommand} visible en Figure \ref{Command} devra alors cloner la forme, avant de
-l'ajouter au canevas à l'endroit où l'utilisateur l'a déposée. Pour organiser les commandes, les exécuter, annuler ou refaire des commandes
+l'ajouter au canevas à l'endroit où l'utilisateur l'a déposée. Pour organiser les commandes, les exécuter, annuler ou refaire des commandes, 
  nous utilisons un BagOfCommands. À chaque fois qu'une commande est ajoutée à celui-ci, elle est ajoutée à une liste d'attente ou les commandes 
  sont exécutées dans l'ordre. Dès lors qu'elle est exécutée, elle est ajoutée à la liste des commandes traitées afin de pouvoir être annulée à tout 
  moment. Des exemples de commandes implémentées peuvent être trouvé en Figure \ref{Command}.
@@ -328,7 +349,7 @@ l'ajouter au canevas à l'endroit où l'utilisateur l'a déposée. Pour organise
 \FloatBarrier
 
 Pour mieux comprendre le fonctionnement des commandes, le diagramme de séquence en Figure \ref{CommandDS} montre un exemple d'exécution
-pour la commande translate qui a pour but de deplacer une forme dans le canvas.
+pour la commande translate qui a pour but de déplacer une forme dans le canevas.
 
 \begin{figure}[h]
     \centering
