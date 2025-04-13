@@ -101,11 +101,13 @@ qui possède une interface \textit{FileLoader} ainsi qu'une implémentation conc
 \subsection{Composite}
 
 Le pattern \textit{Composite} a été utilisé afin de simplifier la création de groupes de formes ainsi que de groupes de groupes de formes.
-Les groupes devant posséder les mêmes traitements que les formes simples (resize, move, ...) la classe groupe implémentant également l'interface \textit{Shape}. Nous pouvons donc 
+Les groupes devant posséder les mêmes traitements que les formes simples (resize, move, \ldots), la classe groupe implémentant également l'interface \textit{Shape}. Nous pouvons donc 
 traiter de la même manière les groupes de formes et les formes individuelles telles que les polygones réguliers ou les cercles.  On utilise ici une liste couplée à un set de forme pour stocker
 les formes contenues dans un groupe afin de pouvoir itérer facilement sur les éléments mais également garantir qu'une forme n'apparait qu'une fois dans un groupe grâce aux propriétés du set.
 Nous possédons également un groupe particulier, la Toolbar. Elle possède les mêmes propriétés qu'un groupe, mais possède une fonction différente pour ajouter un nouvel élément. L'ajout est différencié
-car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide).
+car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide). Ce pattern est central à l'architecture de notre logiciel.
+En effet, on peut considérer toute la fenêtre comme un ensemble de groupe. Dans le model, on retrouve le groupe \textit{components} représentant la racine. On peut ensuite ajouter les groupes toolbar, menu et
+canvas représentant tous les trois des zones différentes de l'application avec des actions différentes (mouvement des formes sur le canvas, clique sur les boutons du menu, \ldots) pour définir l'aspect global de l'application. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=15.0cm,keepaspectratio]{Composite.png}
@@ -147,7 +149,12 @@ d'accéder à l'instance unique de l'objet n'importe où dans le programme.
 \FloatBarrier
 \subsection{Method factory}
 Le pattern \textit{Method Factory} a été choisi afin de déléguer à d'autres classes la responsabilité de créer des éditeurs de formes
-spécifiques à la forme créée.
+spécifiques à la forme créée. En effet, nous avions besoin de pouvoir instancier un éditeur différent pour chaque type de forme car elles
+ne possèdent pas les mêmes traitements. Par exemple, il est possible de changer la couleur d'un cercle, d'un rectangle et d'un polygone régulier, mais pas celle d'un groupe.
+Ici, le choix de l'éditeur à instancier est confié à la commande \textit{EditShapeCommand} car elle a accès à la forme à éditer. Les formes pouvant toutes
+être re-dimensionnées, nous avons ajouté un \textit{AbstractEditor} afin de factoriser le code de cette opération et ainsi éviter la duplication de code.
+De plus, les traitements pouvant être rangés par catégories (changement de couleurs, rotation, changement du nombre de coté), nous avons rassemblé les traitements
+dans différentes classes capables de créer le menu d'édition pour son type d'opération dans le but d'éviter encore une fois la duplication de code.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{methodFactory.png}
