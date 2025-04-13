@@ -190,6 +190,11 @@ implémentations concrètes de ce dernier sans affecter la vue.
 On découple totalement l'abstraction de l'implémentation.
 \FloatBarrier
 \subsection{Observer}
+Nous avons utilisé le pattern \textit{Observer} pour gérer le rafraichissement de la vue. Il est ici efficace de placer notre vue observatrice du BagOfCommands
+car il pourra la notifier à chaque commande utilisée par exemple. Puisque toutes les modifications d'état de notre logiciel passent par des commandes, il n'est 
+donc pas possible de rater une mise à jour du modèle. Pour aller plus loin, garder le BagOfCommands pour gérer le rafraichissement de la vue pourrait permettre 
+de choisir de lancer un update de la vue suivant la commande à exécuter puisqu'il est par exemple inutile de mettre à jour la vue après une sauvegarde dans un fichier.
+De plus, on pourrait implémenter une version \textit{paresseuse} capable d'éviter des mises à jour trop rapides si des commandes ayant un impact sur la vue se suivent.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{observer.png}
