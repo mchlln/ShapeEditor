@@ -134,7 +134,7 @@ Le pattern a également été utilisé dans le \textit{BagOfCommands}. Celui ci 
 \end{figure}
 \FloatBarrier
 
-Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un field privé et statique \textit{instance}, du type de leur classe.
+Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un attribut privé et statique \textit{instance}, du type de leur classe.
 Leur constructeur est également privé. Ils possèdent tous deux la méthode publique et statique \textit{getInstance()} qui permet
 d'accéder à l'instance unique de l'objet n'importe où dans le programme.
 
@@ -211,6 +211,25 @@ On découple totalement l'abstraction de l'implémentation.
 \FloatBarrier
 
 \subsection{Memento}
+Afin de pouvoir annuler et refaire des commandes (mécanisme de undo/redo), nous avons utilisé le pattern memento.
+Pour cela, nous avons crée une interface \textit{Memento} qui possède la fonction \textit{restore} (remet l'objet sauvegardé à son état d'origine).
+Les implémentations de \textit{Shape} ont une fonction \textit{save()} qui retourne un memento ainsi que qu'une classe interne qui implémente cette interface.
+
+Sur la figure \ref{MementoGroupe}, on peut voir que la classe \textit{Group} a une classe interne \textit{GroupMemento} qui implémente \textit{Memento}, 
+elle possède un champ originator, qui est une référence vers l'objet ayant appelé la classe. Les champs de cet objet vont donc être sauvegardés afin de pouvoir
+être restaurés lors d'un appel à la fonction \textit{restore()}. 
+On peut également voir la commande \textit{UngroupCommande}, qui dégroupe le groupe donné. Cette commande possède un memento sur le groupe à supprimer,
+afin de pouvoir appeler \textit{restore()} dans sa méthode \textit{undo()}.
+
+Sur la figure \ref{MementoShape}, on peut voir que les classes \textit{AbstractShape} et \textit{RegularPolygon} possèdent des classes internes implémentant
+l'interface \textit{Memento}.  Les classes \textit{Rectangle} et \textit{Circle} n'ont pas besoin d'implémenter cette interface, car leur structure est identique à celle
+de l'AbstractShape, on a besoin de sauvegarder les mêmes attributs. Le polygone régulier a son propre Mémento, qui va étendre le AbstractMemento 
+afin de sauvegarder le nombre de côtés ainsi que son angle de rotation, qui ne sont pas présents dans les autres formes.
+La commande \textit{ResizeCommand} est un autre exemple d'utilisation du memento, en effet, la commande sauvegarde la forme donnée avant de
+changer sa taille afin de pouvoir annuler la modification si besoin.
+
+La plupart des commandes implémentées créent des Memento des formes données en paramètres. À chaque exécution de commande, on l'ajoute dans une liste du
+\textit{BagOfCommands} afin de pouvoir appeler undo dessus si l'utilisateur envoie une commande d'annulation.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{memento.png}
