@@ -4,6 +4,7 @@ import static ubx.archilog.view.View.MENU_MARGIN;
 import static ubx.archilog.view.View.WINDOW_HEIGHT;
 
 import ubx.archilog.model.Color;
+import ubx.archilog.model.Position;
 
 public class ToolBar extends Group {
 
@@ -44,8 +45,19 @@ public class ToolBar extends Group {
   }
 
   public void removeShapeFromToolBar(final Shape shape) {
+    if (shape.equals(bin)) return;
     super.remove(shape);
     shapeCount--; // TODO: update other shapes
+    updatePositions();
+  }
+
+  private void updatePositions() {
+    int currentY = MENU_MARGIN;
+    for (final Shape shape : getShapes()) {
+      if (shape.equals(bin)) continue;
+      shape.moveTo(new Position(shape.getX(), currentY));
+      currentY += 60;
+    }
   }
 
   public ImageRectangle getBin() {

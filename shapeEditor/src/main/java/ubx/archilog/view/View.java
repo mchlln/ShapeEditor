@@ -162,10 +162,10 @@ public class View {
       }
 
       // Special case to forbid bin deletion
-      s = detect(model.getToolBar().getBin(), model.getToolBar().getBin(), from, to, true);
+      /* s = detect(model.getToolBar().getBin(), model.getToolBar().getBin(), from, to, true);
       if (s != null && s.getZindex() > 0) {
         return;
-      }
+      }*/
 
       s = detect(model.getToolBar(), model.getToolBar().getBin(), from, to, true);
       if (s != null && s.getZindex() > 0) {
