@@ -56,7 +56,7 @@ Le logiciel présente plusieurs fonctionnalités clé qui sont les suivantes :
     \item Sauvegarde de la toolbar en quittant le logiciel, recharge au de celle ci au lancement.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth,keepaspectratio]{dog.png}
     \caption{Exemple de dessin avec notre logiciel}
@@ -71,8 +71,20 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 \section{Design patterns utilisés} \label{sec2}
 
 \subsection{Prototype}
+Le pattern prototype a été utilisé dans les différentes formes en ajoutant une méthode \textit{clone()}. Cette méthode permet de faire une deep copy de l'objet,
+ nous laissant modifier les champs du clone sans affecter ceux de la forme de base.
+ L'interface Shape implémente \textit{Cloneable}, ce qui nous permet de créer ces clones.
+ Toutes les implémentations concrètes de Shape implémentent clone() (tout sauf \textit{Polygon} et \textit{Ellipsoid}).
+ Cela est particulièrement utile pour le drag-and-drop de la toolbar vers le canevas et inversement.
 
 \subsection{Builder}
+Nous avons choisi d'utiliser le pattern Builder afin de créer des fichiers de sauvegarde de l'état du logiciel. Cela nous permet de créer différentes implémentations
+afin de sérialiser différents types de documents. Dans la Figure \ref{Builder}, nous pouvons voir que le \textit{FileBuilder} est l'interface contenant les différentes étapes de création
+du fichier de sauvegarde. La classe \textit{XmlBuilder} correspond quant à elle au ``Concrete Builder'' du pattern, c'est-à-dire l'implémentation spécifique
+de l'interface. Nous avons donc implémenté un builder de fichiers XML. Grâce à l'interface \textit{FileBuilder}, l'ajout de nouveaux builders concrets est facilitée.
+Par exemple, il est possible de rajouter des savers au format txt ou JSON en implémentant l'interface \textit{FileBuilder}.
+Ce qui va permettre la prise en charge différents formats de fichiers est le fait que la méthode \textit{getResult()} est présente uniquement dans les classes concrètes, ce qui ne va pas nous
+limiter quant au format de retour des builders.
 
 \begin{figure}[h]
     \centering
@@ -82,9 +94,12 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 \end{figure}
 \FloatBarrier
 
+Afin de rester cohérents lors du chargement de fichiers de sauvegarde, nous avons utilisé le même principe pour le Loader,
+qui possède une interface \textit{FileLoader} ainsi qu'une implémentation concrète \textit{XmlLoader}.
 
 \subsection{Composite}
 
+Le pattern \textit{Composite} a été utilisé afin de simplifier la création de groupes de formes ainsi que de groupes de groupes de formes.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=15.0cm,keepaspectratio]{Composite.png}
@@ -95,6 +110,13 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 
 \subsection{Singleton}
 
+Le pattern \textit{Singleton} a été utilisé dans deux de nos classes. Premièrement, il a été utilisé dans la classe \textit{Model}, 
+afin de garantir une instance unique, avec un point d'accès global au sein de l'application.
+Cela nous permet par exemple de récupérer les formes présentes dans le canevas ou la toolbar, n'importe où dans l'application. Avec cette implémentation,
+on peut utiliser une architecture MVC modifiée, où la Vue peut accéder au contenu du Modèle sans passer par le Contrôleur, ce qui évite l'envoi
+de nombreuses commandes.
+Le pattern a également été utilisé dans le \textit{BagOfCommands}. Celui ci remplace le Controller classique et permet d'exécuter des commandes (voir \ref{BoC}).
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{singleton.png}
@@ -103,6 +125,10 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
     \label{Singleton}
 \end{figure}
 \FloatBarrier
+
+Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un field privé \textit{instance}, du type de leur classe.
+Leur constructeur est également privé. Ils possèdent tous deux la méthode publique et statique \textit{getInstance()} qui permet
+d'accéder à l'instance unique de l'objet n'importe où dans le programme.
 
 \subsection{Visitor}
 
@@ -114,7 +140,8 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 \end{figure}
 \FloatBarrier
 \subsection{Method factory}
-
+Le pattern \textit{Method Factory} a été choisi afin de déléguer à d'autres classes la responsabilité de créer des éditeurs de formes
+spécifiques à la forme créée.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{methodFactory.png}
@@ -123,12 +150,31 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 \end{figure}
 \FloatBarrier
 \subsection{Bridge}
+
+Le pattern \textit{Bridge} a été choisi dans notre projet afin d'avoir la possibilité de changer de technologie dans notre vue
+ sans modifier la logique de celle-ci. L'abstraction de la vue et son implémentation sont indépendantes.
+
+Nous avons utilisé \textit{Java Awt} ici, mais il serait tout à fait possible d'utiliser \textit{JavaFX} ou d'autres frameworks graphiques
+avec un minimum de modifications.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{bridge.png}
     \caption{Diagramme UML du Bridge}
     \label{Bridge}
 \end{figure}
+\FloatBarrier
+
+Sur la figure \ref{Bridge}, nous pouvons observer l'implémentation du Bridge via l'interface \textit{Render}.
+La vue va communiquer avec celle-ci, ce qui abstrait l'utilisation d'une technologie particulière.
+La classe \textit{AwtRenderer} est une implémentation concrète de l'interface \textit{Render}. 
+Tout le code spécifique à JavaAWT se situe dans cette classe, ce qui ne soumet pas l'application à
+l'utilisation de cette technologie de rendu graphique.
+La classe \textit{View} est quant à elle l'abstraction du pattern, elle utilise un objet de type \textit{Render} sans se soucier de son implémentation concrète.
+
+Ce choix d'architecture nous permet d'implémenter indépendamment la vue du render, ce qui nous permettrait de rajouter d'autres
+implémentations concrètes de ce dernier sans affecter la vue.
+On découple totalement l'abstraction de l'implémentation.
 \FloatBarrier
 \subsection{Observer}
 \begin{figure}[h]
@@ -156,7 +202,7 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
 \end{figure}
 \FloatBarrier
 
-\subsection{Command + Bag Of Command}
+\subsection{Command + Bag Of Command} \label{BoC}
 
 \begin{figure}[h]
     \centering
