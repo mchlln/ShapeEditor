@@ -21,7 +21,7 @@ public class GroupCommand implements Command {
   @Override
   public void execute() {
     if (shapes.size() > 1) {
-      newGroup = new Group();
+      newGroup = new Group(false);
       for (final Shape shape : shapes) {
         Model.getInstance().getCanvas().remove(shape); // Unlink from canvas
         shapesMemento.add(shape.save());

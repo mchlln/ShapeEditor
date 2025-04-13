@@ -12,7 +12,7 @@ public class ToolBar extends Group {
   private ImageRectangle bin;
 
   public ToolBar() {
-    super();
+    super(true);
     this.setZindex(0);
     this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0), true));
     // this.add(new Rectangle(5, 150, 20, 30, new Color(189, 142, 231, 255)));
@@ -39,15 +39,15 @@ public class ToolBar extends Group {
       return;
     }
     shape.scale((float) MENU_MARGIN / Math.max(shape.getWidth(), shape.getHeight()));
-    super.add(shape);
     shape.translate(-shape.getX(), shapeCount * 60 + MENU_MARGIN - shape.getY());
+    super.add(shape);
     shapeCount++;
   }
 
   public void removeShapeFromToolBar(final Shape shape) {
     if (shape.equals(bin)) return;
     super.remove(shape);
-    shapeCount--; // TODO: update other shapes
+    shapeCount--;
     updatePositions();
   }
 

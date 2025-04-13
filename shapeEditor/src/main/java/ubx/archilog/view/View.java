@@ -33,7 +33,7 @@ public class View implements ShapeObserver {
     renderer.initialize(WINDOW_WIDTH, WINDOW_HEIGHT, mousePressed, mouseReleased, quit);
     final Model model = Model.getInstance();
     model.buildMenu(renderer);
-    final Group group = new Group();
+    final Group group = new Group(false);
     group.add(new Circle(100, 100, 1, 50, new Color(245, 0, 245, 255)));
     group.add(new Rectangle(200, 200, 1, 100, 50, new Color(0, 245, 245, 255), true));
     group.updateChildZIndex();

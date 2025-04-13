@@ -43,7 +43,7 @@ public class XmlLoader implements FileLoader {
     final NodeList canvasNodes = parentElement.getElementsByTagName("canvas");
     for (int i = 0; i < canvasNodes.getLength(); i++) {
       final Element canvasElement = (Element) canvasNodes.item(i);
-      final Group canvas = new Group();
+      final Group canvas = new Group(false);
       loadGroup(canvasElement, canvas);
       canvas.setZindex(0);
       Model.getInstance().setCanvas(canvas);
@@ -58,7 +58,7 @@ public class XmlLoader implements FileLoader {
         final Element element = (Element) node;
         switch (element.getTagName()) {
           case "group" -> {
-            final Group childGroup = new Group();
+            final Group childGroup = new Group(false);
             loadGroup(element, childGroup);
             group.add(childGroup);
           }

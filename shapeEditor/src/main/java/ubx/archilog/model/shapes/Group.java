@@ -18,17 +18,20 @@ public class Group implements Shape {
   private int zIndex;
   private int width;
   private int height;
+  private boolean borders;
 
-  public Group() {
+  public Group(boolean borders) {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
     this.zIndex = 1;
+    this.borders = borders;
   }
 
-  public Group(final int zIndex) {
+  public Group(final int zIndex, boolean borders) {
     this.shapesSet = new HashSet<>();
     this.shapesList = new ArrayList<>();
     this.zIndex = zIndex;
+    this.borders = borders;
   }
 
   public void updateChildZIndex() {
@@ -155,7 +158,9 @@ public class Group implements Shape {
     for (final Shape shape : shapesList) {
       shape.draw(render);
     }
-    render.drawRect(x, y, width, height, false, new Color(0, 0, 0, 255));
+    if (borders) {
+      render.drawRect(x, y, width, height, false, new Color(0, 0, 0, 255));
+    }
   }
 
   @Override
@@ -190,7 +195,7 @@ public class Group implements Shape {
 
   @Override
   public Shape clone() {
-    final Group copy = new Group();
+    final Group copy = new Group(false);
     for (final Shape shape : shapesList) {
       copy.add(shape.clone());
     }

@@ -33,7 +33,7 @@ public abstract class AbstractEditor implements ShapeEditor {
             "/icons/minus.png",
             () -> BagOfCommands.getInstance().addCommand(new ResizeCommand(shape, 0.8f)));
 
-    group = new Group();
+    group = new Group(false);
     group.setZindex(0);
     group.add(scaleIncreaseButton);
     group.add(scaleDecreaseButton);

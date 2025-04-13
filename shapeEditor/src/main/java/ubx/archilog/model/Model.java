@@ -23,12 +23,12 @@ public final class Model {
   private Shape currentMenu;
 
   private Model() {
-    components = new Group();
+    components = new Group(false);
     components.setZindex(0);
     toolBar = new ToolBar();
-    menu = new Group();
+    menu = new Group(true);
     menu.setZindex(0);
-    canvas = new Group();
+    canvas = new Group(false);
     canvas.setZindex(0);
     canvas.add(
         new Rectangle(
