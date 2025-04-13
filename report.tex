@@ -126,7 +126,7 @@ Le pattern a également été utilisé dans le \textit{BagOfCommands}. Celui ci 
 \end{figure}
 \FloatBarrier
 
-Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un field privé \textit{instance}, du type de leur classe.
+Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un field privé et statique \textit{instance}, du type de leur classe.
 Leur constructeur est également privé. Ils possèdent tous deux la méthode publique et statique \textit{getInstance()} qui permet
 d'accéder à l'instance unique de l'objet n'importe où dans le programme.
 
@@ -168,7 +168,7 @@ avec un minimum de modifications.
 Sur la figure \ref{Bridge}, nous pouvons observer l'implémentation du Bridge via l'interface \textit{Render}.
 La vue va communiquer avec celle-ci, ce qui abstrait l'utilisation d'une technologie particulière.
 La classe \textit{AwtRenderer} est une implémentation concrète de l'interface \textit{Render}. 
-Tout le code spécifique à JavaAWT se situe dans cette classe, ce qui ne soumet pas l'application à
+Tout le code spécifique à Java AWT se situe dans cette classe, ce qui ne soumet pas l'application à
 l'utilisation de cette technologie de rendu graphique.
 La classe \textit{View} est quant à elle l'abstraction du pattern, elle utilise un objet de type \textit{Render} sans se soucier de son implémentation concrète.
 
