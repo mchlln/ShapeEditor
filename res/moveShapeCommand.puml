@@ -1,0 +1,25 @@
+@startuml
+User -> View: mouseDragged() + search for clicked shape
+View -> TranslateCommand : new TranslateCommand(clickedShape, xDiff, yDiff)
+TranslateCommand -> Shape : save()
+Shape --> TranslateCommand : memento
+TranslateCommand --> View : command
+View -> BagOfCommand: addCommand(command)
+BagOfCommand -> BagOfCommand : executeAll()
+BagOfCommand -> TranslateCommand : execute()
+TranslateCommand -> Shape : translate(xDiff, yDiff)
+Shape --> TranslateCommand : 
+TranslateCommand --> User: showResult
+
+User -> View: mouseClicked() + undo button clicked
+View -> ImageRectangle : action.run()
+ImageRectangle -> UndoCommand : new UndoCommand()
+UndoCommand --> ImageRectangle : command
+ImageRectangle -> BagOfCommand : addCommand(command)
+BagOfCommand -> BagOfCommand : executeAll()
+BagOfCommand -> UndoCommand : execute()
+UndoCommand -> BagOfCommand : undoLastCommand()
+BagOfCommand -> TranslateCommand : undo()
+TranslateCommand -> TranslateCommand : memento.restore()
+TranslateCommand --> User : showResult
+@enduml
