@@ -140,7 +140,7 @@ public class AwtRenderer extends Frame implements Render, ActionListener, MouseL
       final BiFunction<Position, Integer, Void> mouseReleasedCallback,
       final Function<Void, Void> quitCallback) {
     setLayout(new FlowLayout());
-    setTitle("Basic AWT App");
+    setTitle("Shape Editor");
 
     this.mousePressed = mousePressedCallback;
     this.mouseReleased = mouseReleasedCallback;
