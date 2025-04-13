@@ -10,7 +10,7 @@ import ubx.archilog.model.shapes.*;
 import ubx.archilog.model.visitor.IsInVisitor;
 import ubx.archilog.model.visitor.ShapeInZoneVisitor;
 
-public class View {
+public class View implements ShapeObserver {
   private static final int MOUSE_TOLERANCE = 5;
   public static final int WINDOW_WIDTH = 800;
   public static final int WINDOW_HEIGHT = 600;
@@ -70,7 +70,7 @@ public class View {
       mouseDragged(from, position, button);
     }
     from = null;
-    updateView();
+    // updateView();
     return null;
   }
 
@@ -187,5 +187,10 @@ public class View {
       BagOfCommands.getInstance().addCommand(new GroupCommand(zone));
     }
     Model.getInstance().clearCurrentMenu();
+  }
+
+  @Override
+  public void update() {
+    updateView();
   }
 }

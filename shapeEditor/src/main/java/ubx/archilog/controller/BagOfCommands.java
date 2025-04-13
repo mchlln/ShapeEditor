@@ -1,11 +1,12 @@
 package ubx.archilog.controller;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 import ubx.archilog.controller.commands.*;
+import ubx.archilog.model.Observable;
+import ubx.archilog.model.ShapeObserver;
 
-public final class BagOfCommands {
+public final class BagOfCommands implements Observable {
+  private List<ShapeObserver> observers = new ArrayList<>();
   private static BagOfCommands instance = null;
 
   private final Queue<Command> commands = new LinkedList<>();
@@ -57,6 +58,7 @@ public final class BagOfCommands {
       }
       command.execute();
     }
+    notifyObservers();
   }
 
   public void undoLastCommand() {
@@ -67,6 +69,7 @@ public final class BagOfCommands {
       System.out.println("redo command pushed: " + redoCommands.peek());
       command.undo();
     }
+    notifyObservers();
   }
 
   public void redoLastCommand() {
@@ -77,5 +80,21 @@ public final class BagOfCommands {
       System.out.println("undo command pushed: " + undoCommands.peek());
       command.execute();
     }
+    notifyObservers();
+  }
+
+  @Override
+  public void addObserver(ShapeObserver obs) {
+    observers.add(obs);
+  }
+
+  @Override
+  public void removeObserver(ShapeObserver obs) {
+    observers.remove(obs);
+  }
+
+  @Override
+  public void notifyObservers() {
+    observers.forEach(ShapeObserver::update);
   }
 }

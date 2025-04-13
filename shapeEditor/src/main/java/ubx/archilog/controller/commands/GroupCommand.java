@@ -23,7 +23,7 @@ public class GroupCommand implements Command {
     if (shapes.size() > 1) {
       newGroup = new Group();
       for (final Shape shape : shapes) {
-        Model.getInstance().getCanvas().getShapes().remove(shape); // Unlink from canvas
+        Model.getInstance().getCanvas().remove(shape); // Unlink from canvas
         shapesMemento.add(shape.save());
         newGroup.add(shape);
       }
@@ -33,12 +33,13 @@ public class GroupCommand implements Command {
   }
 
   @Override
-  public void undo() { // TODO: Don't do a group if size < 1
+  public void undo() {
+    if (shapes.size() < 2) return;
     Model.getInstance().getCanvas().remove(newGroup);
     for (final Memento memento : shapesMemento) {
       memento.restore();
     }
-    for (final Shape shape : newGroup.getShapes()) {
+    for (final Shape shape : shapes) {
       Model.getInstance().getCanvas().add(shape);
     }
   }
