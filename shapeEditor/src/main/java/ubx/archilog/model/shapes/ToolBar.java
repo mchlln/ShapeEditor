@@ -65,7 +65,7 @@ public class ToolBar extends Group {
   }
 
   public ToolBar(boolean empty) {
-    super();
+    super(true);
     this.setZindex(0);
     this.add(new Rectangle(0, 0, 0, MENU_MARGIN, WINDOW_HEIGHT, new Color(189, 142, 231, 0), true));
     bin =

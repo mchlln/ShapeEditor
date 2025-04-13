@@ -52,7 +52,7 @@ public class View implements ShapeObserver {
       loader.load(".defaultToolbar.xml");
       System.out.println("TOOLBAR :" + Model.getInstance().getToolBar());
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      // ignore and use default toolbar
     }
   }
 
