@@ -68,6 +68,38 @@ Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du 
  Grâce aux différentes possibilités d'édition de formes, nous avons pu changer la couleur, la forme ainsi que la tailles des formes pour créer le dessin voulu.
  On peut également voir que la forme a été ajoutée à la toolbar, et qu'il est possible de rajouter les formes de celles-ci au canevas.
  
+\section{Utiliser le logiciel}
+
+Afin de prendre en main le logiciel plus rapidement, voici quelques conseils d'utilisation:
+\begin{itemize}
+    \item Afin de charger un canevas et sa toolbar personnalisée, il faut cliquer sur la première icône du menu, celle d'import.
+    \item Pour sauvegarder le logiciel, il faut cliquer sur la deuxième icône du menu, celle d'export.
+    \item Pour grouper des formes, il faut effectuer un drag de la souris en faisant un clic droit. Après le relâchement de la souris, un rectangle de sélection 
+    apparaitra autour du groupe crée.
+    \item Pour supprimer un groupe, il faut effectuer un clic droit sur le groupe puis cliquer sur la troisième icône de l'éditeur du groupe.
+    \item Pour augmenter ou diminuer la taille d'une forme, faire un clic droit sur l'objet puis cliquer sur les icônes + ou - entourées d'un cercle dans l'éditeur de la forme.
+    \item Pour augmenter ou diminuer le nombre de côtés d'un polygone régulier, faire un clic droit sur l'objet puis cliquer sur les icônes + ou - dans l'éditeur de la forme.
+    \item Pour faire pivoter une forme (polygone ou rectangle), faire un clic droit sur l'objet puis cliquer sur l'icône de rotation dans l'éditeur de la forme.
+    \item Pour modifier la couleur d'une forme simple, faire un clic droit sur l'objet puis cliquer sur l'icône de couleur dans l'éditeur de la forme, puis sélectionner la couleur souhaitée.
+    \item Pour annuler une action, cliquer sur la troisième icône du menu, celle d'undo. Cette commande n'est pas valable pour l'annulation d'un chargement ou sauvegarde de fichier, ni sur l'ouverture d'un éditeur de formes.
+    \item Pour refaire une action annulée, cliquer sur la quatrième icône du menu, celle de redo. Cette commande n'est pas valable pour les mêmes commandes que le undo.
+    \item Pour ajouter une forme sur le canevas, il faut faire un drag and drop en appuyant sur le bouton gauche de la souris de la toolbar vers le canevas.
+    \item Pour supprimer une forme de la toolbar ou du canevas, il faut faire un drag and drop vers la poubelle située en bas de la toolbar.
+    \item Pour ajouter une forme à la toolbar, il faut effectuer un drag and drop depuis le canevas vers la toolbar.
+    \item Pour déplacer une forme, il faut faire un drag and drop en cliquant sur la forme et en lâchant à sa destination.
+\end{itemize}
+
+Attention, le logiciel sauvegarde la toolbar à la fermeture de l'application dans \textit{.defaultToolbar}. Au lancement de l'application, il se sert de cette configuration.
+Si toutes les formes ont été supprimées de la toolbar précédemment, il faut supprimer ce fichier afin de prendre la configuration par défaut de l'application.
+
+Pour plus d'informations sur les icônes des éditeurs, voir partie \ref{MethodFactory}.
+
+
+\section{Architecture du logiciel}
+
+Nous utilisons une sorte de MVC modifié,
+
+
 \section{Design patterns utilisés} \label{sec2}
 
 \subsection{Prototype}
@@ -216,21 +248,21 @@ De plus, on pourrait implémenter une version \textit{paresseuse} capable d'évi
 \FloatBarrier
 
 \subsection{Memento}
-Afin de pouvoir annuler et refaire des commandes (mécanisme de undo/redo), nous avons utilisé le pattern memento.
+Afin de pouvoir annuler et refaire des commandes (mécanisme de undo/redo), nous avons utilisé le pattern Memento.
 Pour cela, nous avons crée une interface \textit{Memento} qui possède la fonction \textit{restore} (remet l'objet sauvegardé à son état d'origine).
-Les implémentations de \textit{Shape} ont une fonction \textit{save()} qui retourne un memento ainsi que qu'une classe interne qui implémente cette interface.
+Les implémentations de \textit{Shape} ont une fonction \textit{save()} qui retourne un Memento ainsi que qu'une classe interne qui implémente cette interface.
 
 Sur la figure \ref{MementoGroupe}, on peut voir que la classe \textit{Group} a une classe interne \textit{GroupMemento} qui implémente \textit{Memento}, 
 elle possède un champ originator, qui est une référence vers l'objet ayant appelé la classe. Les champs de cet objet vont donc être sauvegardés afin de pouvoir
 être restaurés lors d'un appel à la fonction \textit{restore()}. 
-On peut également voir la commande \textit{UngroupCommande}, qui dégroupe le groupe donné. Cette commande possède un memento sur le groupe à supprimer,
+On peut également voir la commande \textit{UngroupCommande}, qui dégroupe le groupe donné. Cette commande possède un Memento sur le groupe à supprimer,
 afin de pouvoir appeler \textit{restore()} dans sa méthode \textit{undo()}.
 
 Sur la figure \ref{MementoShape}, on peut voir que les classes \textit{AbstractShape} et \textit{RegularPolygon} possèdent des classes internes implémentant
 l'interface \textit{Memento}.  Les classes \textit{Rectangle} et \textit{Circle} n'ont pas besoin d'implémenter cette interface, car leur structure est identique à celle
 de l'AbstractShape, on a besoin de sauvegarder les mêmes attributs. Le polygone régulier a son propre Mémento, qui va étendre le AbstractMemento 
 afin de sauvegarder le nombre de côtés ainsi que son angle de rotation, qui ne sont pas présents dans les autres formes.
-La commande \textit{ResizeCommand} est un autre exemple d'utilisation du memento, en effet, la commande sauvegarde la forme donnée avant de
+La commande \textit{ResizeCommand} est un autre exemple d'utilisation du Memento, en effet, la commande sauvegarde la forme donnée avant de
 changer sa taille afin de pouvoir annuler la modification si besoin.
 
 La plupart des commandes implémentées créent des Memento des formes données en paramètres. À chaque exécution de commande, on l'ajoute dans une liste du
@@ -251,7 +283,7 @@ La plupart des commandes implémentées créent des Memento des formes données 
 \end{figure}
 \FloatBarrier
 
-\subsection{Command + Bag Of Command} \label{BoC}
+\subsection{Command + Bag Of Commands} \label{BoC}
 
 \begin{figure}[h]
     \centering
