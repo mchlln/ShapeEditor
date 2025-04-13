@@ -85,12 +85,12 @@ de l'interface. Nous avons donc implémenté un builder de fichiers XML. Grâce 
 Par exemple, il est possible de rajouter des savers au format txt ou JSON en implémentant l'interface \textit{FileBuilder}.
 Ce qui va permettre la prise en charge différents formats de fichiers est le fait que la méthode \textit{getResult()} est présente uniquement dans les classes concrètes, ce qui ne va pas nous
 limiter quant au format de retour des builders. Nous avons donc basé la structure de l'application sur le pattern Composite puisque notre modèle repose sur un Group nommé \textit{components}
-comportant lui-même des groupes pour représenter la toolbar, le menu ou encore le canvas.
+comportant lui-même des groupes pour représenter la toolbar, le menu ou encore le canevas.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{builder.png}
-    \caption{Diagramme UML du Builder}
+    \caption{Diagramme de classe du Builder}
     \label{Builder}
 \end{figure}
 \FloatBarrier
@@ -107,11 +107,11 @@ les formes contenues dans un groupe afin de pouvoir itérer facilement sur les �
 Nous possédons également un groupe particulier, la Toolbar. Elle possède les mêmes propriétés qu'un groupe, mais possède une fonction différente pour ajouter un nouvel élément. L'ajout est différencié
 car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide). Ce pattern est central à l'architecture de notre logiciel.
 En effet, on peut considérer toute la fenêtre comme un ensemble de groupe. Dans le model, on retrouve le groupe \textit{components} représentant la racine. On peut ensuite ajouter les groupes toolbar, menu et
-canvas représentant tous les trois des zones différentes de l'application avec des actions différentes (mouvement des formes sur le canvas, clique sur les boutons du menu, \ldots) pour définir l'aspect global de l'application. 
+canevas représentant tous les trois des zones différentes de l'application avec des actions différentes (mouvement des formes sur le canevas, clique sur les boutons du menu, \ldots) pour définir l'aspect global de l'application. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=15.0cm,keepaspectratio]{Composite.png}
-    \caption{Diagramme UML du Composite}
+    \caption{Diagramme de classe du Composite}
     \label{Composite}
 \end{figure}
 \FloatBarrier
@@ -129,7 +129,7 @@ Le pattern a également été utilisé dans le \textit{BagOfCommands}. Celui ci 
     \centering
     \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{singleton.png}
     \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{singleton2.png}
-    \caption{Diagramme UML des deux Singleton}
+    \caption{Diagramme de classe des deux Singleton}
     \label{Singleton}
 \end{figure}
 \FloatBarrier
@@ -155,7 +155,7 @@ La fonction \textit{getResult()} renvoie également cette liste.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{visitor.png}
-    \caption{Diagramme UML du Visitor}
+    \caption{Diagramme de classe du Visitor}
     \label{Visitor}
 \end{figure}
 \FloatBarrier
@@ -170,7 +170,7 @@ dans différentes classes capables de créer le menu d'édition pour son type d'
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{methodFactory.png}
-    \caption{Diagramme UML de la Method Factory}
+    \caption{Diagramme de classe de la Method Factory}
     \label{MethodFactory}
 \end{figure}
 \FloatBarrier
@@ -185,7 +185,7 @@ avec un minimum de modifications.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{bridge.png}
-    \caption{Diagramme UML du Bridge}
+    \caption{Diagramme de classe du Bridge}
     \label{Bridge}
 \end{figure}
 \FloatBarrier
@@ -210,7 +210,7 @@ De plus, on pourrait implémenter une version \textit{paresseuse} capable d'évi
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{observer.png}
-    \caption{Diagramme UML de l'Observer}
+    \caption{Diagramme de classe de l'Observer}
     \label{Observer}
 \end{figure}
 \FloatBarrier
@@ -238,7 +238,7 @@ La plupart des commandes implémentées créent des Memento des formes données 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{memento.png}
-    \caption{Diagramme UML du Memento pour un groupe}
+    \caption{Diagramme de classe du Memento pour un groupe}
     \label{MementoGroupe}
 \end{figure}
 \FloatBarrier
@@ -246,18 +246,38 @@ La plupart des commandes implémentées créent des Memento des formes données 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{memento2.png}
-    \caption{Diagramme UML du Memento pour une forme simple}
+    \caption{Diagramme de classe du Memento pour une forme simple}
     \label{MementoShape}
 \end{figure}
 \FloatBarrier
 
 \subsection{Command + Bag Of Command} \label{BoC}
 
+Pour permettre des interactions entre la vue et le modèle, nous avons choisi de passer par les commandes. En effet,
+puisqu'il ne faut pas de logique métier dans notre vue, nous avons décidé de la mettre dans les commandes en réalisant 
+les différents appels au modèle. Par exemple lorsque que l'on clone un forme de la toolbar
+au canevas, la commande \textit{CloneToCanvasCommand} visible en Figure \ref{Command} devra alors cloner la forme, avant de
+l'ajouter au canevas à l'endroit où l'utilisateur l'a déposée. Pour organiser les commandes, les exécuter, annuler ou refaire des commandes
+ nous utilisons un BagOfCommands. À chaque fois qu'une commande est ajoutée à celui-ci, elle est ajoutée à une liste d'attente ou les commandes 
+ sont exécutées dans l'ordre. Dès lors qu'elle est exécutée, elle est ajoutée à la liste des commandes traitées afin de pouvoir être annulée à tout 
+ moment. Des exemples de commandes implémentées peuvent être trouvé en Figure \ref{Command}.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{command.png}
-    \caption{Diagramme UML des Commandes}
+    \caption{Diagramme de classe des Commandes}
     \label{Command}
+\end{figure}
+\FloatBarrier
+
+Pour mieux comprendre le fonctionnement des commandes, le diagramme de séquence en Figure \ref{CommandDS} montre un exemple d'exécution
+pour la commande translate qui a pour but de deplacer une forme dans le canvas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{DS_command.png}
+    \caption{Diagramme de séquence pour les Commandes}
+    \label{CommandDS}
 \end{figure}
 \FloatBarrier
 
