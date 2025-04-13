@@ -97,7 +97,18 @@ Pour plus d'informations sur les icônes des éditeurs, voir partie \ref{MethodF
 
 \section{Architecture du logiciel}
 
-Nous utilisons une sorte de MVC modifié,
+Nous utilisons une sorte de MVC modifié, où la Vue envoie des commandes au Controller (BagOfCommands), qui agit sur le Modèle. Le Modèle gère uniquement la logique métier. La Vue a tout de même accès au Modèle,
+afin de pouvoir mettre à jour son affichage lorsqu'elle est notifiée.
+Le logiciel est donc structuré en trois packages principaux : view, model et controller.
+\begin{itemize}
+    \item Le Controller contient un sous-package commands, qui regroupe les différentes commandes implémentées.
+    \item Le Model possède plusieurs sous package afin de regrouper les classes par "familles". Le package io contient le loader et le saver afin de pouvoir sauvegarder et charger des fichiers. Le package shapes contient l'interface Shape ainsi que ses différentes implémentations. Enfin le package visitor contient l'interface ShapeVisitor ainsi que ses implémentations. Il s'agit
+    de fonctions servant à rajouter des fonctionnalités et des traitements aux formes sans polluer leurs classes respectives.
+    \item La Vue possède quant à elle un sous package Editor qui contient les ShapeEditor ainsi que leurs factories respectives.
+
+
+\end{itemize}
+
 
 
 \section{Design patterns utilisés} \label{sec2}
@@ -206,6 +217,20 @@ dans différentes classes capables de créer le menu d'édition pour son type d'
     \label{MethodFactory}
 \end{figure}
 \FloatBarrier
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 0.3\textwidth,height=5.0cm,keepaspectratio]{editorGroup.png}
+    \includegraphics[width= 0.3\textwidth,height=5.0cm,keepaspectratio]{editorPolygon.png}
+    \caption{Éditeurs de groupe (gauche) et de polygone (droite)}
+    \label{MFicons}
+\end{figure}
+\FloatBarrier
+
+Dans la figure \ref{MFicons}, on peut voir les différents boutons correspondant aux éditeurs de formes.
+À gauche, on peut observer l'éditeur du groupe qui va lui permettre d'augmenter ou réduire sa taille ainsi que de se dégrouper.
+À droite, on peut voir l'éditeur du polygone (le cercle et le rectangle sont similaires, avec moins d'options). Cela va permettre à l'utilisateur
+d'augmenter ou réduire la taille de la forme, de changer sa couleur, d'augmenter ou réduire le nombre de côtés du polygone ainsi que d'effectuer une rotation de la forme.
 \subsection{Bridge}
 
 Le pattern \textit{Bridge} a été choisi dans notre projet afin d'avoir la possibilité de changer de technologie dans notre vue
