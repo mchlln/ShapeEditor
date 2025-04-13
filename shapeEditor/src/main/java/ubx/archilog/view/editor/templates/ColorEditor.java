@@ -12,7 +12,7 @@ public class ColorEditor {
   private final int x;
   private final int y;
 
-  public ColorEditor(Group group, int x, int y) {
+  public ColorEditor(final Group group, final int x, final int y) {
     this.group = group;
     this.x = x;
     this.y = y;

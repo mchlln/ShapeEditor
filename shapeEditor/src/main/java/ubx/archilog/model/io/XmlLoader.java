@@ -38,8 +38,8 @@ public class XmlLoader implements FileLoader {
     for (int i = 0; i < toolBarNodes.getLength(); i++) {
       final Element toolBarElement = (Element) toolBarNodes.item(i);
       final ToolBar toolBar = new ToolBar(true);
-      List<Shape> toAdd = loadGroup(toolBarElement, toolBar);
-      for (Shape shape : toAdd) {
+      final List<Shape> toAdd = loadGroup(toolBarElement, toolBar);
+      for (final Shape shape : toAdd) {
         if (shape.zIndex() != 0) {
           toolBar.addShapeToToolBar(shape);
         }
@@ -51,8 +51,8 @@ public class XmlLoader implements FileLoader {
     for (int i = 0; i < canvasNodes.getLength(); i++) {
       final Element canvasElement = (Element) canvasNodes.item(i);
       final Group canvas = new Group(false);
-      List<Shape> toAdd = loadGroup(canvasElement, canvas);
-      for (Shape shape : toAdd) {
+      final List<Shape> toAdd = loadGroup(canvasElement, canvas);
+      for (final Shape shape : toAdd) {
         canvas.add(shape);
       }
       canvas.zIndex(0);
@@ -61,7 +61,7 @@ public class XmlLoader implements FileLoader {
   }
 
   private List<Shape> loadGroup(final Element groupElement, final Group group) {
-    List<Shape> children = new ArrayList<>();
+    final List<Shape> children = new ArrayList<>();
     final NodeList groupChildren = groupElement.getChildNodes();
     for (int i = 0; i < groupChildren.getLength(); i++) {
       final Node node = groupChildren.item(i);
@@ -70,8 +70,8 @@ public class XmlLoader implements FileLoader {
         switch (element.getTagName()) {
           case "group" -> {
             final Group childGroup = new Group(false);
-            List<Shape> toAdd = loadGroup(element, childGroup);
-            for (Shape shape : toAdd) {
+            final List<Shape> toAdd = loadGroup(element, childGroup);
+            for (final Shape shape : toAdd) {
               childGroup.add(shape);
             }
             children.add(childGroup);

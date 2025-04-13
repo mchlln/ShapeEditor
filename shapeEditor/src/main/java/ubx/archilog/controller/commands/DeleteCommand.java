@@ -8,11 +8,11 @@ import ubx.archilog.model.shapes.Shape;
 import ubx.archilog.model.shapes.ToolBar;
 
 public class DeleteCommand implements Command {
-  private Shape shape;
-  private Group from;
-  Memento modelMemento;
+  private final Shape shape;
+  private final Group from;
+  private final Memento modelMemento;
 
-  public DeleteCommand(Shape shape, Group from) {
+  public DeleteCommand(final Shape shape, final Group from) {
     this.shape = shape;
     this.from = from;
     this.modelMemento = Model.getInstance().getComponents().save();
@@ -25,7 +25,6 @@ public class DeleteCommand implements Command {
     } else {
       from.remove(shape);
     }
-    // TODO: Find shape and remove it from either canvas or toolbar
   }
 
   @Override

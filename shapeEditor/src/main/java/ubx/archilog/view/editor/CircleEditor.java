@@ -12,7 +12,7 @@ public class CircleEditor extends AbstractEditor {
   public void edit(final Shape shape, final Render render) {
     if (shape instanceof Circle) {
       super.edit(shape, render);
-      ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
+      final ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
       colorEditor.edit(shape, render);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);

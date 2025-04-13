@@ -13,9 +13,9 @@ public class RectangleEditor extends AbstractEditor {
   public void edit(final Shape shape, final Render render) {
     if (shape instanceof Rectangle) {
       super.edit(shape, render);
-      ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
+      final ColorEditor colorEditor = new ColorEditor(group, 520, View.TOP_PADDING);
       colorEditor.edit(shape, render);
-      RotationEditor rotationEditor = new RotationEditor(group, 580, View.TOP_PADDING);
+      final RotationEditor rotationEditor = new RotationEditor(group, 580, View.TOP_PADDING);
       rotationEditor.edit(shape);
       Model.getInstance().clearCurrentMenu();
       Model.getInstance().setCurrentMenu(group);
