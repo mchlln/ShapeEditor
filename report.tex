@@ -1,0 +1,362 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{pifont}
+\usepackage[a4paper, margin=1.5cm]{geometry}  
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{placeins}
+
+\graphicspath{ {./res/} }
+\author{
+    Valentin Jonquière,
+    Mathilde Chollon
+}
+
+\title{Rapport Architecture Logicielle}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Présentation du projet}
+
+Ce rapport présente le projet du cours d'Architecture Logicielle de M1 Informatique à l'Université de Bordeaux.
+Nous devions créer un logiciel de dessin vectoriel, où l'on peut manipuler différentes formes afin de créer des figures dans l'éditeur.
+Le but de ce cours étant l'application de Design Patterns afin d'avoir une architecture propre, extensible et facilement maintenable, 
+nous allons expliquer en section \ref{sec2} les patterns utilisés et leurs avantages pour notre implémentation.
+
+Nous avons suivi le style Google pour le formatage du code.
+Nous avons également essayé de suivre les recommandations d'outils de qualité de code comme PMD, ce qui explique les attributs, arguments et variables \textit{final}.
+
+Pour l'interface graphique, seulement quelques fonctions de \textit{Java AWT} étaient autorisées, comme les fonctions de dessin de rectangle, d'ovale ou de polygone, mais les types de formes devaient
+être les nôtres.
+Le logiciel présente plusieurs fonctionnalités clé qui sont les suivantes :
+\begin{itemize}
+    \item Sélection d'un objet depuis la toolbar et ajout au canevas via un glisser-déposer.
+    \item Création/ suppression de groupes d'objets.
+    \item Modification de la taille, position, couleur,... des objets.
+    \item Ajout des formes crées à la toolbar via glisser-déposer.
+    \item Annuler/ refaire une action.
+    \item Sauvegarde/chargement d'un fichier contenant canevas et toolbar.
+    \item Sauvegarde de la toolbar en quittant le logiciel, recharge au de celle ci au lancement.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,keepaspectratio]{dog.png}
+    \caption{Exemple de dessin avec notre logiciel}
+    \label{Clebs}
+\end{figure}
+\FloatBarrier
+Sur la Figure \ref{Clebs}, on a un aperçu des différentes fonctionnalités du logiciel.
+ Le chien a été créé à partir des formes basiques telles que le cercle, rectangle et polygone régulier.
+ Grâce aux différentes possibilités d'édition de formes, nous avons pu changer la couleur, la forme ainsi que la tailles des formes pour créer le dessin voulu.
+ On peut également voir que la forme a été ajoutée à la toolbar, et qu'il est possible de rajouter les formes de celles-ci au canevas.
+ 
+\section{Utiliser le logiciel}
+
+Afin de prendre en main le logiciel plus rapidement, voici quelques conseils d'utilisation:
+\begin{itemize}
+    \item Afin de charger un canevas et sa toolbar personnalisée, il faut cliquer sur la première icône du menu, celle d'import.
+    \item Pour sauvegarder le logiciel, il faut cliquer sur la deuxième icône du menu, celle d'export.
+    \item Pour grouper des formes, il faut effectuer un drag de la souris en faisant un clic droit. Après le relâchement de la souris, un rectangle de sélection 
+    apparaitra autour du groupe crée.
+    \item Pour supprimer un groupe, il faut effectuer un clic droit sur le groupe puis cliquer sur la troisième icône de l'éditeur du groupe.
+    \item Pour augmenter ou diminuer la taille d'une forme, faire un clic droit sur l'objet puis cliquer sur les icônes + ou - entourées d'un cercle dans l'éditeur de la forme.
+    \item Pour augmenter ou diminuer le nombre de côtés d'un polygone régulier, faire un clic droit sur l'objet puis cliquer sur les icônes + ou - dans l'éditeur de la forme.
+    \item Pour faire pivoter une forme (polygone ou rectangle), faire un clic droit sur l'objet puis cliquer sur l'icône de rotation dans l'éditeur de la forme.
+    \item Pour modifier la couleur d'une forme simple, faire un clic droit sur l'objet puis cliquer sur l'icône de couleur dans l'éditeur de la forme, puis sélectionner la couleur souhaitée.
+    \item Pour annuler une action, cliquer sur la troisième icône du menu, celle d'undo. Cette commande n'est pas valable pour l'annulation d'un chargement ou sauvegarde de fichier, ni sur l'ouverture d'un éditeur de formes.
+    \item Pour refaire une action annulée, cliquer sur la quatrième icône du menu, celle de redo. Cette commande n'est pas valable pour les mêmes commandes que le undo.
+    \item Pour ajouter une forme sur le canevas, il faut faire un drag and drop en appuyant sur le bouton gauche de la souris de la toolbar vers le canevas.
+    \item Pour supprimer une forme de la toolbar ou du canevas, il faut faire un drag and drop vers la poubelle située en bas de la toolbar.
+    \item Pour ajouter une forme à la toolbar, il faut effectuer un drag and drop depuis le canevas vers la toolbar.
+    \item Pour déplacer une forme, il faut faire un drag and drop en cliquant sur la forme et en lâchant à sa destination.
+\end{itemize}
+
+Attention, le logiciel sauvegarde la toolbar à la fermeture de l'application dans \textit{.defaultToolbar}. Au lancement de l'application, il se sert de cette configuration.
+Si toutes les formes ont été supprimées de la toolbar précédemment, il faut supprimer ce fichier afin de prendre la configuration par défaut de l'application.
+
+Pour plus d'informations sur les icônes des éditeurs, voir partie \ref{MethodFactory}.
+
+
+\section{Architecture du logiciel}
+
+Nous utilisons une sorte de MVC modifié, où la Vue envoie des commandes au Controller (BagOfCommands), qui agit sur le Modèle. Le Modèle gère uniquement la logique métier. La Vue a tout de même accès au Modèle,
+afin de pouvoir mettre à jour son affichage lorsqu'elle est notifiée.
+Le logiciel est donc structuré en trois packages principaux : view, model et controller.
+\begin{itemize}
+    \item Le Controller contient un sous-package commands, qui regroupe les différentes commandes implémentées.
+    \item Le Model possède plusieurs sous package afin de regrouper les classes par "familles". Le package io contient le loader et le saver afin de pouvoir sauvegarder et charger des fichiers. Le package shapes contient l'interface Shape ainsi que ses différentes implémentations. Enfin le package visitor contient l'interface ShapeVisitor ainsi que ses implémentations. Il s'agit
+    de fonctions servant à rajouter des fonctionnalités et des traitements aux formes sans polluer leurs classes respectives.
+    \item La Vue possède quant à elle un sous package Editor qui contient les ShapeEditor ainsi que leurs factories respectives.
+
+
+\end{itemize}
+
+
+
+\section{Design patterns utilisés} \label{sec2}
+
+\subsection{Prototype}
+Le pattern prototype a été utilisé dans les différentes formes en ajoutant une méthode \textit{clone()}. Cette méthode permet de faire une deep copy de l'objet,
+ nous laissant modifier les champs du clone sans affecter ceux de la forme de base.
+ L'interface Shape implémente \textit{Cloneable}, ce qui nous permet de créer ces clones.
+ Toutes les implémentations concrètes de Shape implémentent clone() (tout sauf \textit{Polygon} et \textit{Ellipsoid}).
+ Cela est particulièrement utile pour le drag-and-drop de la toolbar vers le canevas et inversement.
+
+\subsection{Builder}
+Nous avons choisi d'utiliser le pattern Builder afin de créer des fichiers de sauvegarde de l'état du logiciel. Cela nous permet de créer différentes implémentations
+afin de sérialiser différents types de documents. Dans la Figure \ref{Builder}, nous pouvons voir que le \textit{FileBuilder} est l'interface contenant les différentes étapes de création
+du fichier de sauvegarde. La classe \textit{XmlBuilder} correspond quant à elle au ``Concrete Builder'' du pattern, c'est-à-dire l'implémentation spécifique
+de l'interface. Nous avons donc implémenté un builder de fichiers XML. Grâce à l'interface \textit{FileBuilder}, l'ajout de nouveaux builders concrets est facilitée.
+Par exemple, il est possible de rajouter des savers au format txt ou JSON en implémentant l'interface \textit{FileBuilder}.
+Ce qui va permettre la prise en charge différents formats de fichiers est le fait que la méthode \textit{getResult()} est présente uniquement dans les classes concrètes, ce qui ne va pas nous
+limiter quant au format de retour des builders. Nous avons donc basé la structure de l'application sur le pattern Composite puisque notre modèle repose sur un Group nommé \textit{components}
+comportant lui-même des groupes pour représenter la toolbar, le menu ou encore le canevas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{builder.png}
+    \caption{Diagramme de classe du Builder}
+    \label{Builder}
+\end{figure}
+\FloatBarrier
+
+Afin de rester cohérents lors du chargement de fichiers de sauvegarde, nous avons utilisé le même principe pour le Loader,
+qui possède une interface \textit{FileLoader} ainsi qu'une implémentation concrète \textit{XmlLoader}.
+
+\subsection{Composite}
+
+Le pattern \textit{Composite} a été utilisé afin de simplifier la création de groupes de formes ainsi que de groupes de groupes de formes.
+Les groupes devant posséder les mêmes traitements que les formes simples (resize, move, \ldots), la classe groupe implémentant également l'interface \textit{Shape}. Nous pouvons donc 
+traiter de la même manière les groupes de formes et les formes individuelles telles que les polygones réguliers ou les cercles.  On utilise ici une liste couplée à un set de forme pour stocker
+les formes contenues dans un groupe afin de pouvoir itérer facilement sur les éléments, mais également garantir qu'une forme n'apparait qu'une fois dans un groupe grâce aux propriétés du set.
+Nous possédons également un groupe particulier, la Toolbar. Elle possède les mêmes propriétés qu'un groupe, mais possède une fonction différente pour ajouter un nouvel élément. L'ajout est différencié
+car il est nécessaire de pouvoir réorganiser l'agencement de la toolbar si une forme est supprimée par exemple (ne pas laisser un emplacement vide). Ce pattern est central à l'architecture de notre logiciel.
+En effet, on peut considérer toute la fenêtre comme un ensemble de groupe. Dans le Modèle, on retrouve le groupe \textit{components} représentant la racine. On peut ensuite ajouter les groupes toolbar, menu et
+canevas représentant tous les trois des zones différentes de l'application avec des actions différentes (mouvement des formes sur le canevas, clique sur les boutons du menu, \ldots) pour définir l'aspect global de l'application. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=15.0cm,keepaspectratio]{Composite.png}
+    \caption{Diagramme de classe du Composite}
+    \label{Composite}
+\end{figure}
+\FloatBarrier
+
+\subsection{Singleton}
+
+Le pattern \textit{Singleton} a été utilisé dans deux de nos classes. Premièrement, il a été utilisé dans la classe \textit{Model}, 
+afin de garantir une instance unique, avec un point d'accès global au sein de l'application.
+Cela nous permet par exemple de récupérer les formes présentes dans le canevas ou la toolbar, n'importe où dans l'application. Avec cette implémentation,
+on peut utiliser une architecture MVC modifiée, où la Vue peut accéder au contenu du Modèle sans passer par le Contrôleur, ce qui évite l'envoi
+de nombreuses commandes.
+Le pattern a également été utilisé dans le \textit{BagOfCommands}. Celui ci remplace le Controller classique et permet d'exécuter des commandes (voir \ref{BoC}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{singleton.png}
+    \includegraphics[width=\textwidth,height=5.0cm,keepaspectratio]{singleton2.png}
+    \caption{Diagramme de classe des deux Singleton}
+    \label{Singleton}
+\end{figure}
+\FloatBarrier
+
+Dans la Figure \ref{Singleton}, on peut voir que les deux classes possèdent un attribut privé et statique \textit{instance}, du type de leur classe.
+Leur constructeur est également privé. Ils possèdent tous deux la méthode publique et statique \textit{getInstance()} qui permet
+d'accéder à l'instance unique de l'objet n'importe où dans le programme.
+
+\subsection{Visitor}
+Nous avons décidé d'ajouter des Visitors afin d'éviter de rajouter trop de fonctions dans nos classes,
+de regrouper les opérations de même genre et d'appliquer des opérations sur certaines formes.
+Comme indiqué sur la Figure \ref{Visitor}, nous avons créé une interface \textit{ShapeVisitor}, qui
+peut visiter des objets de type Group, Abstract Shape, Rectangle ainsi que Circle. Nous aurions pu rajouter plus de classes à
+visiter, mais cela ne semblait pas nécessaire pour l'usage que nous avons.
+La classe \textit{IsInVisitor} implémente cette interface. Elle rajoute dans une liste les formes présentes à une position donnée.
+La fonction \textit{getResult()} renvoie cette liste.
+On se sert de ce visitor pour savoir quel type d'action on a réalisé : quel menu cliqué, ou lors d'un drag : quels sont les
+conteneurs de source et de destination (toolbar, menu, canevas).
+La classe \textit{ShapeInZoneVisitor} implémente également notre interface de Visitor.
+Ce Visitor permet de savoir quelles formes sont présentes dans la zone envoyée au constructeur. Il est utilisé lors de la création de groupe:
+on regarde si quelles sont les formes présentes dans le canevas se trouvant également dans la zone demandée.
+La fonction \textit{getResult()} renvoie également cette liste.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{visitor.png}
+    \caption{Diagramme de classe du Visitor}
+    \label{Visitor}
+\end{figure}
+\FloatBarrier
+\subsection{Method factory}
+Le pattern \textit{Method Factory} a été choisi afin de déléguer à d'autres classes la responsabilité de créer des éditeurs de formes
+spécifiques à la forme créée. En effet, nous avions besoin de pouvoir instancier un éditeur différent pour chaque type de forme, car elles
+ne possèdent pas les mêmes traitements. Par exemple, il est possible de changer la couleur d'un cercle, d'un rectangle et d'un polygone régulier, mais pas celle d'un groupe.
+Ici, le choix de l'éditeur à instancier est confié à la commande \textit{EditShapeCommand} car elle a accès à la forme à éditer. Les formes pouvant toutes
+être re-dimensionnées, nous avons ajouté un \textit{AbstractEditor} afin de factoriser le code de cette opération et ainsi éviter la duplication de code.
+De plus, les traitements pouvant être rangés par catégories (changement de couleurs, rotation, changement du nombre de côtés), nous avons rassemblé les traitements
+dans différentes classes capables de créer le menu d'édition pour son type d'opération dans le but d'éviter encore une fois la duplication de code.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{methodFactory.png}
+    \caption{Diagramme de classe de la Method Factory}
+    \label{MethodFactory}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width= 0.3\textwidth,height=5.0cm,keepaspectratio]{editorGroup.png}
+    \includegraphics[width= 0.3\textwidth,height=5.0cm,keepaspectratio]{editorPolygon.png}
+    \caption{Éditeurs de groupe (gauche) et de polygone (droite)}
+    \label{MFicons}
+\end{figure}
+\FloatBarrier
+
+Dans la figure \ref{MFicons}, on peut voir les différents boutons correspondant aux éditeurs de formes.
+À gauche, on peut observer l'éditeur du groupe qui va lui permettre d'augmenter ou réduire sa taille ainsi que de se dégrouper.
+À droite, on peut voir l'éditeur du polygone (le cercle et le rectangle sont similaires, avec moins d'options). Cela va permettre à l'utilisateur
+d'augmenter ou réduire la taille de la forme, de changer sa couleur, d'augmenter ou réduire le nombre de côtés du polygone ainsi que d'effectuer une rotation de la forme.
+\subsection{Bridge}
+
+Le pattern \textit{Bridge} a été choisi dans notre projet afin d'avoir la possibilité de changer de technologie dans notre vue
+ sans modifier la logique de celle-ci. L'abstraction de la vue et son implémentation sont indépendantes.
+
+Nous avons utilisé \textit{Java Awt} ici, mais il serait tout à fait possible d'utiliser \textit{JavaFX} ou d'autres frameworks graphiques
+avec un minimum de modifications.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{bridge.png}
+    \caption{Diagramme de classe du Bridge}
+    \label{Bridge}
+\end{figure}
+\FloatBarrier
+
+Sur la figure \ref{Bridge}, nous pouvons observer l'implémentation du Bridge via l'interface \textit{Render}.
+La vue va communiquer avec celle-ci, ce qui abstrait l'utilisation d'une technologie particulière.
+La classe \textit{AwtRenderer} est une implémentation concrète de l'interface \textit{Render}. 
+Tout le code spécifique à Java AWT se situe dans cette classe, ce qui ne soumet pas l'application à
+l'utilisation de cette technologie de rendu graphique.
+La classe \textit{View} est quant à elle l'abstraction du pattern, elle utilise un objet de type \textit{Render} sans se soucier de son implémentation concrète.
+
+Ce choix d'architecture nous permet d'implémenter indépendamment la vue du render, ce qui nous permettrait de rajouter d'autres
+implémentations concrètes de ce dernier sans affecter la vue.
+On découple totalement l'abstraction de l'implémentation.
+\FloatBarrier
+\subsection{Observer}
+Nous avons utilisé le pattern \textit{Observer} pour gérer le rafraichissement de la vue. Il est ici efficace de placer notre vue observatrice du BagOfCommands
+car il pourra la notifier à chaque commande utilisée par exemple. Puisque toutes les modifications d'état de notre logiciel passent par des commandes, il n'est 
+donc pas possible de rater une mise à jour du modèle. Pour aller plus loin, garder le BagOfCommands pour gérer le rafraichissement de la vue pourrait permettre 
+de choisir de lancer un update de la vue suivant la commande à exécuter puisqu'il est par exemple inutile de mettre à jour la vue après une sauvegarde dans un fichier.
+De plus, on pourrait implémenter une version \textit{paresseuse} capable d'éviter des mises à jour trop rapides si des commandes ayant un impact sur la vue se suivent.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{observer.png}
+    \caption{Diagramme de classe de l'Observer}
+    \label{Observer}
+\end{figure}
+\FloatBarrier
+
+\subsection{Memento}
+Afin de pouvoir annuler et refaire des commandes (mécanisme de undo/redo), nous avons utilisé le pattern Memento.
+Pour cela, nous avons créé une interface \textit{Memento} qui possède la fonction \textit{restore} (remet l'objet sauvegardé à son état d'origine).
+Les implémentations de \textit{Shape} ont une fonction \textit{save()} qui retourne un Memento ainsi que qu'une classe interne qui implémente cette interface.
+
+Sur la figure \ref{MementoGroupe}, on peut voir que la classe \textit{Group} a une classe interne \textit{GroupMemento} qui implémente \textit{Memento}, 
+elle possède un champ originator, qui est une référence vers l'objet ayant appelé la classe. Les champs de cet objet vont donc être sauvegardés afin de pouvoir
+être restaurés lors d'un appel à la fonction \textit{restore()}. 
+On peut également voir la commande \textit{UngroupCommande}, qui dégroupe le groupe donné. Cette commande possède un Memento sur le groupe à supprimer,
+afin de pouvoir appeler \textit{restore()} dans sa méthode \textit{undo()}.
+
+Sur la figure \ref{MementoShape}, on peut voir que les classes \textit{AbstractShape} et \textit{RegularPolygon} possèdent des classes internes implémentant
+l'interface \textit{Memento}.  Les classes \textit{Rectangle} et \textit{Circle} n'ont pas besoin d'implémenter cette interface, car leur structure est identique à celle
+de l'AbstractShape, on a besoin de sauvegarder les mêmes attributs. Le polygone régulier a son propre Mémento, qui va étendre le AbstractMemento 
+afin de sauvegarder le nombre de côtés ainsi que son angle de rotation, qui ne sont pas présents dans les autres formes.
+La commande \textit{ResizeCommand} est un autre exemple d'utilisation du Memento, en effet, la commande sauvegarde la forme donnée avant de
+changer sa taille afin de pouvoir annuler la modification si besoin.
+
+La plupart des commandes implémentées créent des Memento des formes données en paramètres. À chaque exécution de commande, on l'ajoute dans une liste du
+\textit{BagOfCommands} afin de pouvoir appeler undo dessus si l'utilisateur envoie une commande d'annulation.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{memento.png}
+    \caption{Diagramme de classe du Memento pour un groupe}
+    \label{MementoGroupe}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{memento2.png}
+    \caption{Diagramme de classe du Memento pour une forme simple}
+    \label{MementoShape}
+\end{figure}
+\FloatBarrier
+
+Afin d'expliquer l'utilisation du Mémento dans nos commandes, la figure \ref{DSMemento} représente un diagramme de séquence sur la commande \textit{TranslateCommand} puis son annulation.
+L'utilisateur va cliquer sur une forme puis la déplacer sur le canevas. Après avoir trouvé la forme cliquée, ainsi que la translation effectuée,
+la Vue va créer une commande \textit{TranslateCommand}. Celle ci va créer un Mémento de la forme cliquée, qu'il va sauvegarder puis retourner l'instance de la commande.
+La vue va ensuite ajouter cette commande au BagOfCommands, qui va l'exécuter par la suite.
+La vue va donc se mettre à jour.
+Si l'utilisateur décide d'annuler l'action, il va cliquer sur le bouton de suppression. Cela va donc envoyer l'action correspondante, soit la création d'une \textit{UndoCommand}
+ainsi que son ajout au BagOfCommands. Celui ci va l'exécuter, ce qui appelle la fonction \textit{undoLastCommand()} qui appelle le \textit{undo} de
+la \textit{TranslateCommand} créée auparavant. La commande va appeler le restore du Memento, ce qui va redonner la position d'origine à l'objet.
+La vue va ensuite se mettre à jour.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{DS_memento.png}
+    \caption{Diagramme de séquence pour le undo d'une commande}
+    \label{DSMemento}
+\end{figure}
+\FloatBarrier
+
+\subsection{Command + Bag Of Commands} \label{BoC}
+
+Pour permettre des interactions entre la vue et le modèle, nous avons choisi de passer par les commandes. En effet,
+puisqu'il ne faut pas de logique métier dans notre vue, nous avons décidé de la mettre dans les commandes en réalisant 
+les différents appels au modèle. Par exemple lorsque que l'on clone une forme de la toolbar
+au canevas, la commande \textit{CloneToCanvasCommand} visible en Figure \ref{Command} devra alors cloner la forme, avant de
+l'ajouter au canevas à l'endroit où l'utilisateur l'a déposée. Pour organiser les commandes, les exécuter, annuler ou refaire des commandes, 
+ nous utilisons un BagOfCommands. À chaque fois qu'une commande est ajoutée à celui-ci, elle est ajoutée à une liste d'attente ou les commandes 
+ sont exécutées dans l'ordre. Dès lors qu'elle est exécutée, elle est ajoutée à la liste des commandes traitées afin de pouvoir être annulée à tout 
+ moment. Des exemples de commandes implémentées peuvent être trouvé en Figure \ref{Command}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{command.png}
+    \caption{Diagramme de classe des Commandes}
+    \label{Command}
+\end{figure}
+\FloatBarrier
+
+Pour mieux comprendre le fonctionnement des commandes, le diagramme de séquence en Figure \ref{CommandDS} montre un exemple d'exécution
+pour la commande translate qui a pour but de déplacer une forme dans le canevas.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=10.0cm,keepaspectratio]{DS_command.png}
+    \caption{Diagramme de séquence pour les Commandes}
+    \label{CommandDS}
+\end{figure}
+\FloatBarrier
+
+\end{document}

@@ -1,3 +1,31 @@
 package ubx.archilog.model.io;
 
-public interface FileBuilder {}
+import ubx.archilog.model.shapes.*;
+
+public interface FileBuilder {
+  void beginDocument();
+
+  void endDocument();
+
+  void beginGroup(Group group);
+
+  void endGroup();
+
+  void beginToolBar();
+
+  void endToolBar();
+
+  void beginCanvas();
+
+  void endCanvas();
+
+  void buildPolygon(Polygon polygon);
+
+  void buildEllipsoid(Ellipsoid ellipsoid);
+
+  void buildCircle(Circle circle);
+
+  void buildRectangle(Rectangle rectangle);
+
+  void buildRegularPolygon(final RegularPolygon polygon);
+}

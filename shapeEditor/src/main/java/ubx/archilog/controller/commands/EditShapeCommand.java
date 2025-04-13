@@ -1,0 +1,40 @@
+package ubx.archilog.controller.commands;
+
+import ubx.archilog.controller.Command;
+import ubx.archilog.model.shapes.*;
+import ubx.archilog.view.Render;
+import ubx.archilog.view.editor.*;
+
+public class EditShapeCommand implements Command {
+
+  private final Shape shape;
+  private final ShapeEditorFactory editorFactory;
+  private final Render render;
+
+  public EditShapeCommand(final Shape shape, final Render render) {
+    this.shape = shape;
+    this.render = render;
+    if (shape instanceof Rectangle) {
+      this.editorFactory = new RectangleEditorFactory();
+    } else if (shape instanceof Circle) {
+      this.editorFactory = new CircleEditorFactory();
+    } else if (shape instanceof Group) {
+      this.editorFactory = new GroupEditorFactory();
+    } else if (shape instanceof RegularPolygon) {
+      this.editorFactory = new RegularPolygonEditorFactory();
+    } else {
+      throw new UnsupportedOperationException("Unsupported shape: " + shape);
+    }
+  }
+
+  @Override
+  public void execute() {
+    final ShapeEditor editor = editorFactory.createEditor();
+    editor.edit(shape, render);
+  }
+
+  @Override
+  public void undo() {
+    // creation of an editor can't be undone
+  }
+}
